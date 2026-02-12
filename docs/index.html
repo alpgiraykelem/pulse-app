@@ -86,6 +86,19 @@
           "description": "Custom software development, design, and AI facilitation consulting"
         }
       }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {"@type":"Question","name":"How is Pulse different from Toggl?","acceptedAnswer":{"@type":"Answer","text":"Toggl requires manual timers. Pulse tracks time automatically by monitoring your active app and window. It also auto-categorizes work into projects using AI pattern detection."}},
+        {"@type":"Question","name":"Can Pulse replace Jira time tracking?","acceptedAnswer":{"@type":"Answer","text":"Yes. Pulse captures every minute spent in VS Code, Terminal, Figma, or your browser automatically. Create brand/project hierarchies and auto-assign activities using classification rules."}},
+        {"@type":"Question","name":"Is Pulse free?","acceptedAnswer":{"@type":"Answer","text":"Pulse is 100% free and open source under the MIT license. No premium tier, no data harvesting, no subscription."}},
+        {"@type":"Question","name":"Does Pulse work offline?","acceptedAnswer":{"@type":"Answer","text":"Yes, Pulse works 100% offline with a local SQLite database. No internet required. Your data never leaves your Mac."}},
+        {"@type":"Question","name":"What apps does Pulse track?","acceptedAnswer":{"@type":"Answer","text":"Every macOS app: VS Code, Figma, Safari, Chrome, Terminal, Slack, Notion. Browser tabs like YouTube, GitHub, ChatGPT are tracked separately. Terminal background processes are tracked with project names."}},
+        {"@type":"Question","name":"How does automatic project classification work?","acceptedAnswer":{"@type":"Answer","text":"7 rule types: URL domain, URL path, window title, terminal folder, Figma file, bundle ID, page title. AI pattern detector suggests rules automatically from unassigned activities."}},
+        {"@type":"Question","name":"Is Pulse good for freelancers?","acceptedAnswer":{"@type":"Answer","text":"Built for freelancers and agencies. Automatically tracks client projects, generates hour reports, and separates billable from personal time."}},
+        {"@type":"Question","name":"How does Pulse compare to ClickUp?","acceptedAnswer":{"@type":"Answer","text":"ClickUp requires manual timer start/stop. Pulse runs in the menu bar and captures everything automatically, without monthly cost or cloud dependency."}}
+      ]
     }
   ]
 }
@@ -607,6 +620,36 @@ section{padding:100px 0}
   .new-grid{grid-template-columns:1fr}
 }
 
+/* ── FAQ ── */
+.faq-section{background:rgba(255,255,255,.01)}
+.faq-grid{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:8px}
+.faq{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:12px;
+  overflow:hidden;
+  transition:border-color .3s;
+}
+.faq:hover{border-color:rgba(124,92,252,.2)}
+.faq summary{
+  padding:20px 24px;
+  font-size:1rem;font-weight:600;color:#fff;
+  cursor:pointer;list-style:none;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:background .2s;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:'+';font-size:1.3rem;font-weight:300;color:#7C5CFC;
+  transition:transform .2s;flex-shrink:0;margin-left:16px;
+}
+.faq[open] summary::after{transform:rotate(45deg)}
+.faq[open] summary{background:rgba(124,92,252,.04)}
+.faq p{
+  padding:0 24px 20px;
+  font-size:.9rem;color:#8b8fa7;line-height:1.65;
+}
+
 /* ── Scroll Reveal ── */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
@@ -637,7 +680,7 @@ section{padding:100px 0}
     <div class="hero-badge"><span></span> Open Source &middot; macOS</div>
 
     <!-- Download Card (inline initially, sticky on scroll) -->
-    <a href="https://github.com/alpgiray-crypto/pulse-app" target="_blank" rel="noopener" class="dl-card" id="dlCard">
+    <a href="https://github.com/alpgiray-crypto/pulse-app/releases/latest" target="_blank" rel="noopener" class="dl-card" id="dlCard">
       <div class="dl-card-icon">
         <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="44" height="44" rx="10" fill="url(#dl-icon-grad)"/>
@@ -685,9 +728,9 @@ section{padding:100px 0}
 <section class="replace-section" id="replace">
   <div class="container">
     <div class="section-header reveal">
-      <div class="section-label">Why Pulse</div>
-      <h2 class="section-title">What they do manually,<br><span class="gradient-text">this does automatically.</span></h2>
-      <p class="section-desc">Toggl, Jira, ClickUp &mdash; they all need you to remember. Pulse just works.</p>
+      <div class="section-label">Toggl &amp; Jira Alternative</div>
+      <h2 class="section-title">Replace manual time tracking<br><span class="gradient-text">with automatic tracking.</span></h2>
+      <p class="section-desc">Toggl requires you to start timers. Jira needs manual time logs. ClickUp demands project tagging. Pulse does all of this automatically &mdash; the best free alternative for freelancers and developers.</p>
     </div>
 
     <div class="compare-grid">
@@ -733,9 +776,9 @@ section{padding:100px 0}
 <section class="whats-new" id="new">
   <div class="container">
     <div class="section-header reveal">
-      <div class="section-label">Latest</div>
-      <h2 class="section-title">Built-in project management<br><span class="gradient-text">that thinks for you.</span></h2>
-      <p class="section-desc">Brand hierarchy, auto-classification rules, and AI-powered pattern detection. All without leaving the menu bar.</p>
+      <div class="section-label">Automatic Project Tracking</div>
+      <h2 class="section-title">AI-powered project management<br><span class="gradient-text">built into your time tracker.</span></h2>
+      <p class="section-desc">Automatic project classification, client brand hierarchy, and smart rules engine. Track billable hours per client without lifting a finger &mdash; the project time tracking software that actually works.</p>
     </div>
 
     <div class="new-grid">
@@ -800,9 +843,9 @@ section{padding:100px 0}
 <section id="features">
   <div class="container">
     <div class="section-header reveal">
-      <div class="section-label">Features</div>
-      <h2 class="section-title">Everything happens<br><span class="gradient-text">automatically.</span></h2>
-      <p class="section-desc">No timers to start. No buttons to click. Pulse watches what you do and builds beautiful reports.</p>
+      <div class="section-label">Time Tracking Features</div>
+      <h2 class="section-title">Automatic time tracking<br><span class="gradient-text">for every app you use.</span></h2>
+      <p class="section-desc">No timers to start. No buttons to click. Pulse tracks every app, browser tab, terminal command, and design file on your Mac &mdash; then generates detailed productivity reports.</p>
     </div>
     <div class="features-grid">
       <div class="feature-card reveal">
@@ -858,9 +901,9 @@ section{padding:100px 0}
 <section class="report-preview" id="report">
   <div class="container">
     <div class="section-header reveal">
-      <div class="section-label">Daily Reports</div>
-      <h2 class="section-title">See your day<br><span class="gradient-text">in full clarity.</span></h2>
-      <p class="section-desc">Charts, timelines, and per-app breakdowns. Generated automatically as beautiful HTML files.</p>
+      <div class="section-label">Productivity Reports</div>
+      <h2 class="section-title">Detailed time reports<br><span class="gradient-text">generated automatically.</span></h2>
+      <p class="section-desc">Daily productivity reports with time-per-app charts, activity timelines, and project breakdowns. See exactly how many hours you spent on each client &mdash; perfect for freelancer invoicing and developer productivity analysis.</p>
     </div>
 
     <div class="rp-grid">
@@ -1024,9 +1067,9 @@ section{padding:100px 0}
 <section class="privacy" id="privacy">
   <div class="container">
     <div class="section-header reveal">
-      <div class="section-label">Privacy &amp; Open Source</div>
-      <h2 class="section-title">Your data stays<br><span class="gradient-text">on your Mac.</span></h2>
-      <p class="section-desc">Zero network calls. Zero telemetry. Every line of code is open for inspection.</p>
+      <div class="section-label">Privacy-First Time Tracker</div>
+      <h2 class="section-title">Offline time tracking.<br><span class="gradient-text">Your data never leaves your Mac.</span></h2>
+      <p class="section-desc">Unlike cloud-based time trackers, Pulse runs 100% offline. No accounts, no subscriptions, no data collection. The most private time tracking app for macOS &mdash; open source and auditable.</p>
     </div>
     <div class="privacy-grid">
       <div class="privacy-card reveal">
@@ -1082,8 +1125,8 @@ path = appSupport.appendingPathComponent(<span class="str">"activity.db"</span>)
 <section id="how">
   <div class="container">
     <div class="section-header reveal">
-      <div class="section-label">How It Works</div>
-      <h2 class="section-title">Three steps.<br><span class="gradient-text">Then forget about it.</span></h2>
+      <div class="section-label">Getting Started</div>
+      <h2 class="section-title">Install in 60 seconds.<br><span class="gradient-text">Track time automatically forever.</span></h2>
     </div>
     <div class="steps">
       <div class="step reveal">
@@ -1109,9 +1152,9 @@ path = appSupport.appendingPathComponent(<span class="str">"activity.db"</span>)
 <section class="install-section" id="install">
   <div class="container">
     <div class="section-header reveal">
-      <div class="section-label">Install</div>
-      <h2 class="section-title">Ready in<br><span class="gradient-text">60 seconds.</span></h2>
-      <p class="section-desc">Requires macOS 13+ and Xcode Command Line Tools.</p>
+      <div class="section-label">Free Download</div>
+      <h2 class="section-title">Download Pulse<br><span class="gradient-text">for macOS. Free.</span></h2>
+      <p class="section-desc">Works on macOS 13 Ventura and later. No account needed, no credit card, no trial period. Free and open source forever.</p>
     </div>
     <div class="install-block reveal">
       <button class="install-copy" onclick="copyBlock(this)" aria-label="Copy install commands">Copy</button>
@@ -1122,6 +1165,59 @@ path = appSupport.appendingPathComponent(<span class="str">"activity.db"</span>)
       <div class="line"><span class="prompt">$ </span>cd pulse-app &amp;&amp; ./Scripts/install.sh</div>
     </div>
     <p class="install-note reveal">Then open <code>Pulse</code> from Spotlight or Applications folder.</p>
+  </div>
+</section>
+
+<!-- ── FAQ (SEO) ── -->
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">FAQ</div>
+      <h2 class="section-title">Frequently asked<br><span class="gradient-text">questions.</span></h2>
+    </div>
+    <div class="faq-grid">
+
+      <details class="faq reveal">
+        <summary>How is Pulse different from Toggl?</summary>
+        <p>Toggl requires you to manually start and stop timers for each task. If you forget, your data is inaccurate. Pulse tracks your time automatically by monitoring which app and window is active on your Mac. No timers, no buttons, no forgetting. It also auto-categorizes your work into projects using AI pattern detection &mdash; something Toggl requires you to do manually.</p>
+      </details>
+
+      <details class="faq reveal">
+        <summary>Can Pulse replace Jira time tracking?</summary>
+        <p>Yes. Jira requires developers to manually log hours against tickets at the end of each day. Pulse captures this data automatically &mdash; every minute spent in VS Code, Terminal, Figma, or your browser is recorded with the exact window title. You can create brand/project hierarchies that mirror your Jira projects, and Pulse will auto-assign activities using classification rules.</p>
+      </details>
+
+      <details class="faq reveal">
+        <summary>Is Pulse free? What's the catch?</summary>
+        <p>Pulse is 100% free and open source under the MIT license. There's no catch, no premium tier, no data harvesting. It runs entirely on your Mac with no server, no account, and no subscription. The source code is fully auditable on GitHub.</p>
+      </details>
+
+      <details class="faq reveal">
+        <summary>Does Pulse work offline?</summary>
+        <p>Yes, Pulse works 100% offline. It uses a local SQLite database stored on your Mac. No internet connection is required for tracking, reporting, or project management. Your data never leaves your machine &mdash; making it the most private time tracking app available for macOS.</p>
+      </details>
+
+      <details class="faq reveal">
+        <summary>What apps does Pulse track?</summary>
+        <p>Pulse tracks every macOS application: VS Code, Figma, Safari, Chrome, Terminal, Slack, Notion, and more. It also separates browser tabs &mdash; YouTube, GitHub, ChatGPT, and other sites are tracked as individual apps. Terminal background processes (builds, deploys, npm scripts) are tracked with project names extracted from window titles.</p>
+      </details>
+
+      <details class="faq reveal">
+        <summary>How does automatic project classification work?</summary>
+        <p>Pulse uses 7 rule types to classify activities: URL domain, URL path, window title, terminal folder, Figma file name, bundle ID, and page title. You can create rules manually, or let the AI pattern detector scan your unassigned activities and suggest rules automatically. Once set, rules auto-classify all future activities &mdash; no manual tagging needed.</p>
+      </details>
+
+      <details class="faq reveal">
+        <summary>Is Pulse good for freelancers?</summary>
+        <p>Pulse is built for freelancers, contractors, and agencies who need accurate time tracking for client billing. It automatically tracks which client project you're working on, generates detailed reports showing hours per project, and separates billable work from personal browsing. No more guessing how long a task took &mdash; every minute is captured.</p>
+      </details>
+
+      <details class="faq reveal">
+        <summary>How does Pulse compare to ClickUp time tracking?</summary>
+        <p>ClickUp's time tracker is a manual timer embedded in its project management tool. You must remember to start/stop it for each task. Pulse runs independently in your menu bar and captures everything automatically. You get the time tracking data ClickUp provides, without the manual effort, the monthly cost, or the cloud dependency.</p>
+      </details>
+
+    </div>
   </div>
 </section>
 
