@@ -1,0 +1,14 @@
+.build/
+.swiftpm/
+*.xcodeproj/
+xcuserdata/
+DerivedData/
+.DS_Store
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+.claude/
+.cursor/
+.agents/
+CLAUDE.md
