@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pulse — Promo Cards</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  background:#1a1a2e;
+  color:#e2e4ed;
+  padding:40px;
+  display:flex;flex-direction:column;align-items:center;gap:60px;
+  -webkit-font-smoothing:antialiased;
+}
+h2.section-label{
+  font-size:14px;text-transform:uppercase;letter-spacing:3px;
+  color:#7C5CFC;margin-bottom:12px;align-self:flex-start;max-width:1200px;width:100%;
+}
+
+/* ═══════════════════════════════════════════
+   1. OG IMAGE / GITHUB SOCIAL PREVIEW
+   1200 x 630
+   ═══════════════════════════════════════════ */
+.og-card{
+  width:1200px;height:630px;
+  background:linear-gradient(160deg,#0B0D17 0%,#12142a 40%,#0B0D17 100%);
+  border-radius:0;
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:20px;
+}
+.og-card::before{
+  content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);
+  width:900px;height:900px;
+  background:radial-gradient(ellipse,rgba(124,92,252,.15) 0%,transparent 65%);
+  pointer-events:none;
+}
+.og-card::after{
+  content:'';position:absolute;bottom:-100px;right:-100px;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(91,141,239,.08) 0%,transparent 60%);
+  pointer-events:none;
+}
+.og-icon{
+  width:80px;height:80px;border-radius:20px;
+  background:linear-gradient(135deg,#3D4FF5,#8C38E0);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 32px rgba(124,92,252,.3);
+  position:relative;z-index:1;
+}
+.og-icon svg{width:44px;height:44px}
+.og-title{
+  font-size:72px;font-weight:800;letter-spacing:-.04em;
+  background:linear-gradient(135deg,#fff 30%,#c4b5fd);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  position:relative;z-index:1;
+}
+.og-sub{
+  font-size:24px;color:#8b8fa7;font-weight:500;
+  position:relative;z-index:1;max-width:700px;text-align:center;line-height:1.4;
+}
+.og-tags{
+  display:flex;gap:12px;position:relative;z-index:1;margin-top:8px;
+}
+.og-tag{
+  font-size:14px;font-weight:600;
+  padding:8px 20px;border-radius:100px;
+  background:rgba(124,92,252,.12);
+  border:1px solid rgba(124,92,252,.25);
+  color:#a78bfa;
+}
+.og-badge{
+  position:absolute;top:32px;left:32px;
+  display:flex;align-items:center;gap:8px;
+  font-size:14px;font-weight:600;color:#a78bfa;z-index:1;
+}
+.og-badge span{width:8px;height:8px;border-radius:50%;background:#22c55e}
+.og-github{
+  position:absolute;bottom:32px;right:32px;
+  font-size:14px;color:#555;z-index:1;
+  font-family:'SF Mono',monospace;
+}
+
+/* ═══════════════════════════════════════════
+   2. FEATURE HIGHLIGHT CARDS
+   600 x 400
+   ═══════════════════════════════════════════ */
+.feature-row{display:flex;gap:24px;flex-wrap:wrap;justify-content:center}
+.feat{
+  width:580px;height:380px;
+  border-radius:20px;position:relative;overflow:hidden;
+  padding:40px;display:flex;flex-direction:column;justify-content:flex-end;
+}
+.feat::before{
+  content:'';position:absolute;inset:0;border-radius:20px;padding:1px;
+  background:linear-gradient(160deg,var(--c1,rgba(124,92,252,.3)),transparent 50%);
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;
+}
+.feat-glow{
+  position:absolute;top:-60px;right:-40px;width:300px;height:300px;
+  background:radial-gradient(circle,var(--glow,rgba(124,92,252,.1)),transparent 65%);
+  pointer-events:none;
+}
+.feat-icon{
+  position:absolute;top:36px;left:40px;
+  width:56px;height:56px;border-radius:16px;
+  background:var(--icon-bg,rgba(124,92,252,.12));
+  display:flex;align-items:center;justify-content:center;
+}
+.feat-icon svg{width:28px;height:28px}
+.feat-badge{
+  position:absolute;top:42px;right:40px;
+  font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;
+  color:var(--badge-c,#7C5CFC);
+}
+.feat h3{font-size:28px;font-weight:800;color:#fff;margin-bottom:8px;letter-spacing:-.02em;line-height:1.2}
+.feat p{font-size:15px;color:#8b8fa7;line-height:1.55;max-width:440px}
+
+.feat-auto{
+  background:linear-gradient(160deg,rgba(124,92,252,.06),#0B0D17 50%);
+  --c1:rgba(124,92,252,.35);--glow:rgba(124,92,252,.12);
+  --icon-bg:rgba(124,92,252,.12);--badge-c:#7C5CFC;
+}
+.feat-ai{
+  background:linear-gradient(160deg,rgba(184,79,255,.06),#0B0D17 50%);
+  --c1:rgba(184,79,255,.35);--glow:rgba(184,79,255,.1);
+  --icon-bg:rgba(184,79,255,.12);--badge-c:#B84FFF;
+}
+.feat-offline{
+  background:linear-gradient(160deg,rgba(34,197,94,.05),#0B0D17 50%);
+  --c1:rgba(34,197,94,.3);--glow:rgba(34,197,94,.08);
+  --icon-bg:rgba(34,197,94,.12);--badge-c:#22c55e;
+}
+.feat-project{
+  background:linear-gradient(160deg,rgba(91,141,239,.06),#0B0D17 50%);
+  --c1:rgba(91,141,239,.35);--glow:rgba(91,141,239,.1);
+  --icon-bg:rgba(91,141,239,.12);--badge-c:#5B8DEF;
+}
+.feat-terminal{
+  background:linear-gradient(160deg,rgba(16,185,129,.05),#0B0D17 50%);
+  --c1:rgba(16,185,129,.3);--glow:rgba(16,185,129,.08);
+  --icon-bg:rgba(16,185,129,.12);--badge-c:#10b981;
+}
+.feat-report{
+  background:linear-gradient(160deg,rgba(249,115,22,.05),#0B0D17 50%);
+  --c1:rgba(249,115,22,.3);--glow:rgba(249,115,22,.08);
+  --icon-bg:rgba(249,115,22,.12);--badge-c:#f97316;
+}
+
+/* ═══════════════════════════════════════════
+   3. COMPARISON CARD
+   1080 x 1080 (Instagram square)
+   ═══════════════════════════════════════════ */
+.compare{
+  width:1080px;height:1080px;
+  background:linear-gradient(160deg,#0B0D17,#12142a 50%,#0B0D17);
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:60px;gap:40px;
+}
+.compare::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:800px;height:600px;
+  background:radial-gradient(ellipse,rgba(124,92,252,.1),transparent 65%);
+}
+.compare-title{
+  font-size:42px;font-weight:800;color:#fff;text-align:center;
+  letter-spacing:-.03em;line-height:1.2;position:relative;z-index:1;
+}
+.compare-title em{
+  font-style:normal;
+  background:linear-gradient(135deg,#7C5CFC,#5B8DEF);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.compare-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:24px;
+  width:100%;max-width:900px;position:relative;z-index:1;
+}
+.compare-col{
+  border-radius:20px;padding:36px 32px;
+}
+.compare-old{
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.06);
+}
+.compare-new{
+  background:linear-gradient(160deg,rgba(124,92,252,.08),rgba(11,13,23,.6));
+  border:1px solid rgba(124,92,252,.2);
+}
+.compare-col-label{
+  font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;
+  margin-bottom:20px;
+}
+.compare-old .compare-col-label{color:#8b8fa7}
+.compare-new .compare-col-label{color:#7C5CFC}
+.compare-col-logos{display:flex;gap:8px;margin-bottom:24px}
+.compare-col-logo{
+  font-size:13px;font-weight:700;color:#666;
+  padding:5px 14px;border-radius:8px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);
+}
+.compare-col-name{
+  font-size:28px;font-weight:800;margin-bottom:24px;
+  background:linear-gradient(135deg,#7C5CFC,#5B8DEF);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.compare-items{display:flex;flex-direction:column;gap:16px}
+.compare-item{
+  display:flex;align-items:flex-start;gap:12px;
+  font-size:15px;line-height:1.4;color:#c4c7d4;
+}
+.cx{
+  flex-shrink:0;width:24px;height:24px;border-radius:7px;
+  background:rgba(239,68,68,.1);color:#ef4444;
+  font-size:14px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+.ck{
+  flex-shrink:0;width:24px;height:24px;border-radius:7px;
+  background:rgba(34,197,94,.1);color:#22c55e;
+  font-size:12px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+.compare-foot{
+  font-size:15px;color:#555;position:relative;z-index:1;
+  font-family:'SF Mono',monospace;
+}
+
+/* ═══════════════════════════════════════════
+   4. STATS BANNER
+   1200 x 300
+   ═══════════════════════════════════════════ */
+.stats-banner{
+  width:1200px;height:300px;
+  background:linear-gradient(160deg,#0B0D17,#12142a 50%,#0B0D17);
+  border-radius:0;position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;gap:80px;
+}
+.stats-banner::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 50%,rgba(124,92,252,.08),transparent 60%);
+}
+.stat-item{text-align:center;position:relative;z-index:1}
+.stat-val{
+  font-size:48px;font-weight:800;letter-spacing:-.03em;
+  background:linear-gradient(135deg,#7C5CFC,#B84FFF,#5B8DEF);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.stat-lbl{
+  font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:2px;
+  color:#8b8fa7;margin-top:6px;
+}
+
+/* ═══════════════════════════════════════════
+   5. TWITTER/X CARD
+   1200 x 675
+   ═══════════════════════════════════════════ */
+.twitter-card{
+  width:1200px;height:675px;
+  background:linear-gradient(160deg,#0B0D17,#12142a 50%,#0B0D17);
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;padding:0 80px;gap:60px;
+}
+.twitter-card::before{
+  content:'';position:absolute;top:-100px;right:-100px;
+  width:600px;height:600px;
+  background:radial-gradient(circle,rgba(124,92,252,.12),transparent 60%);
+}
+.tw-left{flex:1;position:relative;z-index:1}
+.tw-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 16px;border-radius:100px;
+  background:rgba(124,92,252,.1);border:1px solid rgba(124,92,252,.2);
+  font-size:13px;font-weight:600;color:#a78bfa;margin-bottom:28px;
+}
+.tw-badge span{width:7px;height:7px;border-radius:50%;background:#22c55e}
+.tw-title{
+  font-size:52px;font-weight:800;color:#fff;
+  letter-spacing:-.04em;line-height:1.1;margin-bottom:16px;
+}
+.tw-title em{
+  font-style:normal;
+  background:linear-gradient(135deg,#7C5CFC,#5B8DEF);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.tw-desc{font-size:18px;color:#8b8fa7;line-height:1.5;max-width:480px}
+.tw-right{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;gap:16px;
+}
+.tw-feat{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 20px;border-radius:14px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.06);
+  min-width:340px;
+}
+.tw-feat-icon{
+  width:40px;height:40px;border-radius:10px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.tw-feat-text{font-size:15px;font-weight:600;color:#e2e4ed}
+.tw-feat-sub{font-size:12px;color:#8b8fa7;margin-top:2px}
+
+/* ═══════════════════════════════════════════
+   6. FEATURE STRIP (GitHub README)
+   900 x 160 per strip
+   ═══════════════════════════════════════════ */
+.strip-row{display:flex;flex-direction:column;gap:4px}
+.strip{
+  width:900px;height:100px;
+  display:flex;align-items:center;gap:20px;
+  padding:0 32px;
+  background:linear-gradient(90deg,var(--s-bg,rgba(124,92,252,.06)),rgba(11,13,23,.95) 70%);
+  position:relative;overflow:hidden;
+}
+.strip::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:var(--s-c,#7C5CFC);
+}
+.strip-icon{
+  width:44px;height:44px;border-radius:12px;flex-shrink:0;
+  background:var(--s-icon-bg,rgba(124,92,252,.12));
+  display:flex;align-items:center;justify-content:center;
+}
+.strip-icon svg{width:22px;height:22px}
+.strip h4{font-size:16px;font-weight:700;color:#fff;margin-bottom:2px}
+.strip p{font-size:13px;color:#8b8fa7;max-width:600px}
+
+/* ═══════════════════════════════════════════
+   7. QUOTE / TAGLINE CARD
+   1080 x 1080
+   ═══════════════════════════════════════════ */
+.quote-card{
+  width:1080px;height:1080px;
+  background:linear-gradient(160deg,#0B0D17,#0f1128 50%,#0B0D17);
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:80px;
+}
+.quote-card::before{
+  content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:700px;height:700px;
+  background:radial-gradient(circle,rgba(124,92,252,.1),transparent 60%);
+}
+.quote-icon{
+  width:80px;height:80px;border-radius:20px;
+  background:linear-gradient(135deg,#3D4FF5,#8C38E0);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:48px;position:relative;z-index:1;
+  box-shadow:0 8px 40px rgba(124,92,252,.3);
+}
+.quote-text{
+  font-size:56px;font-weight:800;letter-spacing:-.04em;
+  line-height:1.15;max-width:800px;position:relative;z-index:1;
+  color:#fff;
+}
+.quote-text em{
+  font-style:normal;
+  background:linear-gradient(135deg,#7C5CFC,#B84FFF,#5B8DEF);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.quote-sub{
+  font-size:20px;color:#8b8fa7;margin-top:24px;
+  position:relative;z-index:1;max-width:500px;line-height:1.5;
+}
+.quote-url{
+  position:absolute;bottom:40px;
+  font-size:15px;color:#555;font-family:'SF Mono',monospace;
+}
+
+/* pulse icon shared */
+.pulse-icon-svg{filter:drop-shadow(0 2px 8px rgba(124,92,252,.3))}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════
+     1. OG IMAGE / GITHUB SOCIAL PREVIEW (1200x630)
+     ════════════════════════════════════════════════════════ -->
+<h2 class="section-label">1. GitHub Social Preview / OG Image (1200x630)</h2>
+<div class="og-card">
+  <div class="og-badge"><span></span> Open Source &middot; macOS</div>
+  <div class="og-icon">
+    <svg viewBox="0 0 44 44" fill="none">
+      <circle cx="22" cy="19" r="10" fill="none" stroke="#fff" stroke-width="2.2"/>
+      <line x1="22" y1="19" x2="22" y2="13" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="22" y1="19" x2="26" y2="21.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+      <rect x="11" y="34" width="6" height="3.5" rx="1.5" fill="#33D287"/>
+      <rect x="19" y="34" width="6" height="3.5" rx="1.5" fill="#FBBA3F"/>
+      <rect x="27" y="34" width="6" height="3.5" rx="1.5" fill="#5B8DEF"/>
+    </svg>
+  </div>
+  <div class="og-title">Pulse</div>
+  <div class="og-sub">Automatic time tracking for macOS.<br>The Toggl &amp; Jira alternative that needs zero effort.</div>
+  <div class="og-tags">
+    <span class="og-tag">Auto Tracking</span>
+    <span class="og-tag">AI Classification</span>
+    <span class="og-tag">100% Offline</span>
+    <span class="og-tag">Open Source</span>
+  </div>
+  <div class="og-github">github.com/alpgiray-crypto/pulse-app</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     2. FEATURE HIGHLIGHT CARDS (580x380 each)
+     ════════════════════════════════════════════════════════ -->
+<h2 class="section-label">2. Feature Cards (580x380) &mdash; Screenshot individually</h2>
+
+<div class="feature-row">
+  <!-- Automatic Tracking -->
+  <div class="feat feat-auto">
+    <div class="feat-glow"></div>
+    <div class="feat-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#7C5CFC" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+      </svg>
+    </div>
+    <div class="feat-badge">Core</div>
+    <h3>Automatic<br>Time Tracking</h3>
+    <p>Tracks every app and window on your Mac every 2 seconds. No timers to start, no buttons to click. Just real data.</p>
+  </div>
+
+  <!-- AI Classification -->
+  <div class="feat feat-ai">
+    <div class="feat-glow"></div>
+    <div class="feat-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#B84FFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2z"/>
+        <path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>
+      </svg>
+    </div>
+    <div class="feat-badge">AI Powered</div>
+    <h3>Smart Project<br>Classification</h3>
+    <p>AI scans your activities, detects patterns in URLs, folders, and window titles, then creates rules to auto-categorize everything.</p>
+  </div>
+</div>
+
+<div class="feature-row">
+  <!-- 100% Offline -->
+  <div class="feat feat-offline">
+    <div class="feat-glow"></div>
+    <div class="feat-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+    </div>
+    <div class="feat-badge">Privacy</div>
+    <h3>100% Offline.<br>Zero Data Collection.</h3>
+    <p>Every byte stays on your Mac. Local SQLite database, no accounts, no servers, no telemetry. Fully auditable open source code.</p>
+  </div>
+
+  <!-- Brand & Project -->
+  <div class="feat feat-project">
+    <div class="feat-glow"></div>
+    <div class="feat-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#5B8DEF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+      </svg>
+    </div>
+    <div class="feat-badge">Organization</div>
+    <h3>Brand &amp; Project<br>Hierarchy</h3>
+    <p>Create clients, nest projects, define 7 types of classification rules. Every minute auto-assigned to the right project.</p>
+  </div>
+</div>
+
+<div class="feature-row">
+  <!-- Terminal -->
+  <div class="feat feat-terminal">
+    <div class="feat-glow"></div>
+    <div class="feat-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/>
+      </svg>
+    </div>
+    <div class="feat-badge">Developer</div>
+    <h3>Terminal &amp; Background<br>Process Tracking</h3>
+    <p>Monitors builds, deploys, git ops, and npm scripts running in Terminal. Extracts project names from tmux/window titles.</p>
+  </div>
+
+  <!-- Reports -->
+  <div class="feat feat-report">
+    <div class="feat-glow"></div>
+    <div class="feat-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+      </svg>
+    </div>
+    <div class="feat-badge">Reports</div>
+    <h3>Beautiful Daily<br>Productivity Reports</h3>
+    <p>Donut charts, activity timelines, per-app breakdowns, and project summaries. Generated automatically as interactive HTML.</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     3. COMPARISON CARD — Instagram Square (1080x1080)
+     ════════════════════════════════════════════════════════ -->
+<h2 class="section-label">3. Comparison Card &mdash; Instagram/Social (1080x1080)</h2>
+<div class="compare">
+  <div class="compare-title">Stop starting timers.<br><em>Start getting real data.</em></div>
+  <div class="compare-grid">
+    <div class="compare-col compare-old">
+      <div class="compare-col-label">The manual way</div>
+      <div class="compare-col-logos">
+        <span class="compare-col-logo">Toggl</span>
+        <span class="compare-col-logo">Jira</span>
+        <span class="compare-col-logo">ClickUp</span>
+      </div>
+      <div class="compare-items">
+        <div class="compare-item"><span class="cx">&times;</span>Start &amp; stop timers manually</div>
+        <div class="compare-item"><span class="cx">&times;</span>Forget to log = lost data</div>
+        <div class="compare-item"><span class="cx">&times;</span>Tag every task by hand</div>
+        <div class="compare-item"><span class="cx">&times;</span>$10-30/mo per user</div>
+        <div class="compare-item"><span class="cx">&times;</span>Data on someone else's server</div>
+      </div>
+    </div>
+    <div class="compare-col compare-new">
+      <div class="compare-col-label">The automatic way</div>
+      <div class="compare-col-name">Pulse</div>
+      <div class="compare-items">
+        <div class="compare-item"><span class="ck">&#10003;</span>Tracks every app automatically</div>
+        <div class="compare-item"><span class="ck">&#10003;</span>Never misses a second</div>
+        <div class="compare-item"><span class="ck">&#10003;</span>AI auto-classifies projects</div>
+        <div class="compare-item"><span class="ck">&#10003;</span>Free &amp; open source forever</div>
+        <div class="compare-item"><span class="ck">&#10003;</span>100% offline, your Mac only</div>
+      </div>
+    </div>
+  </div>
+  <div class="compare-foot">github.com/alpgiray-crypto/pulse-app</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     4. STATS BANNER (1200x300)
+     ════════════════════════════════════════════════════════ -->
+<h2 class="section-label">4. Stats Banner (1200x300)</h2>
+<div class="stats-banner">
+  <div class="stat-item">
+    <div class="stat-val">&lt;10MB</div>
+    <div class="stat-lbl">RAM Usage</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-val">~0%</div>
+    <div class="stat-lbl">CPU Impact</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-val">100%</div>
+    <div class="stat-lbl">Offline</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-val">7</div>
+    <div class="stat-lbl">Rule Types</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-val">$0</div>
+    <div class="stat-lbl">Forever Free</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     5. TWITTER / X CARD (1200x675)
+     ════════════════════════════════════════════════════════ -->
+<h2 class="section-label">5. Twitter/X Card (1200x675)</h2>
+<div class="twitter-card">
+  <div class="tw-left">
+    <div class="tw-badge"><span></span> Now Available</div>
+    <div class="tw-title">Your work's pulse,<br><em>captured automatically.</em></div>
+    <div class="tw-desc">Automatic time tracking for macOS. Replaces Toggl, Jira timesheets, and ClickUp with zero-effort tracking. Free, offline, open source.</div>
+  </div>
+  <div class="tw-right">
+    <div class="tw-feat">
+      <div class="tw-feat-icon" style="background:rgba(124,92,252,.12)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7C5CFC" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div>
+        <div class="tw-feat-text">Auto Window Tracking</div>
+        <div class="tw-feat-sub">Every 2 seconds, every app</div>
+      </div>
+    </div>
+    <div class="tw-feat">
+      <div class="tw-feat-icon" style="background:rgba(184,79,255,.12)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B84FFF" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+      <div>
+        <div class="tw-feat-text">AI Project Detection</div>
+        <div class="tw-feat-sub">Pattern-based auto-classification</div>
+      </div>
+    </div>
+    <div class="tw-feat">
+      <div class="tw-feat-icon" style="background:rgba(34,197,94,.12)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <div>
+        <div class="tw-feat-text">100% Offline &amp; Private</div>
+        <div class="tw-feat-sub">No servers, no accounts, no data sent</div>
+      </div>
+    </div>
+    <div class="tw-feat">
+      <div class="tw-feat-icon" style="background:rgba(249,115,22,.12)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <div>
+        <div class="tw-feat-text">Beautiful HTML Reports</div>
+        <div class="tw-feat-sub">Charts, timelines, project breakdowns</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     6. GITHUB README FEATURE STRIPS (900x100 each)
+     ════════════════════════════════════════════════════════ -->
+<h2 class="section-label">6. GitHub README Feature Strips (900px wide, screenshot each)</h2>
+<div class="strip-row">
+  <div class="strip" style="--s-bg:rgba(124,92,252,.06);--s-c:#7C5CFC;--s-icon-bg:rgba(124,92,252,.12)">
+    <div class="strip-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#7C5CFC" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    </div>
+    <div>
+      <h4>Automatic Time Tracking</h4>
+      <p>Detects your active app and window every 2 seconds. No manual logging.</p>
+    </div>
+  </div>
+  <div class="strip" style="--s-bg:rgba(184,79,255,.06);--s-c:#B84FFF;--s-icon-bg:rgba(184,79,255,.12)">
+    <div class="strip-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#B84FFF" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/><line x1="11" y1="8" x2="11" y2="14"/></svg>
+    </div>
+    <div>
+      <h4>AI-Powered Pattern Detection</h4>
+      <p>Scans unassigned activities and suggests brands, projects, and classification rules.</p>
+    </div>
+  </div>
+  <div class="strip" style="--s-bg:rgba(91,141,239,.06);--s-c:#5B8DEF;--s-icon-bg:rgba(91,141,239,.12)">
+    <div class="strip-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#5B8DEF" stroke-width="1.8" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    <div>
+      <h4>Brand &amp; Project Hierarchy</h4>
+      <p>Organize by client and project. 7 rule types with regex. Auto-assigns everything.</p>
+    </div>
+  </div>
+  <div class="strip" style="--s-bg:rgba(16,185,129,.05);--s-c:#10b981;--s-icon-bg:rgba(16,185,129,.12)">
+    <div class="strip-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.8" stroke-linecap="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+    </div>
+    <div>
+      <h4>Terminal &amp; Background Monitoring</h4>
+      <p>Tracks builds, deploys, npm scripts. Extracts project names from window titles.</p>
+    </div>
+  </div>
+  <div class="strip" style="--s-bg:rgba(34,197,94,.05);--s-c:#22c55e;--s-icon-bg:rgba(34,197,94,.12)">
+    <div class="strip-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <div>
+      <h4>100% Offline &amp; Private</h4>
+      <p>Local SQLite, no accounts, no servers, no telemetry. MIT licensed, fully auditable.</p>
+    </div>
+  </div>
+  <div class="strip" style="--s-bg:rgba(249,115,22,.05);--s-c:#f97316;--s-icon-bg:rgba(249,115,22,.12)">
+    <div class="strip-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="1.8" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    </div>
+    <div>
+      <h4>Beautiful HTML Reports</h4>
+      <p>Donut charts, timelines, per-app breakdowns, project summaries. Interactive &amp; exportable.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     7. TAGLINE CARD — Instagram/Social (1080x1080)
+     ════════════════════════════════════════════════════════ -->
+<h2 class="section-label">7. Tagline Card &mdash; Social Media (1080x1080)</h2>
+<div class="quote-card">
+  <div class="quote-icon">
+    <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+      <circle cx="22" cy="19" r="10" fill="none" stroke="#fff" stroke-width="2.2"/>
+      <line x1="22" y1="19" x2="22" y2="13" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="22" y1="19" x2="26" y2="21.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+      <rect x="11" y="34" width="6" height="3.5" rx="1.5" fill="#33D287"/>
+      <rect x="19" y="34" width="6" height="3.5" rx="1.5" fill="#FBBA3F"/>
+      <rect x="27" y="34" width="6" height="3.5" rx="1.5" fill="#5B8DEF"/>
+    </svg>
+  </div>
+  <div class="quote-text">Stop starting timers.<br><em>Start getting real data.</em></div>
+  <div class="quote-sub">Pulse &mdash; automatic time tracking for macOS. Free, offline, open source.</div>
+  <div class="quote-url">github.com/alpgiray-crypto/pulse-app</div>
+</div>
+
+</body>
+</html>
