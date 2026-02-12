@@ -374,6 +374,164 @@ h2.section-label{
 
 /* pulse icon shared */
 .pulse-icon-svg{filter:drop-shadow(0 2px 8px rgba(124,92,252,.3))}
+
+/* ═══════════════════════════════════════════
+   VERTICAL STORIES (1080 x 1920)
+   ═══════════════════════════════════════════ */
+.story{
+  width:1080px;height:1920px;
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.story *{position:relative;z-index:1}
+
+/* shared glow bg */
+.story::before{
+  content:'';position:absolute;z-index:0;
+  top:-200px;left:50%;transform:translateX(-50%);
+  width:1000px;height:1000px;
+  background:radial-gradient(ellipse,var(--story-glow,rgba(124,92,252,.12)),transparent 65%);
+  pointer-events:none;
+}
+.story::after{
+  content:'';position:absolute;z-index:0;
+  bottom:-150px;right:-150px;
+  width:600px;height:600px;
+  background:radial-gradient(circle,var(--story-glow2,rgba(91,141,239,.08)),transparent 60%);
+  pointer-events:none;
+}
+
+/* story header */
+.story-top{
+  padding:60px 56px 0;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.story-logo{
+  display:flex;align-items:center;gap:14px;
+}
+.story-logo-icon{
+  width:52px;height:52px;border-radius:14px;
+  background:linear-gradient(135deg,#3D4FF5,#8C38E0);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(124,92,252,.3);
+}
+.story-logo-icon svg{width:28px;height:28px}
+.story-logo-name{font-size:24px;font-weight:800;color:#fff;letter-spacing:-.02em}
+.story-badge-sm{
+  font-size:12px;font-weight:700;
+  padding:6px 16px;border-radius:100px;
+  background:rgba(124,92,252,.1);border:1px solid rgba(124,92,252,.25);
+  color:#a78bfa;
+}
+
+/* story body */
+.story-body{flex:1;padding:48px 56px;display:flex;flex-direction:column}
+
+/* story footer */
+.story-foot{
+  padding:0 56px 56px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.story-url{font-size:16px;color:#555;font-family:'SF Mono',monospace}
+.story-cta{
+  font-size:16px;font-weight:700;color:#fff;
+  padding:14px 32px;border-radius:14px;
+  background:linear-gradient(135deg,#7C5CFC,#5B8DEF);
+  box-shadow:0 4px 20px rgba(124,92,252,.3);
+}
+
+/* ── story: app tracking cards ── */
+.st-card{
+  border-radius:24px;padding:32px 28px;
+  margin-bottom:16px;position:relative;overflow:hidden;
+}
+.st-card::before{
+  content:'';position:absolute;inset:0;border-radius:24px;padding:1px;
+  background:linear-gradient(160deg,var(--st-c1,rgba(255,255,255,.1)),transparent 40%);
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;z-index:2;
+}
+.st-card-glow{
+  position:absolute;top:-50px;right:-30px;width:250px;height:250px;z-index:0;
+  background:radial-gradient(circle,var(--st-glow,rgba(124,92,252,.08)),transparent 65%);
+}
+.st-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.st-left{display:flex;align-items:center;gap:14px}
+.st-icon{
+  width:48px;height:48px;border-radius:14px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.st-icon svg{width:24px;height:24px}
+.st-name{font-size:20px;font-weight:700;color:#fff}
+.st-dur{font-size:28px;font-weight:800;letter-spacing:-.03em;color:var(--st-accent,#7C5CFC)}
+
+.st-list{display:flex;flex-direction:column;gap:8px}
+.st-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 16px;border-radius:14px;
+  background:rgba(255,255,255,.03);position:relative;overflow:hidden;
+}
+.st-item-bar{
+  position:absolute;bottom:0;left:0;height:3px;border-radius:0 0 14px 14px;
+  background:var(--st-accent,#7C5CFC);opacity:.2;
+}
+.st-item-t{flex:1;color:#c4c7d4;font-size:16px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.st-item-d{color:var(--st-accent,#7C5CFC);font-weight:700;font-size:16px;flex-shrink:0;font-variant-numeric:tabular-nums}
+.st-item .st-tag{
+  font-size:12px;font-weight:700;padding:3px 10px;border-radius:6px;flex-shrink:0;
+  background:rgba(255,255,255,.06);color:var(--st-accent,#7C5CFC);
+}
+
+/* story title */
+.story-title{
+  font-size:52px;font-weight:800;color:#fff;
+  letter-spacing:-.04em;line-height:1.12;margin-bottom:16px;
+}
+.story-title em{
+  font-style:normal;
+  background:linear-gradient(135deg,#7C5CFC,#B84FFF,#5B8DEF);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.story-desc{font-size:20px;color:#8b8fa7;line-height:1.5;margin-bottom:40px}
+
+/* story compare */
+.st-compare-col{
+  border-radius:20px;padding:32px 28px;margin-bottom:16px;
+}
+.st-compare-old{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06)}
+.st-compare-new{background:linear-gradient(160deg,rgba(124,92,252,.08),rgba(11,13,23,.6));border:1px solid rgba(124,92,252,.2)}
+.st-compare-label{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px}
+.st-compare-old .st-compare-label{color:#8b8fa7}
+.st-compare-new .st-compare-label{color:#7C5CFC}
+.st-compare-logos{display:flex;gap:10px;margin-bottom:20px}
+.st-compare-logo{
+  font-size:14px;font-weight:700;color:#666;
+  padding:6px 16px;border-radius:8px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);
+}
+.st-compare-name{
+  font-size:32px;font-weight:800;margin-bottom:20px;
+  background:linear-gradient(135deg,#7C5CFC,#5B8DEF);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.st-compare-items{display:flex;flex-direction:column;gap:14px}
+.st-compare-item{display:flex;align-items:flex-start;gap:12px;font-size:17px;line-height:1.4;color:#c4c7d4}
+
+/* story feature list */
+.st-feat-list{display:flex;flex-direction:column;gap:14px;margin-top:8px}
+.st-feat-item{
+  display:flex;align-items:center;gap:16px;
+  padding:18px 20px;border-radius:16px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.05);
+}
+.st-feat-icon{
+  width:48px;height:48px;border-radius:14px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.st-feat-icon svg{width:24px;height:24px}
+.st-feat-info h4{font-size:17px;font-weight:700;color:#fff;margin-bottom:2px}
+.st-feat-info p{font-size:14px;color:#8b8fa7;line-height:1.4}
 </style>
 </head>
 <body>
@@ -689,6 +847,436 @@ h2.section-label{
   <div class="quote-text">Stop starting timers.<br><em>Start getting real data.</em></div>
   <div class="quote-sub">Pulse &mdash; automatic time tracking for macOS. Free, offline, open source.</div>
   <div class="quote-url">github.com/alpgiray-crypto/pulse-app</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     VERTICAL STORIES (1080x1920) — Instagram Stories / Reels / TikTok
+     ════════════════════════════════════════════════════════════════ -->
+
+<!-- ─────────────────────────────────────
+     STORY 1: HERO — What is Pulse?
+     ───────────────────────────────────── -->
+<h2 class="section-label">8. Story: Hero (1080x1920)</h2>
+<div class="story" style="background:linear-gradient(180deg,#0B0D17,#0f1128 50%,#0B0D17);--story-glow:rgba(124,92,252,.14);--story-glow2:rgba(91,141,239,.1)">
+  <div class="story-top">
+    <div class="story-logo">
+      <div class="story-logo-icon">
+        <svg viewBox="0 0 44 44" fill="none">
+          <circle cx="22" cy="19" r="10" fill="none" stroke="#fff" stroke-width="2.2"/>
+          <line x1="22" y1="19" x2="22" y2="13" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+          <line x1="22" y1="19" x2="26" y2="21.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          <rect x="11" y="34" width="6" height="3.5" rx="1.5" fill="#33D287"/>
+          <rect x="19" y="34" width="6" height="3.5" rx="1.5" fill="#FBBA3F"/>
+          <rect x="27" y="34" width="6" height="3.5" rx="1.5" fill="#5B8DEF"/>
+        </svg>
+      </div>
+      <span class="story-logo-name">Pulse</span>
+    </div>
+    <span class="story-badge-sm">Open Source</span>
+  </div>
+
+  <div class="story-body" style="justify-content:center;align-items:center;text-align:center">
+    <div style="font-size:120px;font-weight:800;letter-spacing:-.06em;line-height:1;margin-bottom:32px;background:linear-gradient(135deg,#fff 30%,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Pulse</div>
+    <div style="font-size:36px;font-weight:700;color:#fff;line-height:1.2;margin-bottom:20px">Your work's pulse,<br>captured <span style="background:linear-gradient(135deg,#7C5CFC,#5B8DEF);-webkit-background-clip:text;-webkit-text-fill-color:transparent">automatically.</span></div>
+    <div style="font-size:20px;color:#8b8fa7;max-width:700px;line-height:1.5;margin-bottom:48px">Automatic time tracking for macOS. Replaces Toggl, Jira timesheets, and ClickUp. Free, offline, open source.</div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center">
+      <span class="og-tag" style="font-size:16px;padding:10px 24px">Auto Tracking</span>
+      <span class="og-tag" style="font-size:16px;padding:10px 24px">AI Classification</span>
+      <span class="og-tag" style="font-size:16px;padding:10px 24px">100% Offline</span>
+      <span class="og-tag" style="font-size:16px;padding:10px 24px">Free Forever</span>
+    </div>
+  </div>
+
+  <div class="story-foot">
+    <span class="story-url">github.com/alpgiray-crypto/pulse-app</span>
+    <span class="story-cta">Download Free</span>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────
+     STORY 2: SPOTIFY TRACKING
+     ───────────────────────────────────── -->
+<h2 class="section-label">9. Story: Spotify Tracking (1080x1920)</h2>
+<div class="story" style="background:linear-gradient(180deg,#0B0D17,#071a10 30%,#0B0D17 70%);--story-glow:rgba(29,185,84,.12);--story-glow2:rgba(29,185,84,.06)">
+  <div class="story-top">
+    <div class="story-logo">
+      <div class="story-logo-icon" style="background:linear-gradient(135deg,#1db954,#169c46)">
+        <svg viewBox="0 0 24 24" fill="#fff" width="26" height="26"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+      </div>
+      <span class="story-logo-name">Pulse</span>
+    </div>
+    <span class="story-badge-sm" style="background:rgba(29,185,84,.1);border-color:rgba(29,185,84,.25);color:#1db954">Now Playing</span>
+  </div>
+
+  <div class="story-body">
+    <div class="story-title" style="margin-top:24px">Tracks what you<br><em style="background:linear-gradient(135deg,#1db954,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent">listen to.</em></div>
+    <div class="story-desc">Pulse logs every song from Spotify and Apple Music alongside your work sessions.</div>
+
+    <div class="st-card" style="background:linear-gradient(160deg,rgba(29,185,84,.06),rgba(11,13,23,.8) 50%);--st-accent:#1db954;--st-c1:rgba(29,185,84,.25);--st-glow:rgba(29,185,84,.1)">
+      <div class="st-card-glow"></div>
+      <div class="st-head">
+        <div class="st-left">
+          <div class="st-icon" style="background:rgba(29,185,84,.15)">
+            <svg viewBox="0 0 24 24" fill="#1db954"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2z"/></svg>
+          </div>
+          <span class="st-name">Spotify</span>
+        </div>
+        <span class="st-dur">27m</span>
+      </div>
+      <div class="st-list">
+        <div class="st-item"><span class="st-item-t">Tame Impala &mdash; Let It Happen</span><span class="st-item-bar" style="width:100%"></span><span class="st-item-d">7:46</span></div>
+        <div class="st-item"><span class="st-item-t">Nujabes &mdash; Feather</span><span class="st-item-bar" style="width:80%"></span><span class="st-item-d">6:12</span></div>
+        <div class="st-item"><span class="st-item-t">Mac DeMarco &mdash; Chamber of Reflection</span><span class="st-item-bar" style="width:69%"></span><span class="st-item-d">5:23</span></div>
+        <div class="st-item"><span class="st-item-t">Khruangbin &mdash; Time (You and I)</span><span class="st-item-bar" style="width:60%"></span><span class="st-item-d">4:37</span></div>
+        <div class="st-item"><span class="st-item-t">Bad Bunny &mdash; DtMF</span><span class="st-item-bar" style="width:44%"></span><span class="st-item-d">3:26</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;padding:24px 28px;border-radius:16px;background:rgba(29,185,84,.04);border:1px solid rgba(29,185,84,.1)">
+      <div style="font-size:15px;color:#8b8fa7;line-height:1.5">
+        <span style="color:#1db954;font-weight:700">Now Playing</span> info is captured alongside your work &mdash; see which music fuels your most productive sessions.
+      </div>
+    </div>
+  </div>
+
+  <div class="story-foot">
+    <span class="story-url">github.com/alpgiray-crypto/pulse-app</span>
+    <span class="story-cta" style="background:linear-gradient(135deg,#1db954,#169c46)">Download Free</span>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────
+     STORY 3: YOUTUBE + SOCIAL TRACKING
+     ───────────────────────────────────── -->
+<h2 class="section-label">10. Story: YouTube &amp; Social Tracking (1080x1920)</h2>
+<div class="story" style="background:linear-gradient(180deg,#0B0D17,#1a0a0a 30%,#0B0D17 70%);--story-glow:rgba(255,0,0,.1);--story-glow2:rgba(255,0,0,.05)">
+  <div class="story-top">
+    <div class="story-logo">
+      <div class="story-logo-icon">
+        <svg viewBox="0 0 44 44" fill="none">
+          <circle cx="22" cy="19" r="10" fill="none" stroke="#fff" stroke-width="2.2"/>
+          <line x1="22" y1="19" x2="22" y2="13" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+          <line x1="22" y1="19" x2="26" y2="21.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          <rect x="11" y="34" width="6" height="3.5" rx="1.5" fill="#33D287"/>
+          <rect x="19" y="34" width="6" height="3.5" rx="1.5" fill="#FBBA3F"/>
+          <rect x="27" y="34" width="6" height="3.5" rx="1.5" fill="#5B8DEF"/>
+        </svg>
+      </div>
+      <span class="story-logo-name">Pulse</span>
+    </div>
+    <span class="story-badge-sm" style="background:rgba(255,0,0,.08);border-color:rgba(255,0,0,.2);color:#ff4444">Smart Sites</span>
+  </div>
+
+  <div class="story-body">
+    <div class="story-title" style="margin-top:24px">Separates every<br><em style="background:linear-gradient(135deg,#ff0000,#ff6b6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent">browser tab.</em></div>
+    <div class="story-desc">YouTube, GitHub, ChatGPT, X, Instagram &mdash; each tracked as its own app inside your browser.</div>
+
+    <!-- YouTube card -->
+    <div class="st-card" style="background:linear-gradient(160deg,rgba(255,0,0,.04),rgba(11,13,23,.8) 50%);--st-accent:#ff0000;--st-c1:rgba(255,0,0,.2);--st-glow:rgba(255,0,0,.08)">
+      <div class="st-card-glow"></div>
+      <div class="st-head">
+        <div class="st-left">
+          <div class="st-icon" style="background:rgba(255,0,0,.12)">
+            <svg viewBox="0 0 24 24" fill="#ff0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </div>
+          <span class="st-name">YouTube</span>
+        </div>
+        <span class="st-dur">34m</span>
+      </div>
+      <div class="st-list">
+        <div class="st-item"><span class="st-item-t">Building a macOS Menu Bar App in Swift</span><span class="st-item-bar" style="width:65%"></span><span class="st-item-d">22m</span></div>
+        <div class="st-item"><span class="st-item-t">Figma Config 2025 &mdash; What's New</span><span class="st-item-bar" style="width:35%"></span><span class="st-item-d">12m</span></div>
+      </div>
+    </div>
+
+    <!-- Social card -->
+    <div class="st-card" style="background:rgba(255,255,255,.02);--st-accent:#8b8fa7;--st-c1:rgba(255,255,255,.08);--st-glow:rgba(255,255,255,.03)">
+      <div class="st-card-glow"></div>
+      <div class="st-head">
+        <div class="st-left">
+          <div class="st-icon" style="background:rgba(255,255,255,.06)">
+            <svg viewBox="0 0 24 24" fill="#8b8fa7" width="20" height="20"><circle cx="12" cy="12" r="10" fill="none" stroke="#8b8fa7" stroke-width="1.5"/><circle cx="12" cy="12" r="3" fill="#8b8fa7"/></svg>
+          </div>
+          <span class="st-name">Social</span>
+        </div>
+        <span class="st-dur" style="color:#8b8fa7">26m</span>
+      </div>
+      <div class="st-list">
+        <div class="st-item">
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#e2e4ed"><path d="M17.53 7.77l-4.28 4.95 5.08 6.83h-3.94l-3.51-4.72-4.02 4.72H3.09l4.6-5.3L2.7 7.77h4.04l3.18 4.28 3.69-4.28h3.92zm-1.41 10.6h-1.18L8.03 8.96h1.27l6.82 9.41z"/></svg>
+          </div>
+          <span class="st-item-t" style="font-weight:600">X (Twitter)</span>
+          <span class="st-item-d" style="color:#8b8fa7">14m</span>
+        </div>
+        <div class="st-item">
+          <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+          </div>
+          <span class="st-item-t" style="font-weight:600">Instagram</span>
+          <span class="st-item-d" style="color:#8b8fa7">12m</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:auto;padding:20px 24px;border-radius:14px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05)">
+      <div style="font-size:14px;color:#8b8fa7;line-height:1.5">
+        <span style="color:#fff;font-weight:700">Smart Site Separation</span> &mdash; Browser tabs are split into individual apps. Know exactly how much time goes to work vs. distractions.
+      </div>
+    </div>
+  </div>
+
+  <div class="story-foot">
+    <span class="story-url">github.com/alpgiray-crypto/pulse-app</span>
+    <span class="story-cta">Download Free</span>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────
+     STORY 4: WORK APPS — Figma + Terminal + Claude
+     ───────────────────────────────────── -->
+<h2 class="section-label">11. Story: Work Apps (1080x1920)</h2>
+<div class="story" style="background:linear-gradient(180deg,#0B0D17,#12142a 50%,#0B0D17);--story-glow:rgba(162,89,255,.12);--story-glow2:rgba(16,185,129,.08)">
+  <div class="story-top">
+    <div class="story-logo">
+      <div class="story-logo-icon">
+        <svg viewBox="0 0 44 44" fill="none">
+          <circle cx="22" cy="19" r="10" fill="none" stroke="#fff" stroke-width="2.2"/>
+          <line x1="22" y1="19" x2="22" y2="13" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+          <line x1="22" y1="19" x2="26" y2="21.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          <rect x="11" y="34" width="6" height="3.5" rx="1.5" fill="#33D287"/>
+          <rect x="19" y="34" width="6" height="3.5" rx="1.5" fill="#FBBA3F"/>
+          <rect x="27" y="34" width="6" height="3.5" rx="1.5" fill="#5B8DEF"/>
+        </svg>
+      </div>
+      <span class="story-logo-name">Pulse</span>
+    </div>
+    <span class="story-badge-sm">Every App</span>
+  </div>
+
+  <div class="story-body">
+    <div class="story-title" style="margin-top:16px">Tracks every tool<br><em>you work with.</em></div>
+    <div class="story-desc" style="margin-bottom:28px">Figma, VS Code, Terminal, Claude, browsers &mdash; everything captured with window titles and project context.</div>
+
+    <!-- Figma -->
+    <div class="st-card" style="background:linear-gradient(160deg,rgba(162,89,255,.06),rgba(11,13,23,.8) 50%);--st-accent:#a259ff;--st-c1:rgba(162,89,255,.25);--st-glow:rgba(162,89,255,.1);margin-bottom:12px">
+      <div class="st-card-glow"></div>
+      <div class="st-head">
+        <div class="st-left">
+          <div class="st-icon" style="background:rgba(162,89,255,.12)">
+            <svg viewBox="0 0 38 57" width="22" height="22" fill="none"><path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z" fill="#1abcfe"/><path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0z" fill="#0acf83"/><path d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z" fill="#ff7262"/><path d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z" fill="#f24e1e"/><path d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z" fill="#a259ff"/></svg>
+          </div>
+          <span class="st-name">Figma</span>
+        </div>
+        <span class="st-dur">2h 14m</span>
+      </div>
+      <div class="st-list">
+        <div class="st-item"><span class="st-item-t">E-Commerce Redesign &mdash; Mobile Checkout</span><span class="st-item-bar" style="width:72%"></span><span class="st-item-d">58m</span></div>
+        <div class="st-item"><span class="st-item-t">Pulse &mdash; Icon Iterations</span><span class="st-item-bar" style="width:55%"></span><span class="st-item-d">44m</span></div>
+        <div class="st-item"><span class="st-item-t">Component Library &mdash; Button States</span><span class="st-item-bar" style="width:40%"></span><span class="st-item-d">32m</span></div>
+      </div>
+    </div>
+
+    <!-- Terminal -->
+    <div class="st-card" style="background:linear-gradient(160deg,rgba(16,185,129,.05),rgba(11,13,23,.8) 50%);--st-accent:#10b981;--st-c1:rgba(16,185,129,.25);--st-glow:rgba(16,185,129,.08);margin-bottom:12px">
+      <div class="st-card-glow"></div>
+      <div class="st-head">
+        <div class="st-left">
+          <div class="st-icon" style="background:rgba(16,185,129,.12)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+          </div>
+          <span class="st-name">Terminal</span>
+        </div>
+        <span class="st-dur">38m</span>
+      </div>
+      <div class="st-list">
+        <div class="st-item"><span class="st-tag">swift build</span><span class="st-item-t">pulse-app &mdash; release</span><span class="st-item-bar" style="width:47%"></span><span class="st-item-d">18m</span></div>
+        <div class="st-item"><span class="st-tag">shopify dev</span><span class="st-item-t">flavor-co-theme</span><span class="st-item-bar" style="width:37%"></span><span class="st-item-d">14m</span></div>
+      </div>
+    </div>
+
+    <!-- Claude -->
+    <div class="st-card" style="background:linear-gradient(160deg,rgba(217,119,87,.05),rgba(11,13,23,.8) 50%);--st-accent:#D97757;--st-c1:rgba(217,119,87,.2);--st-glow:rgba(217,119,87,.08)">
+      <div class="st-card-glow"></div>
+      <div class="st-head">
+        <div class="st-left">
+          <div class="st-icon" style="background:rgba(217,119,87,.12)">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M16.98 5.81L12 3 7.02 5.81 4 10.8v2.4l3.02 4.99L12 21l4.98-2.81L20 13.2v-2.4l-2.02-4.99z" fill="#D97757"/><path d="M12 8v8M9 10.5L12 8l3 2.5M9 13.5L12 16l3-2.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="st-name">Claude</span>
+        </div>
+        <span class="st-dur">17m</span>
+      </div>
+      <div class="st-list">
+        <div class="st-item"><span class="st-item-t">Swift Concurrency best practices for polling</span><span class="st-item-bar" style="width:59%"></span><span class="st-item-d">10m</span></div>
+        <div class="st-item"><span class="st-item-t">macOS idle detection with CGEventSource</span><span class="st-item-bar" style="width:41%"></span><span class="st-item-d">7m</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="story-foot">
+    <span class="story-url">github.com/alpgiray-crypto/pulse-app</span>
+    <span class="story-cta">Download Free</span>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────
+     STORY 5: COMPARISON — vs Toggl/Jira/ClickUp
+     ───────────────────────────────────── -->
+<h2 class="section-label">12. Story: Comparison (1080x1920)</h2>
+<div class="story" style="background:linear-gradient(180deg,#0B0D17,#12142a 50%,#0B0D17);--story-glow:rgba(124,92,252,.12);--story-glow2:rgba(91,141,239,.08)">
+  <div class="story-top">
+    <div class="story-logo">
+      <div class="story-logo-icon">
+        <svg viewBox="0 0 44 44" fill="none">
+          <circle cx="22" cy="19" r="10" fill="none" stroke="#fff" stroke-width="2.2"/>
+          <line x1="22" y1="19" x2="22" y2="13" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+          <line x1="22" y1="19" x2="26" y2="21.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          <rect x="11" y="34" width="6" height="3.5" rx="1.5" fill="#33D287"/>
+          <rect x="19" y="34" width="6" height="3.5" rx="1.5" fill="#FBBA3F"/>
+          <rect x="27" y="34" width="6" height="3.5" rx="1.5" fill="#5B8DEF"/>
+        </svg>
+      </div>
+      <span class="story-logo-name">Pulse</span>
+    </div>
+    <span class="story-badge-sm">vs Manual</span>
+  </div>
+
+  <div class="story-body">
+    <div class="story-title" style="margin-top:16px;text-align:center">Stop starting timers.<br><em>Start getting real data.</em></div>
+    <div class="story-desc" style="text-align:center;margin-bottom:32px">What Toggl, Jira, and ClickUp make you do manually &mdash; Pulse does automatically.</div>
+
+    <div class="st-compare-col st-compare-old">
+      <div class="st-compare-label">The manual way</div>
+      <div class="st-compare-logos">
+        <span class="st-compare-logo">Toggl</span>
+        <span class="st-compare-logo">Jira</span>
+        <span class="st-compare-logo">ClickUp</span>
+      </div>
+      <div class="st-compare-items">
+        <div class="st-compare-item"><span class="cx">&times;</span>Start &amp; stop timers manually</div>
+        <div class="st-compare-item"><span class="cx">&times;</span>Forget to log = lost data forever</div>
+        <div class="st-compare-item"><span class="cx">&times;</span>Tag every task by hand</div>
+        <div class="st-compare-item"><span class="cx">&times;</span>$10-30/mo per user</div>
+      </div>
+    </div>
+
+    <div class="st-compare-col st-compare-new">
+      <div class="st-compare-label">The automatic way</div>
+      <div class="st-compare-name">Pulse</div>
+      <div class="st-compare-items">
+        <div class="st-compare-item"><span class="ck">&#10003;</span>Tracks every app automatically</div>
+        <div class="st-compare-item"><span class="ck">&#10003;</span>Never misses a second</div>
+        <div class="st-compare-item"><span class="ck">&#10003;</span>AI auto-classifies projects</div>
+        <div class="st-compare-item"><span class="ck">&#10003;</span>Free &amp; open source forever</div>
+        <div class="st-compare-item"><span class="ck">&#10003;</span>100% offline, your Mac only</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="story-foot">
+    <span class="story-url">github.com/alpgiray-crypto/pulse-app</span>
+    <span class="story-cta">Download Free</span>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────
+     STORY 6: FEATURES LIST
+     ───────────────────────────────────── -->
+<h2 class="section-label">13. Story: Features (1080x1920)</h2>
+<div class="story" style="background:linear-gradient(180deg,#0B0D17,#12142a 50%,#0B0D17);--story-glow:rgba(124,92,252,.1);--story-glow2:rgba(184,79,255,.06)">
+  <div class="story-top">
+    <div class="story-logo">
+      <div class="story-logo-icon">
+        <svg viewBox="0 0 44 44" fill="none">
+          <circle cx="22" cy="19" r="10" fill="none" stroke="#fff" stroke-width="2.2"/>
+          <line x1="22" y1="19" x2="22" y2="13" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+          <line x1="22" y1="19" x2="26" y2="21.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          <rect x="11" y="34" width="6" height="3.5" rx="1.5" fill="#33D287"/>
+          <rect x="19" y="34" width="6" height="3.5" rx="1.5" fill="#FBBA3F"/>
+          <rect x="27" y="34" width="6" height="3.5" rx="1.5" fill="#5B8DEF"/>
+        </svg>
+      </div>
+      <span class="story-logo-name">Pulse</span>
+    </div>
+    <span class="story-badge-sm">Features</span>
+  </div>
+
+  <div class="story-body">
+    <div class="story-title" style="margin-top:16px">Everything<br><em>automatic.</em></div>
+    <div class="story-desc" style="margin-bottom:28px">No timers. No buttons. Just real data about how you spend your time.</div>
+
+    <div class="st-feat-list">
+      <div class="st-feat-item">
+        <div class="st-feat-icon" style="background:rgba(124,92,252,.12)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#7C5CFC" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="st-feat-info">
+          <h4>Auto Window Tracking</h4>
+          <p>Every app, every 2 seconds</p>
+        </div>
+      </div>
+      <div class="st-feat-item">
+        <div class="st-feat-icon" style="background:rgba(184,79,255,.12)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#B84FFF" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <div class="st-feat-info">
+          <h4>AI Pattern Detection</h4>
+          <p>Auto-suggests projects &amp; rules</p>
+        </div>
+      </div>
+      <div class="st-feat-item">
+        <div class="st-feat-icon" style="background:rgba(91,141,239,.12)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#5B8DEF" stroke-width="1.8" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="st-feat-info">
+          <h4>Brand &amp; Project Hierarchy</h4>
+          <p>7 rule types, regex support</p>
+        </div>
+      </div>
+      <div class="st-feat-item">
+        <div class="st-feat-icon" style="background:rgba(16,185,129,.12)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.8" stroke-linecap="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+        </div>
+        <div class="st-feat-info">
+          <h4>Terminal Monitoring</h4>
+          <p>Builds, deploys, background processes</p>
+        </div>
+      </div>
+      <div class="st-feat-item">
+        <div class="st-feat-icon" style="background:rgba(29,185,84,.12)">
+          <svg viewBox="0 0 24 24" fill="#1db954" width="22" height="22"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02z"/></svg>
+        </div>
+        <div class="st-feat-info">
+          <h4>Now Playing</h4>
+          <p>Spotify &amp; Apple Music tracking</p>
+        </div>
+      </div>
+      <div class="st-feat-item">
+        <div class="st-feat-icon" style="background:rgba(249,115,22,.12)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="1.8" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div class="st-feat-info">
+          <h4>HTML Reports</h4>
+          <p>Charts, timelines, project breakdowns</p>
+        </div>
+      </div>
+      <div class="st-feat-item">
+        <div class="st-feat-icon" style="background:rgba(34,197,94,.12)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div class="st-feat-info">
+          <h4>100% Offline &amp; Private</h4>
+          <p>No servers, no accounts, MIT licensed</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="story-foot">
+    <span class="story-url">github.com/alpgiray-crypto/pulse-app</span>
+    <span class="story-cta">Download Free</span>
+  </div>
 </div>
 
 </body>
