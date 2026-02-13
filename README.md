@@ -22,12 +22,12 @@ Privacy-first, automatic time tracking for macOS. Runs silently in your menu bar
 
 ## Why Pulse?
 
-Manual time trackers like **Toggl**, **Jira**, and **ClickUp** require you to start/stop timers, categorize tasks, and remember what you worked on. Pulse does all of this automatically.
+Manual time trackers require you to start/stop timers, categorize tasks, and remember what you worked on. Pulse does all of this automatically.
 
-| | Toggl / Jira / ClickUp | Pulse |
+| | Manual Time Trackers | Pulse |
 |---|---|---|
-| **Tracking** | Manual start/stop timers | Automatic — detects active app every 2s |
-| **Project assignment** | Manual selection per entry | AI suggests rules, auto-classifies |
+| **Tracking** | Start/stop timers manually | Automatic — detects active app every 2s |
+| **Project assignment** | Select project per entry | AI suggests rules, auto-classifies |
 | **Terminal work** | Not tracked | Builds, deploys, git — all captured |
 | **Spotify / Music** | Not tracked | Now playing alongside your work |
 | **Data location** | Cloud servers | 100% local on your Mac |
