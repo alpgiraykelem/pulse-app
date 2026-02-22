@@ -168,6 +168,10 @@ final class LocalAPIServer {
             return handleGetRules()
         case ("POST", "/api/rule/delete"):
             return handleDeleteRule(body: body)
+        case ("GET", "/api/suggestions"):
+            return handleGetSuggestions()
+        case ("POST", "/api/suggestion/accept"):
+            return handleAcceptSuggestion(body: body)
         default:
             return .notFound()
         }
@@ -389,6 +393,87 @@ final class LocalAPIServer {
             try store.deleteRule(id: req.id)
             projectMatcher.reloadRules()
             return .ok("{\"ok\":true}")
+        } catch {
+            return .badRequest(error.localizedDescription)
+        }
+    }
+
+    // MARK: - Suggestion Handlers
+
+    private func handleGetSuggestions() -> APIResponse {
+        let detector = PatternDetector(store: store)
+        let brands = detector.detect()
+
+        let brandsJSON = brands.map { brand in
+            let projectsJSON = brand.projects.map { proj in
+                let rulesJSON = proj.suggestedRules.map { r in
+                    "{\"ruleType\":\(jsonString(r.ruleType.rawValue)),\"pattern\":\(jsonString(r.pattern)),\"isRegex\":\(r.isRegex)}"
+                }.joined(separator: ",")
+                let appsArr = proj.apps.map { jsonString($0) }.joined(separator: ",")
+                return "{\"suggestedName\":\(jsonString(proj.suggestedName)),\"fullToken\":\(jsonString(proj.fullToken)),\"activityCount\":\(proj.activityCount),\"apps\":[\(appsArr)],\"suggestedRules\":[\(rulesJSON)]}"
+            }.joined(separator: ",")
+            let appsArr = brand.apps.map { jsonString($0) }.joined(separator: ",")
+            return "{\"suggestedName\":\(jsonString(brand.suggestedName)),\"rootToken\":\(jsonString(brand.rootToken)),\"totalActivities\":\(brand.totalActivities),\"apps\":[\(appsArr)],\"projects\":[\(projectsJSON)]}"
+        }.joined(separator: ",")
+
+        return .ok("{\"suggestions\":[\(brandsJSON)]}")
+    }
+
+    private func handleAcceptSuggestion(body: String) -> APIResponse {
+        guard let data = body.data(using: .utf8) else { return .badRequest("invalid body") }
+
+        struct AcceptRequest: Decodable {
+            let brandName: String?
+            let projectName: String?
+            let rules: [RuleInput]?
+            let existingProjectId: Int64?
+
+            struct RuleInput: Decodable {
+                let ruleType: String
+                let pattern: String
+                let isRegex: Bool?
+            }
+        }
+
+        guard let req = try? JSONDecoder().decode(AcceptRequest.self, from: data) else {
+            return .badRequest("invalid JSON")
+        }
+
+        do {
+            let projectId: Int64
+
+            if let existingId = req.existingProjectId {
+                // Assign rules to existing project
+                projectId = existingId
+            } else {
+                // Create brand + project
+                guard let brandName = req.brandName, !brandName.isEmpty else {
+                    return .badRequest("brandName required when not using existingProjectId")
+                }
+                let projName = req.projectName ?? brandName
+
+                let brandId = try store.insertBrand(name: brandName, color: "#6366f1")
+                projectId = try store.insertProject(brandId: brandId, name: projName, color: "#10b981")
+            }
+
+            // Create rules
+            var ruleCount = 0
+            for rule in req.rules ?? [] {
+                guard let ruleType = RuleType(rawValue: rule.ruleType) else { continue }
+                try store.insertRule(
+                    projectId: projectId,
+                    ruleType: ruleType,
+                    pattern: rule.pattern,
+                    isRegex: rule.isRegex ?? false
+                )
+                ruleCount += 1
+            }
+
+            // Reload rules and auto-assign
+            projectMatcher.reloadRules()
+            let assigned = projectMatcher.autoAssignUnclassified()
+
+            return .ok("{\"projectId\":\(projectId),\"rulesCreated\":\(ruleCount),\"assigned\":\(assigned)}")
         } catch {
             return .badRequest(error.localizedDescription)
         }

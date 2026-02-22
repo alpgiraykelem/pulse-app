@@ -12,8 +12,10 @@ final class WindowMonitor {
     private(set) var sessionStart: Date = Date()
     private var pauseStart: Date?
     private var totalPausedSeconds: TimeInterval = 0
+    private var currentDateStr: String
 
     var onStateChanged: (() -> Void)?
+    var onDayChanged: ((_ previousDate: String) -> Void)?
 
     var activeSeconds: Int {
         let elapsed = Date().timeIntervalSince(sessionStart)
@@ -28,6 +30,10 @@ final class WindowMonitor {
         extractor: AppDetailExtractor = AppDetailExtractor(),
         idleThreshold: TimeInterval = 600
     ) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        self.currentDateStr = formatter.string(from: Date())
+
         self.interval = interval
         self.merger = merger
         self.extractor = extractor
@@ -112,7 +118,30 @@ final class WindowMonitor {
         resume(reason: "wake")
     }
 
+    private func resetForNewDay() {
+        merger.flush()
+        musicMonitor?.flushAll()
+        sessionStart = Date()
+        totalPausedSeconds = 0
+        // Keep pause state as-is (if paused, stay paused)
+        if isPaused {
+            pauseStart = Date()
+        }
+        onStateChanged?()
+    }
+
     private func poll() {
+        // Check for day change (midnight reset)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let nowDateStr = formatter.string(from: Date())
+        if nowDateStr != currentDateStr {
+            let previousDate = currentDateStr
+            currentDateStr = nowDateStr
+            resetForNewDay()
+            onDayChanged?(previousDate)
+        }
+
         guard !isPaused else { return }
 
         guard let app = NSWorkspace.shared.frontmostApplication,

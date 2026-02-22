@@ -656,6 +656,24 @@ final class ActivityStore {
         }
     }
 
+    func queryMonth(year: Int, month: Int) throws -> [DaySummary] {
+        let from = String(format: "%04d-%02d-01", year, month)
+        // Calculate last day of month
+        var comps = DateComponents()
+        comps.year = year
+        comps.month = month
+        comps.day = 1
+        guard let startDate = Calendar.current.date(from: comps),
+              let nextMonth = Calendar.current.date(byAdding: .month, value: 1, to: startDate),
+              let lastDay = Calendar.current.date(byAdding: .day, value: -1, to: nextMonth) else {
+            return []
+        }
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let to = formatter.string(from: lastDay)
+        return try queryDays(from: from, to: to)
+    }
+
     func queryDays(from: String, to: String) throws -> [DaySummary] {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"

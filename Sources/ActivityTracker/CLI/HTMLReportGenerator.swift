@@ -114,7 +114,7 @@ enum HTMLReportGenerator {
         let metricCards = buildMetricCards(summary: summary)
         let analysisHTML = buildAnalysisSection(analysis: analysis)
         let projectsHTML = buildProjectsSection(brandSummaries: brandSummaries, totalSeconds: summary.totalSeconds, projectData: projectData)
-        let hasProjects = !brandSummaries.isEmpty || (projectData?.unassigned.isEmpty == false)
+        let hasProjects = !brandSummaries.isEmpty || (projectData?.unassigned.isEmpty == false) || projectData != nil
         let sidebar = buildSidebar(summary: summary, colors: appColorMap, hasAnalysis: analysis != nil, hasProjects: hasProjects)
 
         // Embed JSON data inline so analyzeWithAI works on file:// URLs
@@ -254,6 +254,45 @@ enum HTMLReportGenerator {
         }
         .window-row:hover .window-assign-btn { opacity:1; }
         .window-assign-btn:hover { background:#dde0ff; }
+
+        /* Bulk Selection */
+        .bulk-check {
+            width:16px; height:16px; accent-color:#6366f1; cursor:pointer; flex-shrink:0;
+            margin:0; border-radius:3px;
+        }
+        .window-row.selected { background:#eef0ff; }
+        .select-all-wrap {
+            display:flex; align-items:center; gap:5px; cursor:pointer; font-size:11px; color:#a0a0b0;
+            user-select:none; margin-left:auto;
+        }
+        .select-all-wrap input { margin:0; }
+        .bulk-bar {
+            position:fixed; bottom:0; left:0; right:0; z-index:1000;
+            background:#1a1a2e; color:#fff; padding:12px 24px;
+            display:none; align-items:center; gap:16px; justify-content:center;
+            box-shadow:0 -4px 20px rgba(0,0,0,0.15);
+            animation:slideUp .2s ease;
+        }
+        .bulk-bar.visible { display:flex; }
+        @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+        .bulk-bar .bulk-count { font-size:13px; font-weight:600; white-space:nowrap; }
+        .bulk-bar select {
+            padding:6px 10px; border-radius:6px; border:1px solid #444;
+            background:#2a2a3e; color:#fff; font-size:12px; min-width:180px;
+        }
+        .bulk-bar .bulk-assign-btn {
+            padding:6px 16px; border-radius:6px; font-size:12px; font-weight:600;
+            background:#6366f1; color:#fff; border:none; cursor:pointer;
+        }
+        .bulk-bar .bulk-assign-btn:hover { background:#4f46e5; }
+        .bulk-bar .bulk-assign-btn:disabled { opacity:0.5; cursor:default; }
+        .bulk-bar .bulk-rule-label { display:flex; align-items:center; gap:4px; font-size:11px; color:#a0a0b0; }
+        .bulk-bar .bulk-rule-label input { margin:0; }
+        .bulk-bar .bulk-clear-btn {
+            padding:6px 12px; border-radius:6px; font-size:12px; font-weight:500;
+            background:#333; color:#ccc; border:1px solid #555; cursor:pointer;
+        }
+        .bulk-bar .bulk-clear-btn:hover { background:#444; }
         .window-assign-popup {
             display:flex; align-items:center; gap:6px; margin-top:6px;
             padding:6px 10px; background:#f0f0ff; border-radius:8px; animation:fadeIn .1s;
@@ -426,6 +465,43 @@ enum HTMLReportGenerator {
         .btn-create:hover { background:#4f46e5; }
         .btn-create:disabled { background:#c0c0c8; cursor:default; }
         .create-form-error { color:#ef4444; font-size:12px; display:none; }
+
+        /* Suggestion Cards */
+        .suggestions-container { margin-bottom:20px; }
+        .suggestions-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+        .suggestions-title { font-size:14px; font-weight:700; color:#1a1a2e; }
+        .suggestions-badge { font-size:10px; font-weight:600; padding:2px 8px; border-radius:4px; background:#fef3c7; color:#b45309; }
+        .suggestion-card {
+            background:#fff; border-radius:12px; padding:16px 20px; margin-bottom:10px;
+            box-shadow:0 1px 3px rgba(0,0,0,0.06); border-left:3px solid #f59e0b;
+            transition:opacity .3s, max-height .3s;
+        }
+        .suggestion-card.dismissed { opacity:0; max-height:0; overflow:hidden; padding:0 20px; margin:0; border:none; }
+        .suggestion-card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+        .suggestion-card-name { font-size:15px; font-weight:600; color:#1a1a2e; }
+        .suggestion-card-meta { font-size:12px; color:#8e8ea0; }
+        .suggestion-card-apps { font-size:11px; color:#8e8ea0; margin-bottom:8px; }
+        .suggestion-card-rules { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:10px; }
+        .suggestion-rule-tag { display:inline-block; font-size:10px; font-weight:600; padding:2px 8px; border-radius:4px; background:#f0f0f5; color:#6b6b80; }
+        .suggestion-card-actions { display:flex; align-items:center; gap:8px; }
+        .suggestion-btn-create {
+            padding:5px 14px; border-radius:6px; font-size:12px; font-weight:600;
+            background:#6366f1; color:#fff; border:none; cursor:pointer;
+        }
+        .suggestion-btn-create:hover { background:#4f46e5; }
+        .suggestion-btn-assign {
+            padding:5px 10px; border-radius:6px; font-size:12px; font-weight:600;
+            background:#f0f0f5; color:#6366f1; border:1px solid #d4d4f8; cursor:pointer;
+        }
+        .suggestion-btn-assign:hover { background:#eef0ff; }
+        .suggestion-btn-dismiss {
+            padding:5px 10px; border-radius:6px; font-size:12px;
+            background:transparent; color:#a0a0b0; border:1px solid #e8e8ee; cursor:pointer; margin-left:auto;
+        }
+        .suggestion-btn-dismiss:hover { background:#f8f8fa; color:#6b6b80; }
+        .suggestion-assign-row { display:flex; align-items:center; gap:6px; margin-top:8px; animation:fadeIn .15s; }
+        .suggestion-assign-select { font-size:12px; padding:4px 8px; border:1px solid #e0e0e8; border-radius:6px; background:#fff; color:#1a1a2e; }
+        .suggestion-loading { text-align:center; padding:20px; color:#a0a0b0; font-size:13px; }
 
         .footer { margin-top:60px; text-align:center; font-size:12px; color:#c0c0c8; }
 
@@ -868,6 +944,203 @@ enum HTMLReportGenerator {
             try { refreshProjectDropdowns(); } catch(e) {}
         })();
 
+        // === Suggestions ===
+        (function() {
+            var container = document.getElementById('suggestions-container');
+            if (!container) return;
+
+            // Store rules data per card (keyed by card id)
+            var cardRulesMap = {};
+
+            apiCall('/api/suggestions').then(function(res) {
+                if (!res.suggestions || !res.suggestions.length) return;
+                renderSuggestions(res.suggestions);
+            }).catch(function() {});
+
+            function renderSuggestions(brands) {
+                var html = '<div class="suggestions-header">' +
+                    '<span class="suggestions-title">Suggested Projects</span>' +
+                    '<span class="suggestions-badge">Auto-detected</span>' +
+                    '</div>';
+
+                brands.forEach(function(brand, bi) {
+                    brand.projects.forEach(function(proj, pi) {
+                        var cardId = 'sug-' + bi + '-' + pi;
+                        var appsStr = proj.apps.join(', ');
+
+                        // Store rules data for this card
+                        cardRulesMap[cardId] = proj.suggestedRules;
+
+                        var rulesHTML = proj.suggestedRules.map(function(r) {
+                            return '<span class="suggestion-rule-tag">' + escH(r.ruleType) + ': ' + escH(r.pattern) + '</span>';
+                        }).join('');
+
+                        html += '<div class="suggestion-card" id="' + cardId + '"' +
+                            ' data-brand="' + escA(brand.suggestedName) + '"' +
+                            ' data-project="' + escA(proj.suggestedName) + '">' +
+                            '<div class="suggestion-card-header">' +
+                            '  <span class="suggestion-card-name">' + escH(brand.suggestedName) + ' \\u203A ' + escH(proj.suggestedName) + '</span>' +
+                            '  <span class="suggestion-card-meta">' + proj.activityCount + ' activities</span>' +
+                            '</div>' +
+                            '<div class="suggestion-card-apps">Apps: ' + escH(appsStr) + '</div>' +
+                            '<div class="suggestion-card-rules">' + rulesHTML + '</div>' +
+                            '<div class="suggestion-card-actions"></div>' +
+                            '<div class="suggestion-card-form" style="display:none"></div>' +
+                            '</div>';
+                    });
+                });
+
+                container.innerHTML = html;
+
+                // Attach button event listeners (avoids inline onclick escaping issues)
+                container.querySelectorAll('.suggestion-card').forEach(function(card) {
+                    var actions = card.querySelector('.suggestion-card-actions');
+                    actions.innerHTML =
+                        '<button class="suggestion-btn-create sug-create-btn">Create</button>' +
+                        '<button class="suggestion-btn-assign sug-assign-btn">Assign to...</button>' +
+                        '<button class="suggestion-btn-dismiss sug-dismiss-btn">Dismiss</button>';
+
+                    actions.querySelector('.sug-create-btn').addEventListener('click', function() { showCreateForm(card); });
+                    actions.querySelector('.sug-assign-btn').addEventListener('click', function() { showAssignForm(card); });
+                    actions.querySelector('.sug-dismiss-btn').addEventListener('click', function() { card.classList.add('dismissed'); });
+                });
+            }
+
+            function escH(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+            function escA(s) { return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;'); }
+
+            function getRulesForCard(card) {
+                var data = cardRulesMap[card.id];
+                if (data) return data.map(function(r) {
+                    return { ruleType: r.ruleType, pattern: r.pattern, isRegex: r.isRegex || false };
+                });
+                return [];
+            }
+
+            function clearForm(card) {
+                var form = card.querySelector('.suggestion-card-form');
+                form.style.display = 'none';
+                form.innerHTML = '';
+            }
+
+            // --- Create flow: show editable name form ---
+            function showCreateForm(card) {
+                clearForm(card);
+                var form = card.querySelector('.suggestion-card-form');
+                var brandName = card.dataset.brand;
+                var projName = card.dataset.project;
+
+                form.style.display = 'block';
+                form.innerHTML =
+                    '<div class="suggestion-assign-row" style="flex-wrap:wrap;gap:8px">' +
+                    '  <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:140px">' +
+                    '    <label style="font-size:11px;color:#8e8ea0;font-weight:600">Brand Name</label>' +
+                    '    <input type="text" class="sug-brand-input" value="' + escA(brandName) + '" style="padding:6px 10px;border:1px solid #e0e0e8;border-radius:6px;font-size:13px;color:#1a1a2e;outline:none">' +
+                    '  </div>' +
+                    '  <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:140px">' +
+                    '    <label style="font-size:11px;color:#8e8ea0;font-weight:600">Project Name</label>' +
+                    '    <input type="text" class="sug-proj-input" value="' + escA(projName) + '" style="padding:6px 10px;border:1px solid #e0e0e8;border-radius:6px;font-size:13px;color:#1a1a2e;outline:none">' +
+                    '  </div>' +
+                    '  <div style="display:flex;align-items:flex-end;gap:6px;padding-bottom:1px">' +
+                    '    <button class="suggestion-btn-create sug-confirm-btn" style="padding:7px 16px">Save</button>' +
+                    '    <button class="suggestion-btn-dismiss sug-cancel-btn" style="padding:7px 10px">Cancel</button>' +
+                    '  </div>' +
+                    '</div>';
+
+                form.querySelector('.sug-confirm-btn').addEventListener('click', function() { doCreate(card); });
+                form.querySelector('.sug-cancel-btn').addEventListener('click', function() { clearForm(card); });
+                form.querySelector('.sug-brand-input').focus();
+                form.querySelector('.sug-brand-input').select();
+            }
+
+            function doCreate(card) {
+                var form = card.querySelector('.suggestion-card-form');
+                var brandName = form.querySelector('.sug-brand-input').value.trim();
+                var projName = form.querySelector('.sug-proj-input').value.trim();
+                if (!brandName) { form.querySelector('.sug-brand-input').style.borderColor = '#ef4444'; return; }
+                if (!projName) projName = brandName;
+
+                var rules = getRulesForCard(card);
+                var btn = form.querySelector('.sug-confirm-btn');
+                btn.disabled = true;
+                btn.textContent = 'Creating...';
+
+                apiCall('/api/suggestion/accept', {
+                    brandName: brandName,
+                    projectName: projName,
+                    rules: rules
+                }).then(function(res) {
+                    if (res.error) { btn.disabled = false; btn.textContent = 'Save'; showApiError(res.error); return; }
+                    card.innerHTML = '<div style="padding:12px 0;color:#10b981;font-weight:600;font-size:13px">Created ' + escH(brandName) + ' \\u203A ' + escH(projName) + ' (' + (res.assigned || 0) + ' activities auto-assigned)</div>';
+                    setTimeout(function() { card.classList.add('dismissed'); }, 3000);
+                    refreshProjectDropdowns();
+                }).catch(function() {
+                    btn.disabled = false;
+                    btn.textContent = 'Save';
+                    showApiError('Cannot connect to Pulse.');
+                });
+            }
+
+            // --- Assign flow: show project dropdown ---
+            function showAssignForm(card) {
+                clearForm(card);
+                var form = card.querySelector('.suggestion-card-form');
+                form.style.display = 'block';
+                form.innerHTML =
+                    '<div class="suggestion-assign-row">' +
+                    '  <select class="suggestion-assign-select"><option value="">Loading...</option></select>' +
+                    '  <button class="suggestion-btn-create sug-assign-confirm" style="font-size:11px;padding:5px 12px">Assign</button>' +
+                    '  <button class="suggestion-btn-dismiss sug-assign-cancel" style="font-size:11px;padding:5px 10px">Cancel</button>' +
+                    '</div>';
+
+                form.querySelector('.sug-assign-confirm').addEventListener('click', function() { doAssign(card); });
+                form.querySelector('.sug-assign-cancel').addEventListener('click', function() { clearForm(card); });
+
+                apiCall('/api/projects').then(function(res) {
+                    var optHTML = '<option value="">Select project...</option>';
+                    var bMap = {};
+                    (res.brands || []).forEach(function(b) { bMap[b.id] = {name:b.name, projects:[]}; });
+                    (res.projects || []).forEach(function(p) { if(bMap[p.brandId]) bMap[p.brandId].projects.push(p); });
+                    Object.keys(bMap).forEach(function(bid) {
+                        var e = bMap[bid];
+                        if (!e.projects.length) return;
+                        optHTML += '<optgroup label="' + e.name + '">';
+                        e.projects.forEach(function(p) { optHTML += '<option value="' + p.id + '">' + p.name + '</option>'; });
+                        optHTML += '</optgroup>';
+                    });
+                    var sel = form.querySelector('select');
+                    if (sel) sel.innerHTML = optHTML;
+                }).catch(function() {
+                    var sel = form.querySelector('select');
+                    if (sel) sel.innerHTML = '<option value="">Cannot load projects</option>';
+                });
+            }
+
+            function doAssign(card) {
+                var form = card.querySelector('.suggestion-card-form');
+                var pid = parseInt(form.querySelector('select').value);
+                if (!pid) return;
+
+                var rules = getRulesForCard(card);
+                var btn = form.querySelector('.sug-assign-confirm');
+                btn.disabled = true;
+                btn.textContent = '...';
+
+                apiCall('/api/suggestion/accept', {
+                    existingProjectId: pid,
+                    rules: rules
+                }).then(function(res) {
+                    if (res.error) { btn.disabled = false; btn.textContent = 'Assign'; showApiError(res.error); return; }
+                    card.innerHTML = '<div style="padding:12px 0;color:#10b981;font-weight:600;font-size:13px">Rules assigned (' + (res.assigned || 0) + ' activities matched)</div>';
+                    setTimeout(function() { card.classList.add('dismissed'); }, 3000);
+                    refreshProjectDropdowns();
+                }).catch(function() {
+                    btn.disabled = false;
+                    btn.textContent = 'Assign';
+                });
+            }
+        })();
+
         function analyzeWithAI() {
             var btn = document.getElementById('analyze-btn');
             btn.disabled = true;
@@ -999,7 +1272,128 @@ enum HTMLReportGenerator {
                 return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
             }
         }
+        // === Bulk Selection ===
+        function toggleBulkCheck(cb) {
+            var row = cb.closest('.window-row');
+            if (cb.checked) { row.classList.add('selected'); } else { row.classList.remove('selected'); }
+            // Update select-all state for this card
+            var card = row.closest('.app-card');
+            if (card) {
+                var all = card.querySelectorAll('.bulk-check');
+                var checked = card.querySelectorAll('.bulk-check:checked');
+                var sa = card.querySelector('.select-all-check');
+                if (sa) { sa.checked = checked.length === all.length; sa.indeterminate = checked.length > 0 && checked.length < all.length; }
+            }
+            updateBulkBar();
+        }
+
+        function toggleSelectAll(sa) {
+            var card = sa.closest('.app-card');
+            if (!card) return;
+            var boxes = card.querySelectorAll('.bulk-check');
+            boxes.forEach(function(cb) {
+                cb.checked = sa.checked;
+                var row = cb.closest('.window-row');
+                if (sa.checked) { row.classList.add('selected'); } else { row.classList.remove('selected'); }
+            });
+            updateBulkBar();
+        }
+
+        function updateBulkBar() {
+            var selected = document.querySelectorAll('.bulk-check:checked');
+            var bar = document.getElementById('bulk-bar');
+            if (selected.length > 0) {
+                bar.classList.add('visible');
+                document.getElementById('bulk-count').textContent = selected.length + ' item' + (selected.length > 1 ? 's' : '') + ' selected';
+            } else {
+                bar.classList.remove('visible');
+            }
+        }
+
+        function clearBulkSelection() {
+            document.querySelectorAll('.bulk-check:checked').forEach(function(cb) {
+                cb.checked = false;
+                cb.closest('.window-row').classList.remove('selected');
+            });
+            document.querySelectorAll('.select-all-check').forEach(function(sa) {
+                sa.checked = false;
+                sa.indeterminate = false;
+            });
+            updateBulkBar();
+        }
+
+        function bulkAssign() {
+            var sel = document.getElementById('bulk-project-select');
+            var pid = parseInt(sel.value);
+            if (!pid) return;
+
+            var checked = document.querySelectorAll('.bulk-check:checked');
+            if (!checked.length) return;
+
+            // Collect all IDs
+            var allIds = [];
+            checked.forEach(function(cb) {
+                var row = cb.closest('.window-row');
+                var ids = JSON.parse(row.dataset.ids || '[]');
+                allIds = allIds.concat(ids);
+            });
+
+            if (!allIds.length) return;
+
+            var btn = document.getElementById('bulk-assign-btn');
+            btn.disabled = true;
+            btn.textContent = 'Assigning...';
+
+            apiCall('/api/classify', { activityIds: allIds, projectId: pid }).then(function(res) {
+                if (res.error) { btn.disabled = false; btn.textContent = 'Assign All'; showApiError(res.error); return; }
+                // Fade assigned rows
+                checked.forEach(function(cb) {
+                    var row = cb.closest('.window-row');
+                    row.style.opacity = '0.4';
+                    cb.checked = false;
+                    row.classList.remove('selected');
+                });
+                document.querySelectorAll('.select-all-check').forEach(function(sa) { sa.checked = false; sa.indeterminate = false; });
+                btn.textContent = 'Done!';
+                setTimeout(function() {
+                    btn.disabled = false;
+                    btn.textContent = 'Assign All';
+                    updateBulkBar();
+                }, 1500);
+            }).catch(function() {
+                btn.disabled = false;
+                btn.textContent = 'Assign All';
+            });
+        }
+
+        // Populate bulk bar dropdown on load
+        (function() {
+            var sel = document.getElementById('bulk-project-select');
+            if (!sel) return;
+            apiCall('/api/projects').then(function(res) {
+                var optHTML = '<option value="">Select project...</option>';
+                var bMap = {};
+                (res.brands || []).forEach(function(b) { bMap[b.id] = {name:b.name, projects:[]}; });
+                (res.projects || []).forEach(function(p) { if(bMap[p.brandId]) bMap[p.brandId].projects.push(p); });
+                Object.keys(bMap).sort().forEach(function(bid) {
+                    var e = bMap[bid];
+                    if (!e.projects.length) return;
+                    optHTML += '<optgroup label="' + e.name + '">';
+                    e.projects.forEach(function(p) { optHTML += '<option value="' + p.id + '">' + p.name + '</option>'; });
+                    optHTML += '</optgroup>';
+                });
+                sel.innerHTML = optHTML;
+            }).catch(function() {});
+        })();
         </script>
+
+        <div id="bulk-bar" class="bulk-bar">
+            <span id="bulk-count" class="bulk-count">0 items selected</span>
+            <select id="bulk-project-select"><option value="">Loading projects...</option></select>
+            <button id="bulk-assign-btn" class="bulk-assign-btn" onclick="bulkAssign()">Assign All</button>
+            <button class="bulk-clear-btn" onclick="clearBulkSelection()">Clear</button>
+        </div>
+
         </body>
         </html>
         """
@@ -1011,10 +1405,14 @@ enum HTMLReportGenerator {
         let hasData = !brandSummaries.isEmpty
         let hasUnassigned = !(projectData?.unassigned.isEmpty ?? true)
 
-        guard hasData || hasUnassigned else { return "" }
+        let hasProjectData = projectData != nil
+        guard hasData || hasUnassigned || hasProjectData else { return "" }
 
         var html = "<div class=\"projects-section\" id=\"projects\">\n"
         html += "<div class=\"section-title\">Projects</div>\n"
+
+        // Suggestion container — populated via JS from /api/suggestions
+        html += "<div id=\"suggestions-container\" class=\"suggestions-container\"></div>\n"
 
         // Stacked bar showing brand distribution
         if hasData && totalSeconds > 0 {
@@ -1266,6 +1664,8 @@ enum HTMLReportGenerator {
 
     // MARK: - App Cards
 
+    private static let mediaApps: Set<String> = ["Spotify", "Music", "YouTube"]
+
     private static func buildAppCards(summary: DaySummary, colors: [String: String]) -> String {
         summary.apps.enumerated().map { i, app -> String in
             let color = colors[app.appName] ?? "#6366f1"
@@ -1273,6 +1673,7 @@ enum HTMLReportGenerator {
                 ? Double(app.totalSeconds) / Double(summary.totalSeconds) * 100 : 0
             let barWidth = summary.totalSeconds > 0
                 ? Double(app.totalSeconds) / Double(summary.apps.first?.totalSeconds ?? 1) * 100 : 0
+            let isMedia = mediaApps.contains(app.appName)
 
             let windowRows = app.windowDetails.prefix(12).map { w -> String in
                 let wPct = app.totalSeconds > 0
@@ -1296,20 +1697,34 @@ enum HTMLReportGenerator {
 
                 let idsJSON = w.activityIds.map { String($0) }.joined(separator: ",")
 
+                let statsHTML: String
+                if isMedia {
+                    statsHTML = """
+                        <div class="window-stats">
+                            <button class="window-assign-btn" onclick="showWindowAssign(this)">Assign</button>
+                        </div>
+                    """
+                } else {
+                    statsHTML = """
+                        <div class="window-stats">
+                            <div class="window-bar-track">
+                                <div class="window-bar-fill" style="width:\(String(format:"%.1f", wBarWidth))%;background:\(color)30"></div>
+                            </div>
+                            <span class="window-time">\(dur(w.totalSeconds))</span>
+                            <span class="window-pct">\(String(format:"%.0f", wPct))%</span>
+                            <button class="window-assign-btn" onclick="showWindowAssign(this)">Assign</button>
+                        </div>
+                    """
+                }
+
                 return """
                 <div class="window-row" data-ids="[\(idsJSON)]">
+                    <input type="checkbox" class="bulk-check" onchange="toggleBulkCheck(this)">
                     <div class="window-info">
                         <div class="window-title">\(title)</div>
                         \(detailLine)
                     </div>
-                    <div class="window-stats">
-                        <div class="window-bar-track">
-                            <div class="window-bar-fill" style="width:\(String(format:"%.1f", wBarWidth))%;background:\(color)30"></div>
-                        </div>
-                        <span class="window-time">\(dur(w.totalSeconds))</span>
-                        <span class="window-pct">\(String(format:"%.0f", wPct))%</span>
-                        <button class="window-assign-btn" onclick="showWindowAssign(this)">Assign</button>
-                    </div>
+                    \(statsHTML)
                 </div>
                 """
             }.joined(separator: "\n")
@@ -1324,6 +1739,7 @@ enum HTMLReportGenerator {
                     <div class="app-meta">
                         <span class="app-time">\(dur(app.totalSeconds))</span>
                         <span class="app-pct">\(String(format:"%.1f", pct))%</span>
+                        <label class="select-all-wrap"><input type="checkbox" class="select-all-check" onchange="toggleSelectAll(this)">All</label>
                     </div>
                 </div>
                 <div class="app-bar-track">
@@ -1389,6 +1805,7 @@ enum HTMLReportGenerator {
 
         let groupsHTML = groups.map { group -> String in
             let color = appColors[group.app] ?? "#6366f1"
+            let isMedia = mediaApps.contains(group.app)
             let entriesHTML = group.entries.map { e -> String in
                 var extraLine = ""
                 var parts: [String] = []
@@ -1397,11 +1814,12 @@ enum HTMLReportGenerator {
                 if !parts.isEmpty {
                     extraLine = "\n<div class=\"tl-extra\">\(esc(parts.joined(separator: " · ")))</div>"
                 }
+                let durSpan = isMedia ? "" : "<span class=\"tl-dur\">\(dur(e.dur))</span>"
                 return """
                 <div class="tl-entry">
                     <span class="tl-time">\(e.time)</span>
                     <span class="tl-title">\(esc(String(e.title.prefix(65))))</span>
-                    <span class="tl-dur">\(dur(e.dur))</span>
+                    \(durSpan)
                 </div>\(extraLine)
                 """
             }.joined(separator: "\n")

@@ -86,6 +86,11 @@ final class StatusBarApp: NSObject, NSApplicationDelegate {
         mon.onStateChanged = { [weak self] in
             DispatchQueue.main.async { self?.updateDisplay() }
         }
+        mon.onDayChanged = { [weak self] previousDate in
+            DispatchQueue.main.async {
+                self?.handleDayChanged(previousDate: previousDate)
+            }
+        }
         mon.start()
         monitor = mon
         isTracking = true
@@ -208,8 +213,13 @@ final class StatusBarApp: NSObject, NSApplicationDelegate {
 
         menu.addItem(NSMenuItem.separator())
 
+        // Dashboard
+        let dashboardItem = NSMenuItem(title: "📊 Open Dashboard", action: #selector(openDashboard), keyEquivalent: "d")
+        dashboardItem.target = self
+        menu.addItem(dashboardItem)
+
         // Reports submenu
-        let reportsItem = NSMenuItem(title: "📊 Reports", action: nil, keyEquivalent: "")
+        let reportsItem = NSMenuItem(title: "📋 Reports", action: nil, keyEquivalent: "")
         let reportsMenu = NSMenu()
 
         let hasKey = ConfigManager.claudeApiKey != nil && !ConfigManager.claudeApiKey!.isEmpty
@@ -377,7 +387,7 @@ final class StatusBarApp: NSObject, NSApplicationDelegate {
         generateAndOpenReport(for: dateStr)
     }
 
-    private func generateAndOpenReport(for dateStr: String? = nil) {
+    private func generateAndOpenReport(for dateStr: String? = nil, openFile: Bool = true) {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         let targetDate = dateStr ?? formatter.string(from: Date())
@@ -410,7 +420,9 @@ final class StatusBarApp: NSObject, NSApplicationDelegate {
             projectData: projectData
         )
         HTMLReportGenerator.generateJSON(summary: summary, timeline: timeline)
-        NSWorkspace.shared.selectFile(fileURL.path, inFileViewerRootedAtPath: fileURL.deletingLastPathComponent().path)
+        if openFile {
+            NSWorkspace.shared.selectFile(fileURL.path, inFileViewerRootedAtPath: fileURL.deletingLastPathComponent().path)
+        }
     }
 
     @objc private func analyzePastDate(_ sender: NSMenuItem) {
@@ -485,6 +497,17 @@ final class StatusBarApp: NSObject, NSApplicationDelegate {
                 }
             }
         }
+    }
+
+    private func handleDayChanged(previousDate: String) {
+        // Auto-generate report for the previous day
+        generateAndOpenReport(for: previousDate, openFile: false)
+        updateDisplay()
+    }
+
+    @objc private func openDashboard() {
+        let fileURL = DashboardGenerator.generate(store: store)
+        NSWorkspace.shared.open(fileURL)
     }
 
     @objc private func reclassifyAll() {

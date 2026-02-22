@@ -76,8 +76,24 @@ final class BackgroundProcessMonitor {
     // MARK: - Terminal Query
 
     private func queryTerminalProcesses() -> [BackgroundProcess] {
-        // shells to ignore - only track actual running commands
+        // Shells and idle/utility processes to ignore — only track actual running commands
         let shells: Set<String> = ["bash", "zsh", "sh", "fish", "login", "-bash", "-zsh", "-sh", "-fish"]
+        let idleProcesses: Set<String> = [
+            // System utilities that stay running but indicate no real work
+            "caffeinate",       // prevents sleep (Claude Code runs this)
+            "sourcekit-lsp",    // Swift LSP server (editor keeps it alive)
+            "git-remote-https", // transient git network operations
+            "osascript",        // AppleScript runner (short-lived)
+            "rg",               // ripgrep (short-lived search)
+            "say", "afplay",    // audio playback commands
+            "security",         // keychain access
+            "diskutil",         // disk utility
+            "sleep",            // sleep command
+            "cat", "less", "more", // pagers
+            "tail", "head",     // file viewers
+            "watch",            // periodic command runner
+            "top", "htop",      // system monitors
+        ]
 
         let script = """
         tell application "Terminal"
@@ -120,20 +136,24 @@ final class BackgroundProcessMonitor {
             let allProcsStr = parts[2]
             let windowName = parts[3].trimmingCharacters(in: .whitespaces)
 
-            // Check if there's a non-shell process running
+            // Check if there's a non-shell, non-idle process running
             let allProcs = allProcsStr.components(separatedBy: ",")
                 .map { $0.trimmingCharacters(in: .whitespaces) }
                 .filter { !$0.isEmpty }
 
+            func isIgnored(_ proc: String) -> Bool {
+                shells.contains(proc) || shells.contains("-" + proc) || idleProcesses.contains(proc)
+            }
+
             let hasActiveProcess = allProcs.contains { proc in
-                !shells.contains(proc) && !shells.contains("-" + proc)
+                !isIgnored(proc)
             }
 
             guard hasActiveProcess else { continue }
 
-            // Find the actual command (last non-shell process)
+            // Find the actual command (last non-shell, non-idle process)
             let command = allProcs.last { proc in
-                !shells.contains(proc) && !shells.contains("-" + proc)
+                !isIgnored(proc)
             } ?? lastProcess
 
             // Parse directory from window name
