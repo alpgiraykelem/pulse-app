@@ -213,78 +213,10 @@ final class StatusBarApp: NSObject, NSApplicationDelegate {
 
         menu.addItem(NSMenuItem.separator())
 
-        // Dashboard
+        // Open Dashboard (single entry point — SPA report)
         let dashboardItem = NSMenuItem(title: "📊 Open Dashboard", action: #selector(openDashboard), keyEquivalent: "d")
         dashboardItem.target = self
         menu.addItem(dashboardItem)
-
-        // Reports submenu
-        let reportsItem = NSMenuItem(title: "📋 Reports", action: nil, keyEquivalent: "")
-        let reportsMenu = NSMenu()
-
-        let hasKey = ConfigManager.claudeApiKey != nil && !ConfigManager.claudeApiKey!.isEmpty
-
-        // Today
-        let todayItem = NSMenuItem(title: "Today", action: nil, keyEquivalent: "")
-        let todaySubmenu = NSMenu()
-        let todayOpenItem = NSMenuItem(title: "Open Report", action: #selector(openHTMLReport), keyEquivalent: "t")
-        todayOpenItem.target = self
-        todaySubmenu.addItem(todayOpenItem)
-        if hasKey && !isAnalyzing {
-            let todayAnalyze = NSMenuItem(title: "Analyze with AI", action: #selector(analyzeToday), keyEquivalent: "a")
-            todayAnalyze.target = self
-            todaySubmenu.addItem(todayAnalyze)
-        } else if isAnalyzing {
-            let item = NSMenuItem(title: "Analyzing…", action: nil, keyEquivalent: "")
-            item.isEnabled = false
-            todaySubmenu.addItem(item)
-        }
-        todayItem.submenu = todaySubmenu
-        reportsMenu.addItem(todayItem)
-
-        if let recentDates = try? store.queryRecentDates(limit: 14) {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd"
-            let todayStr = formatter.string(from: Date())
-
-            let pastDates = recentDates.filter { $0.date != todayStr }
-            if !pastDates.isEmpty {
-                reportsMenu.addItem(NSMenuItem.separator())
-
-                let displayFormatter = DateFormatter()
-                displayFormatter.dateFormat = "yyyy-MM-dd"
-                let prettyFormatter = DateFormatter()
-                prettyFormatter.locale = Locale(identifier: "en_US")
-                prettyFormatter.dateFormat = "EEEE, d MMMM"
-
-                for entry in pastDates {
-                    if let date = displayFormatter.date(from: entry.date) {
-                        let label = prettyFormatter.string(from: date)
-                        let dur = formatShortDuration(entry.totalSeconds)
-                        let item = NSMenuItem(title: "\(label)  ·  \(dur)", action: nil, keyEquivalent: "")
-
-                        let daySubmenu = NSMenu()
-                        let openItem = NSMenuItem(title: "Open Report", action: #selector(openPastReport(_:)), keyEquivalent: "")
-                        openItem.target = self
-                        openItem.representedObject = entry.date
-                        daySubmenu.addItem(openItem)
-
-                        if hasKey && !isAnalyzing {
-                            let analyzeItem = NSMenuItem(title: "Analyze with AI", action: #selector(analyzePastDate(_:)), keyEquivalent: "")
-                            analyzeItem.target = self
-                            analyzeItem.representedObject = entry.date
-                            daySubmenu.addItem(analyzeItem)
-                        }
-
-                        item.submenu = daySubmenu
-                        reportsMenu.addItem(item)
-                    }
-                }
-            }
-        }
-
-        reportsItem.submenu = reportsMenu
-        menu.addItem(reportsItem)
 
         menu.addItem(NSMenuItem.separator())
 
@@ -345,7 +277,8 @@ final class StatusBarApp: NSObject, NSApplicationDelegate {
         settingsItem.target = self
         menu.addItem(settingsItem)
 
-        let keyLabel = hasKey ? "Claude API Key ✓" : "Set Claude API Key…"
+        let hasApiKey = ConfigManager.claudeApiKey != nil && !ConfigManager.claudeApiKey!.isEmpty
+        let keyLabel = hasApiKey ? "Claude API Key ✓" : "Set Claude API Key…"
         menu.addItem(NSMenuItem(title: keyLabel, action: #selector(promptApiKey), keyEquivalent: ""))
 
         menu.addItem(NSMenuItem.separator())
@@ -400,28 +333,17 @@ final class StatusBarApp: NSObject, NSApplicationDelegate {
 
         let timeline = (try? store.queryTimeline(date: targetDate)) ?? []
 
-        // Gather project data for the report
-        let brandSummaries = (try? store.queryDayByProject(date: targetDate)) ?? []
-        let unassigned = (try? store.queryUnassignedActivities(date: targetDate)) ?? []
-        let allBrands = (try? store.allBrands()) ?? []
-        let allProjects = (try? store.allProjects()) ?? []
-
-        let projectData = ProjectData(
-            brands: allBrands.map { BrandJSON(id: $0.id, name: $0.name, color: $0.color) },
-            projects: allProjects.map { ProjectJSON(id: $0.project.id, brandId: $0.project.brandId, brandName: $0.brandName, name: $0.project.name, color: $0.project.color) },
-            unassigned: unassigned,
-            apiPort: apiServer?.port ?? 18492
-        )
-
-        let fileURL = HTMLReportGenerator.generate(
-            summary: summary,
-            timeline: timeline,
-            brandSummaries: brandSummaries,
-            projectData: projectData
-        )
+        // Always generate JSON for the day
         HTMLReportGenerator.generateJSON(summary: summary, timeline: timeline)
+
+        // Use SPA report (single report.html that fetches data from API)
+        let port = apiServer?.port ?? 18492
+        let fileURL = HTMLReportGenerator.generateSPA(apiPort: port)
+
         if openFile {
-            NSWorkspace.shared.selectFile(fileURL.path, inFileViewerRootedAtPath: fileURL.deletingLastPathComponent().path)
+            // Open in browser so API calls work (file:// won't allow fetch to localhost)
+            NSWorkspace.shared.open(URL(string: "http://127.0.0.1:\(port)/report?date=\(targetDate)")
+                ?? fileURL)
         }
     }
 
@@ -506,8 +428,12 @@ final class StatusBarApp: NSObject, NSApplicationDelegate {
     }
 
     @objc private func openDashboard() {
-        let fileURL = DashboardGenerator.generate(store: store)
-        NSWorkspace.shared.open(fileURL)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let today = formatter.string(from: Date())
+        projectMatcher?.autoAssignUnclassified(date: today)
+        let port = apiServer?.port ?? 18492
+        NSWorkspace.shared.open(URL(string: "http://127.0.0.1:\(port)/report?date=\(today)")!)
     }
 
     @objc private func reclassifyAll() {

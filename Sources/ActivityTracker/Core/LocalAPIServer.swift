@@ -60,34 +60,53 @@ final class LocalAPIServer {
     }
 
     private func receiveHTTPRequest(_ connection: NWConnection) {
+        receiveData(connection: connection, accumulated: Data())
+    }
+
+    private func receiveData(connection: NWConnection, accumulated: Data) {
         connection.receive(minimumIncompleteLength: 1, maximumLength: 65536) { [weak self] content, _, isComplete, error in
-            guard let self = self, let data = content, !data.isEmpty else {
-                connection.cancel()
+            guard let self = self else { connection.cancel(); return }
+
+            var data = accumulated
+            if let content = content { data.append(content) }
+
+            if data.isEmpty {
+                if isComplete { connection.cancel(); return }
+                self.receiveData(connection: connection, accumulated: data)
                 return
             }
 
-            // Check if we have the full body based on Content-Length
-            if let headerEnd = data.range(of: Data("\r\n\r\n".utf8)) {
-                let headerData = data[data.startIndex..<headerEnd.lowerBound]
-                if let headerStr = String(data: headerData, encoding: .utf8)?.lowercased(),
-                   let clRange = headerStr.range(of: "content-length: ") {
-                    let afterCL = headerStr[clRange.upperBound...]
-                    let clLine = afterCL.prefix(while: { $0 != "\r" && $0 != "\n" })
-                    if let expectedLength = Int(clLine) {
-                        let bodyStart = headerEnd.upperBound
-                        let receivedBodyLength = data.count - data.distance(from: data.startIndex, to: bodyStart)
-                        if receivedBodyLength < expectedLength {
-                            // Need more data — read the rest
-                            let remaining = expectedLength - receivedBodyLength
-                            connection.receive(minimumIncompleteLength: remaining, maximumLength: remaining) { moreContent, _, _, _ in
-                                var fullData = data
-                                if let more = moreContent { fullData.append(more) }
-                                self.processRequest(fullData, connection: connection)
-                            }
-                            return
-                        }
-                    }
+            let separator = Data("\r\n\r\n".utf8)
+            guard let sepRange = data.range(of: separator) else {
+                if isComplete {
+                    self.processRequest(data, connection: connection)
+                } else if data.count < 65536 {
+                    self.receiveData(connection: connection, accumulated: data)
+                } else {
+                    connection.cancel()
                 }
+                return
+            }
+
+            // Headers complete — calculate body bytes received
+            let headerBytes = data.distance(from: data.startIndex, to: sepRange.lowerBound)
+            let separatorBytes = 4 // \r\n\r\n
+            let bodyBytesReceived = data.count - headerBytes - separatorBytes
+
+            // Parse Content-Length from headers
+            var expectedBodyLength = 0
+            let headerData = data[data.startIndex..<sepRange.lowerBound]
+            if let headerStr = String(data: headerData, encoding: .utf8)?.lowercased() {
+                if let clRange = headerStr.range(of: "content-length:") {
+                    let afterCL = headerStr[clRange.upperBound...].drop(while: { $0 == " " })
+                    let clLine = afterCL.prefix(while: { $0 >= "0" && $0 <= "9" })
+                    expectedBodyLength = Int(clLine) ?? 0
+                }
+            }
+
+            if expectedBodyLength > 0 && bodyBytesReceived < expectedBodyLength && !isComplete {
+                self.receiveData(connection: connection, accumulated: data)
+                return
             }
 
             self.processRequest(data, connection: connection)
@@ -113,11 +132,41 @@ final class LocalAPIServer {
     private struct APIResponse {
         let status: Int
         let body: String
+        let contentType: String
+
+        init(status: Int, body: String, contentType: String = "application/json; charset=utf-8") {
+            self.status = status
+            self.body = body
+            self.contentType = contentType
+        }
 
         static func ok(_ json: String) -> APIResponse { APIResponse(status: 200, body: json) }
         static func created(_ json: String) -> APIResponse { APIResponse(status: 201, body: json) }
         static func badRequest(_ msg: String) -> APIResponse { APIResponse(status: 400, body: "{\"error\":\"\(msg)\"}") }
         static func notFound() -> APIResponse { APIResponse(status: 404, body: "{\"error\":\"not found\"}") }
+    }
+
+    /// Parse JSON body tolerantly — handles both `"id": 5` and `"id": "5"`
+    private func parseBody<T: Decodable>(_ body: String, as type: T.Type) -> T? {
+        guard let data = body.data(using: .utf8) else { return nil }
+        // First try normal decode
+        if let result = try? JSONDecoder().decode(type, from: data) {
+            return result
+        }
+        // Fallback: convert string numbers to actual numbers in JSON
+        if let obj = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+            var fixed = obj
+            for (key, val) in obj {
+                if let str = val as? String, let num = Int64(str) {
+                    fixed[key] = num
+                }
+            }
+            if let fixedData = try? JSONSerialization.data(withJSONObject: fixed),
+               let result = try? JSONDecoder().decode(type, from: fixedData) {
+                return result
+            }
+        }
+        return nil
     }
 
     private func routeRequest(_ raw: String) -> APIResponse {
@@ -135,15 +184,48 @@ final class LocalAPIServer {
             return .ok("")
         }
 
-        // Extract JSON body
+        // Extract JSON body — trim null bytes and whitespace
         let body: String
         if let bodyStart = raw.range(of: "\r\n\r\n") {
-            body = String(raw[bodyStart.upperBound...])
+            let rawBody = String(raw[bodyStart.upperBound...])
+            body = rawBody.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines.union(CharacterSet(["\0"])))
         } else {
             body = ""
         }
+        // Parse query string
+        let pathOnly: String
+        let queryParams: [String: String]
+        if let qIndex = path.firstIndex(of: "?") {
+            pathOnly = String(path[path.startIndex..<qIndex])
+            let queryString = String(path[path.index(after: qIndex)...])
+            var params: [String: String] = [:]
+            for pair in queryString.split(separator: "&") {
+                let kv = pair.split(separator: "=", maxSplits: 1)
+                if kv.count == 2 {
+                    params[String(kv[0])] = String(kv[1]).removingPercentEncoding ?? String(kv[1])
+                }
+            }
+            queryParams = params
+        } else {
+            pathOnly = path
+            queryParams = [:]
+        }
 
-        switch (method, path) {
+        switch (method, pathOnly) {
+        case ("GET", "/report"):
+            return handleServeReport(params: queryParams)
+        case ("GET", "/api/days"):
+            return handleGetDays()
+        case ("GET", "/api/report"):
+            return handleGetReport(params: queryParams)
+        case ("GET", "/api/report/week"):
+            return handleGetWeekReport(params: queryParams)
+        case ("GET", "/api/report/month"):
+            return handleGetMonthReport(params: queryParams)
+        case ("GET", "/api/app"):
+            return handleGetApp(params: queryParams)
+        case ("GET", "/api/brand/detail"):
+            return handleGetBrandDetail(params: queryParams)
         case ("GET", "/api/projects"):
             return handleGetProjects()
         case ("POST", "/api/classify"):
@@ -158,6 +240,8 @@ final class LocalAPIServer {
             return handleAutoAssign(body: body)
         case ("POST", "/api/brand/update"):
             return handleUpdateBrand(body: body)
+        case ("POST", "/api/brand/merge"):
+            return handleMergeBrand(body: body)
         case ("POST", "/api/brand/delete"):
             return handleDeleteBrand(body: body)
         case ("POST", "/api/project/update"):
@@ -172,6 +256,8 @@ final class LocalAPIServer {
             return handleGetSuggestions()
         case ("POST", "/api/suggestion/accept"):
             return handleAcceptSuggestion(body: body)
+        case ("POST", "/api/suggestion/dismiss"):
+            return handleDismissSuggestion(body: body)
         default:
             return .notFound()
         }
@@ -199,7 +285,6 @@ final class LocalAPIServer {
     }
 
     private func handleClassify(body: String) -> APIResponse {
-        guard let data = body.data(using: .utf8) else { return .badRequest("invalid body") }
         struct ClassifyRequest: Decodable {
             let activityIds: [Int64]
             let projectId: Int64
@@ -208,7 +293,7 @@ final class LocalAPIServer {
             let rulePattern: String?
         }
 
-        guard let req = try? JSONDecoder().decode(ClassifyRequest.self, from: data) else {
+        guard let req = parseBody(body, as: ClassifyRequest.self) else {
             return .badRequest("invalid JSON")
         }
 
@@ -247,14 +332,13 @@ final class LocalAPIServer {
     }
 
     private func handleCreateProject(body: String) -> APIResponse {
-        guard let data = body.data(using: .utf8) else { return .badRequest("invalid body") }
         struct CreateProjectRequest: Decodable {
             let brandId: Int64
             let name: String
             let color: String?
         }
 
-        guard let req = try? JSONDecoder().decode(CreateProjectRequest.self, from: data) else {
+        guard let req = parseBody(body, as: CreateProjectRequest.self) else {
             return .badRequest("invalid JSON")
         }
 
@@ -308,9 +392,8 @@ final class LocalAPIServer {
     }
 
     private func handleUpdateBrand(body: String) -> APIResponse {
-        guard let data = body.data(using: .utf8) else { return .badRequest("invalid body") }
         struct Req: Decodable { let id: Int64; let name: String?; let color: String? }
-        guard let req = try? JSONDecoder().decode(Req.self, from: data) else {
+        guard let req = parseBody(body, as: Req.self) else {
             return .badRequest("invalid JSON")
         }
         do {
@@ -322,10 +405,9 @@ final class LocalAPIServer {
     }
 
     private func handleDeleteBrand(body: String) -> APIResponse {
-        guard let data = body.data(using: .utf8) else { return .badRequest("invalid body") }
         struct Req: Decodable { let id: Int64 }
-        guard let req = try? JSONDecoder().decode(Req.self, from: data) else {
-            return .badRequest("invalid JSON")
+        guard let req = parseBody(body, as: Req.self) else {
+            return .badRequest("invalid JSON: \(body)")
         }
         do {
             try store.deleteBrand(id: req.id)
@@ -336,10 +418,26 @@ final class LocalAPIServer {
         }
     }
 
+    private func handleMergeBrand(body: String) -> APIResponse {
+        struct Req: Decodable { let sourceId: Int64; let targetId: Int64 }
+        guard let req = parseBody(body, as: Req.self) else {
+            return .badRequest("invalid JSON")
+        }
+        guard req.sourceId != req.targetId else {
+            return .badRequest("source and target must be different")
+        }
+        do {
+            try store.mergeBrands(sourceId: req.sourceId, targetId: req.targetId)
+            projectMatcher.reloadRules()
+            return .ok("{\"ok\":true}")
+        } catch {
+            return .badRequest(error.localizedDescription)
+        }
+    }
+
     private func handleUpdateProject(body: String) -> APIResponse {
-        guard let data = body.data(using: .utf8) else { return .badRequest("invalid body") }
         struct Req: Decodable { let id: Int64; let name: String?; let color: String?; let brandId: Int64? }
-        guard let req = try? JSONDecoder().decode(Req.self, from: data) else {
+        guard let req = parseBody(body, as: Req.self) else {
             return .badRequest("invalid JSON")
         }
         do {
@@ -351,10 +449,9 @@ final class LocalAPIServer {
     }
 
     private func handleDeleteProject(body: String) -> APIResponse {
-        guard let data = body.data(using: .utf8) else { return .badRequest("invalid body") }
         struct Req: Decodable { let id: Int64 }
-        guard let req = try? JSONDecoder().decode(Req.self, from: data) else {
-            return .badRequest("invalid JSON")
+        guard let req = parseBody(body, as: Req.self) else {
+            return .badRequest("invalid JSON: \(body)")
         }
         do {
             try store.deleteProject(id: req.id)
@@ -384,9 +481,8 @@ final class LocalAPIServer {
     }
 
     private func handleDeleteRule(body: String) -> APIResponse {
-        guard let data = body.data(using: .utf8) else { return .badRequest("invalid body") }
         struct Req: Decodable { let id: Int64 }
-        guard let req = try? JSONDecoder().decode(Req.self, from: data) else {
+        guard let req = parseBody(body, as: Req.self) else {
             return .badRequest("invalid JSON")
         }
         do {
@@ -398,11 +494,203 @@ final class LocalAPIServer {
         }
     }
 
+    // MARK: - Serve Report HTML
+
+    private func handleServeReport(params: [String: String]) -> APIResponse {
+        // Generate or re-generate the SPA HTML
+        let spaURL = HTMLReportGenerator.generateSPA(apiPort: port)
+
+        guard let html = try? String(contentsOf: spaURL, encoding: .utf8) else {
+            return .badRequest("Failed to read report.html")
+        }
+
+        // Inject initial date if provided
+        let date = params["date"]
+        let finalHTML: String
+        if let date = date {
+            finalHTML = html.replacingOccurrences(
+                of: "var INITIAL_DATE = null;",
+                with: "var INITIAL_DATE = '\(date)';"
+            )
+        } else {
+            finalHTML = html
+        }
+
+        return APIResponse(status: 200, body: finalHTML, contentType: "text/html; charset=utf-8")
+    }
+
+    // MARK: - Report Data Handlers
+
+    private func handleGetDays() -> APIResponse {
+        do {
+            let dates = try store.allDates()
+            let datesJSON = dates.map { jsonString($0) }.joined(separator: ",")
+            return .ok("{\"dates\":[\(datesJSON)]}")
+        } catch {
+            return .badRequest(error.localizedDescription)
+        }
+    }
+
+    private func handleGetReport(params: [String: String]) -> APIResponse {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let dateStr = params["date"] ?? formatter.string(from: Date())
+
+        do {
+            let summary = try store.queryDay(date: dateStr)
+            let timeline = try store.queryTimeline(date: dateStr)
+            let brandSummaries = try store.queryDayByProject(date: dateStr)
+            let unassigned = try store.queryUnassignedActivities(date: dateStr)
+
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+
+            // Summary
+            let summaryData = try encoder.encode(summary)
+            let summaryJSON = String(data: summaryData, encoding: .utf8) ?? "{}"
+
+            // Timeline
+            let timelineData = try encoder.encode(timeline)
+            let timelineJSON = String(data: timelineData, encoding: .utf8) ?? "[]"
+
+            // Brand summaries
+            let brandsData = try encoder.encode(brandSummaries)
+            let brandsJSON = String(data: brandsData, encoding: .utf8) ?? "[]"
+
+            // Unassigned
+            let unassignedData = try encoder.encode(unassigned)
+            let unassignedJSON = String(data: unassignedData, encoding: .utf8) ?? "[]"
+
+            // Projects info
+            let allBrands = try store.allBrands()
+            let allProjects = try store.allProjects()
+            let brandListJSON = allBrands.map { b in
+                "{\"id\":\(b.id),\"name\":\(jsonString(b.name)),\"color\":\(jsonString(b.color))}"
+            }.joined(separator: ",")
+            let projectListJSON = allProjects.map { (p, brandName) in
+                "{\"id\":\(p.id),\"brandId\":\(p.brandId),\"brandName\":\(jsonString(brandName)),\"name\":\(jsonString(p.name)),\"color\":\(jsonString(p.color))}"
+            }.joined(separator: ",")
+
+            // Assigned activity IDs (to filter from app cards)
+            let assignedIds = try store.assignedActivityIds(date: dateStr)
+            let assignedIdsJSON = assignedIds.map { String($0) }.joined(separator: ",")
+
+            return .ok("{\"summary\":\(summaryJSON),\"timeline\":\(timelineJSON),\"brandSummaries\":\(brandsJSON),\"unassigned\":\(unassignedJSON),\"brands\":[\(brandListJSON)],\"projects\":[\(projectListJSON)],\"assignedIds\":[\(assignedIdsJSON)]}")
+        } catch {
+            return .badRequest(error.localizedDescription)
+        }
+    }
+
+    private func handleGetWeekReport(params: [String: String]) -> APIResponse {
+        do {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            let dateStr = params["date"] ?? formatter.string(from: Date())
+            guard let targetDate = formatter.date(from: dateStr) else {
+                return .badRequest("invalid date")
+            }
+
+            let calendar = Calendar.current
+            let weekday = calendar.component(.weekday, from: targetDate)
+            let daysFromMonday = (weekday + 5) % 7
+            guard let monday = calendar.date(byAdding: .day, value: -daysFromMonday, to: targetDate),
+                  let sunday = calendar.date(byAdding: .day, value: 6, to: monday) else {
+                return .badRequest("date calculation error")
+            }
+
+            let summaries = try store.queryDays(from: formatter.string(from: monday), to: formatter.string(from: sunday))
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            let data = try encoder.encode(summaries)
+            let json = String(data: data, encoding: .utf8) ?? "[]"
+
+            return .ok("{\"weekStart\":\(jsonString(formatter.string(from: monday))),\"weekEnd\":\(jsonString(formatter.string(from: sunday))),\"days\":\(json)}")
+        } catch {
+            return .badRequest(error.localizedDescription)
+        }
+    }
+
+    private func handleGetMonthReport(params: [String: String]) -> APIResponse {
+        do {
+            let calendar = Calendar.current
+            let now = Date()
+            let year = params["year"].flatMap { Int($0) } ?? calendar.component(.year, from: now)
+            let month = params["month"].flatMap { Int($0) } ?? calendar.component(.month, from: now)
+
+            let summaries = try store.queryMonth(year: year, month: month)
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            let data = try encoder.encode(summaries)
+            let json = String(data: data, encoding: .utf8) ?? "[]"
+
+            let totalSeconds = summaries.reduce(0) { $0 + $1.totalSeconds }
+
+            return .ok("{\"year\":\(year),\"month\":\(month),\"totalSeconds\":\(totalSeconds),\"days\":\(json)}")
+        } catch {
+            return .badRequest(error.localizedDescription)
+        }
+    }
+
+    // MARK: - App Detail Handler
+
+    private func handleGetApp(params: [String: String]) -> APIResponse {
+        guard let name = params["name"], !name.isEmpty else {
+            return .badRequest("name parameter required")
+        }
+        do {
+            let report = try store.queryAppDetail(appName: name, from: params["from"], to: params["to"])
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            let data = try encoder.encode(report)
+            let json = String(data: data, encoding: .utf8) ?? "{}"
+            return .ok(json)
+        } catch {
+            return .badRequest(error.localizedDescription)
+        }
+    }
+
+    // MARK: - Brand Detail Handler
+
+    private func handleGetBrandDetail(params: [String: String]) -> APIResponse {
+        guard let idStr = params["id"], let brandId = Int64(idStr) else {
+            return .badRequest("id parameter required")
+        }
+        do {
+            let detail = try store.queryBrandDetail(brandId: brandId, from: params["from"], to: params["to"])
+            let jsonData = try JSONSerialization.data(withJSONObject: detail, options: [])
+            let json = String(data: jsonData, encoding: .utf8) ?? "{}"
+            return .ok(json)
+        } catch {
+            return .badRequest(error.localizedDescription)
+        }
+    }
+
     // MARK: - Suggestion Handlers
+
+    private func handleDismissSuggestion(body: String) -> APIResponse {
+        struct Req: Decodable { let token: String }
+        guard let req = parseBody(body, as: Req.self) else {
+            return .badRequest("invalid JSON")
+        }
+        do {
+            try store.dismissSuggestion(token: req.token)
+            return .ok("{\"ok\":true}")
+        } catch {
+            return .badRequest(error.localizedDescription)
+        }
+    }
 
     private func handleGetSuggestions() -> APIResponse {
         let detector = PatternDetector(store: store)
-        let brands = detector.detect()
+        var brands = detector.detect()
+
+        // Filter out dismissed suggestions
+        let dismissed = (try? store.dismissedSuggestionTokens()) ?? []
+        brands = brands.compactMap { brand in
+            var b = brand
+            b.projects = b.projects.filter { !dismissed.contains($0.fullToken) }
+            return b.projects.isEmpty ? nil : b
+        }
 
         let brandsJSON = brands.map { brand in
             let projectsJSON = brand.projects.map { proj in
@@ -494,8 +782,9 @@ final class LocalAPIServer {
         let bodyData = response.body.data(using: .utf8) ?? Data()
         return [
             "HTTP/1.1 \(response.status) \(statusText)",
-            "Content-Type: application/json; charset=utf-8",
+            "Content-Type: \(response.contentType)",
             "Content-Length: \(bodyData.count)",
+            "Cache-Control: no-cache, no-store, must-revalidate",
             "Access-Control-Allow-Origin: *",
             "Access-Control-Allow-Methods: GET, POST, OPTIONS",
             "Access-Control-Allow-Headers: Content-Type",

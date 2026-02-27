@@ -560,7 +560,7 @@ section{padding:100px 0}
 }
 
 /* ── What's New ── */
-.whats-new{background:rgba(255,255,255,.01)}
+.whats-new{background:rgba(255,255,255,.01);overflow:hidden}
 .new-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -580,22 +580,9 @@ section{padding:100px 0}
 }
 .new-card-hero{
   grid-column:1 / -1;
-  padding:40px 36px;
+  padding:0;overflow:hidden;
   background:linear-gradient(160deg,rgba(124,92,252,.06),rgba(91,141,239,.03) 60%,rgba(255,255,255,.02));
   border-color:rgba(124,92,252,.15);
-}
-.new-card-hero h3{font-size:1.3rem}
-.new-icon-lg{
-  width:56px;height:56px;border-radius:14px;
-  background:linear-gradient(135deg,rgba(124,92,252,.15),rgba(91,141,239,.1));
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:20px;
-}
-.new-icon{
-  width:44px;height:44px;border-radius:12px;
-  background:linear-gradient(135deg,rgba(124,92,252,.1),rgba(91,141,239,.08));
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:16px;
 }
 .new-card h3{font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:8px}
 .new-card p{font-size:.88rem;color:#8b8fa7;line-height:1.55}
@@ -607,11 +594,125 @@ section{padding:100px 0}
   color:var(--tag-c);
   border:1px solid color-mix(in srgb, var(--tag-c) 20%, transparent);
 }
+.new-icon{
+  width:44px;height:44px;border-radius:12px;
+  background:linear-gradient(135deg,rgba(124,92,252,.1),rgba(91,141,239,.08));
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:16px;flex-shrink:0;
+}
+
+/* ── SPA Dashboard Mockup ── */
+.spa-hero-wrap{display:flex;gap:0;min-height:380px}
+.spa-hero-text{padding:40px 36px;flex:0 0 38%;display:flex;flex-direction:column;justify-content:center}
+.spa-hero-text h3{font-size:1.4rem;margin-bottom:12px}
+.spa-hero-text p{margin-bottom:20px}
+.spa-mockup{flex:1;position:relative;display:flex;align-items:stretch;overflow:hidden;border-left:1px solid rgba(255,255,255,.04)}
+
+/* Mini SPA frame */
+.spa-frame{display:flex;width:100%;position:relative}
+.spa-sidebar{width:140px;background:rgba(255,255,255,.025);border-right:1px solid rgba(255,255,255,.05);padding:16px 0;flex-shrink:0;display:flex;flex-direction:column;gap:2px}
+.spa-nav-label{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#555;padding:8px 14px 4px}
+.spa-nav-item{font-size:.72rem;padding:6px 14px;color:#8b8fa7;cursor:default;border-left:2px solid transparent;transition:all .3s}
+.spa-nav-item.active{color:#fff;background:rgba(124,92,252,.08);border-left-color:#7C5CFC}
+.spa-nav-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.spa-nav-sub{font-size:.58rem;padding:3px 14px 3px 28px;color:#555;cursor:default;display:flex;align-items:center;gap:4px}
+.spa-nav-sub i{width:4px;height:4px;border-radius:50%;flex-shrink:0}
+.spa-main{flex:1;padding:16px 20px;overflow:hidden}
+
+/* Animated chart bars */
+.spa-chart-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.spa-chart-label{font-size:.62rem;color:#8b8fa7;width:52px;text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.spa-chart-bar{height:14px;border-radius:4px;transform-origin:left;transform:scaleX(0);transition:transform 1s cubic-bezier(.22,1,.36,1)}
+.visible .spa-chart-bar{transform:scaleX(1)}
+.spa-chart-val{font-size:.6rem;font-weight:700;color:#c4c7d4;width:28px;flex-shrink:0}
+.spa-client-group{margin-bottom:10px}
+.spa-client-header{display:flex;align-items:center;gap:6px;margin-bottom:5px;padding-bottom:4px;border-bottom:1px solid rgba(255,255,255,.04)}
+.spa-client-header i{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.spa-client-header span{font-size:.68rem;font-weight:700;color:#e0e0e0}
+.spa-client-header em{font-size:.56rem;color:#555;font-style:normal;margin-left:auto}
+.spa-client-apps .spa-chart-row{margin-bottom:3px}
+.spa-client-apps .spa-chart-bar{height:10px}
+.spa-client-apps .spa-chart-label{font-size:.56rem;width:44px}
+.spa-client-apps .spa-chart-val{font-size:.52rem;width:24px}
+.spa-period-tabs{display:flex;gap:0;margin-bottom:12px;background:rgba(255,255,255,.04);border-radius:6px;overflow:hidden}
+.spa-period-tab{font-size:.58rem;font-weight:700;padding:4px 10px;color:#555;cursor:default}
+.spa-period-tab.active{background:rgba(124,92,252,.15);color:#a78bfa}
+.spa-donut-wrap{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.spa-donut{width:48px;height:48px;flex-shrink:0}
+.spa-donut circle{transition:stroke-dashoffset 1.2s cubic-bezier(.22,1,.36,1)}
+.visible .spa-donut .donut-fill{stroke-dashoffset:0 !important}
+.spa-donut-legend{display:flex;flex-direction:column;gap:2px}
+.spa-donut-item{font-size:.58rem;color:#8b8fa7;display:flex;align-items:center;gap:4px}
+.spa-donut-item i{width:5px;height:5px;border-radius:50%;display:inline-block;flex-shrink:0}
+
+/* ── Bulk Selection Demo ── */
+.bulk-demo{position:relative;overflow:hidden;padding-bottom:44px}
+.bulk-rows{display:flex;flex-direction:column;gap:4px;margin-top:14px}
+.bulk-row{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.025);font-size:.72rem;color:#c4c7d4;transition:background .4s,box-shadow .4s}
+.bulk-cb{width:13px;height:13px;border-radius:3px;border:1.5px solid rgba(255,255,255,.15);flex-shrink:0;position:relative;transition:all .3s}
+.bulk-row.checked{background:rgba(124,92,252,.06);box-shadow:inset 0 0 0 1px rgba(124,92,252,.15)}
+.bulk-row.checked .bulk-cb{border-color:#7C5CFC;background:#7C5CFC}
+.bulk-row.checked .bulk-cb::after{content:'';position:absolute;left:3px;top:1px;width:4px;height:7px;border:solid #fff;border-width:0 1.5px 1.5px 0;transform:rotate(45deg)}
+.bulk-app{font-weight:600;color:#fff;width:56px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bulk-title{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bulk-dur{font-size:.65rem;color:#8b8fa7;font-weight:600;flex-shrink:0}
+.bulk-bar{position:absolute;bottom:0;left:0;right:0;height:40px;background:rgba(11,13,23,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid rgba(124,92,252,.2);display:flex;align-items:center;gap:8px;padding:0 14px;transform:translateY(100%);transition:transform .5s cubic-bezier(.22,1,.36,1);border-radius:0 0 16px 16px}
+.bulk-bar.show{transform:translateY(0)}
+.bulk-bar-count{font-size:.68rem;font-weight:700;color:#a78bfa}
+.bulk-bar-btn{font-size:.62rem;font-weight:700;padding:5px 12px;border-radius:6px;background:linear-gradient(135deg,#7C5CFC,#5B8DEF);color:#fff;border:none;cursor:default;margin-left:auto}
+
+/* ── Merge Demo ── */
+.merge-demo{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.merge-brand{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:rgba(255,255,255,.025);transition:all .6s}
+.merge-brand-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.merge-brand-name{font-size:.78rem;font-weight:600;color:#e2e4ed;flex:1}
+.merge-brand-count{font-size:.65rem;color:#8b8fa7}
+.merge-arrow{text-align:center;color:#7C5CFC;font-size:.7rem;font-weight:700;padding:2px 0;opacity:0;transform:translateY(-4px);transition:all .5s}
+.merge-result{opacity:0;transform:translateY(-8px);transition:all .6s .2s}
+.visible .merge-arrow{opacity:1;transform:translateY(0)}
+.visible .merge-result{opacity:1;transform:translateY(0)}
+.merge-brand.merged{opacity:.3;transform:scale(.96);text-decoration:line-through;text-decoration-color:rgba(255,255,255,.2)}
+.merge-brand.target{box-shadow:0 0 0 1px rgba(124,92,252,.3);background:rgba(124,92,252,.06)}
+
+/* ── Client Detail Demo ── */
+.client-detail-demo{margin-top:14px}
+.cd-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.cd-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.cd-name{font-size:.85rem;font-weight:700;color:#fff}
+.cd-total{font-size:.75rem;color:#8b8fa7;margin-left:auto}
+.cd-projects{display:flex;flex-direction:column;gap:4px}
+.cd-proj{display:flex;align-items:center;gap:8px;font-size:.72rem}
+.cd-proj-bar{height:8px;border-radius:4px;transform-origin:left;transform:scaleX(0);transition:transform .8s cubic-bezier(.22,1,.36,1)}
+.visible .cd-proj-bar{transform:scaleX(1)}
+.cd-proj-name{color:#c4c7d4;width:72px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cd-proj-val{color:#8b8fa7;font-weight:600;flex-shrink:0;width:32px;text-align:right}
+.cd-months{display:flex;align-items:flex-end;gap:3px;height:32px;margin-top:10px}
+.cd-month-bar{flex:1;background:rgba(124,92,252,.2);border-radius:2px 2px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .6s cubic-bezier(.22,1,.36,1)}
+.visible .cd-month-bar{transform:scaleY(1)}
+.cd-month-labels{display:flex;gap:3px;margin-top:3px}
+.cd-month-labels span{flex:1;text-align:center;font-size:.48rem;color:#555}
+
+/* ── Auto-create animation ── */
+.auto-demo{margin-top:14px}
+.auto-step{display:flex;align-items:center;gap:8px;padding:6px 0;opacity:0;transform:translateX(-8px);transition:all .5s}
+.visible .auto-step{opacity:1;transform:translateX(0)}
+.visible .auto-step:nth-child(2){transition-delay:.3s}
+.visible .auto-step:nth-child(3){transition-delay:.6s}
+.auto-step-num{width:18px;height:18px;border-radius:50%;background:rgba(124,92,252,.15);color:#a78bfa;font-size:.58rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.auto-step-text{font-size:.72rem;color:#c4c7d4}
+.auto-step-text b{color:#fff}
+.auto-select{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:5px;padding:3px 8px;font-size:.65rem;color:#a78bfa;font-weight:600;margin-top:8px}
+.auto-select .chevron{font-size:.5rem;color:#555}
+.auto-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.6rem;font-weight:700;background:rgba(34,197,94,.1);color:#22c55e;margin-left:4px}
 
 @media(max-width:680px){
   .compare-grid{grid-template-columns:1fr;gap:16px}
   .new-grid{grid-template-columns:1fr}
-  .new-card-hero{padding:28px 24px}
+  .new-card-hero{padding:0}
+  .spa-hero-wrap{flex-direction:column}
+  .spa-hero-text{flex:0 0 auto;padding:28px 24px 20px}
+  .spa-mockup{min-height:260px;border-left:none;border-top:1px solid rgba(255,255,255,.04)}
+  .spa-sidebar{width:110px}
 }
 @media(max-width:900px){
   .new-grid{grid-template-columns:1fr 1fr}
@@ -725,6 +826,223 @@ section{padding:100px 0}
   </div>
 </div>
 
+<!-- ── What's New ── -->
+<section class="whats-new" id="new">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">Latest Updates</div>
+      <h2 class="section-title">A full dashboard,<br><span class="gradient-text">right inside the app.</span></h2>
+      <p class="section-desc">Real-time SPA dashboard with client management, bulk assignment, brand merging, and AI-powered project suggestions. Everything runs locally on your Mac.</p>
+    </div>
+
+    <div class="new-grid">
+
+      <!-- ▸ HERO: SPA Dashboard with live mockup -->
+      <div class="new-card new-card-hero reveal">
+        <div class="spa-hero-wrap">
+          <div class="spa-hero-text">
+            <h3>Live SPA Dashboard</h3>
+            <p>Day, week, and month views with interactive charts, project breakdowns, and a real-time local API. No static HTML &mdash; a full single-page app served from your menu bar.</p>
+            <div class="new-tag-row">
+              <span class="new-tag" style="--tag-c:#7C5CFC">Real-time API</span>
+              <span class="new-tag" style="--tag-c:#5B8DEF">Day / Week / Month</span>
+              <span class="new-tag" style="--tag-c:#10b981">Charts</span>
+              <span class="new-tag" style="--tag-c:#f59e0b">Timeline</span>
+            </div>
+          </div>
+          <div class="spa-mockup">
+            <div class="spa-frame">
+              <div class="spa-sidebar">
+                <div class="spa-nav-label">Navigation</div>
+                <div class="spa-nav-item active"><span class="spa-nav-dot" style="background:#7C5CFC"></span>Overview</div>
+                <div class="spa-nav-item"><span class="spa-nav-dot" style="background:#5B8DEF"></span>Applications</div>
+                <div class="spa-nav-item"><span class="spa-nav-dot" style="background:#f59e0b"></span>Timeline</div>
+                <div class="spa-nav-label">Clients</div>
+                <div class="spa-nav-item"><span class="spa-nav-dot" style="background:#6366f1"></span>Northwind Labs</div>
+                <div class="spa-nav-sub"><i style="background:#a259ff"></i>Figma <span style="color:#444;margin-left:auto">1h 48m</span></div>
+                <div class="spa-nav-sub"><i style="background:#6366f1"></i>VS Code <span style="color:#444;margin-left:auto">1h 12m</span></div>
+                <div class="spa-nav-sub"><i style="background:#10b981"></i>Terminal <span style="color:#444;margin-left:auto">32m</span></div>
+                <div class="spa-nav-item"><span class="spa-nav-dot" style="background:#06b6d4"></span>Meridian Media</div>
+                <div class="spa-nav-sub"><i style="background:#3b82f6"></i>Safari <span style="color:#444;margin-left:auto">28m</span></div>
+                <div class="spa-nav-sub"><i style="background:#D97757"></i>Claude <span style="color:#444;margin-left:auto">17m</span></div>
+                <div class="spa-nav-item"><span class="spa-nav-dot" style="background:#ec4899"></span>Studio Volta</div>
+                <div class="spa-nav-sub"><i style="background:#a259ff"></i>Figma <span style="color:#444;margin-left:auto">26m</span></div>
+                <div class="spa-nav-sub"><i style="background:#1db954"></i>Spotify <span style="color:#444;margin-left:auto">27m</span></div>
+              </div>
+              <div class="spa-main">
+                <div class="spa-period-tabs">
+                  <div class="spa-period-tab active">Day</div>
+                  <div class="spa-period-tab">Week</div>
+                  <div class="spa-period-tab">Month</div>
+                </div>
+                <div class="spa-donut-wrap">
+                  <svg class="spa-donut" viewBox="0 0 36 36">
+                    <circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="4"/>
+                    <circle class="donut-fill" cx="18" cy="18" r="14" fill="none" stroke="#a259ff" stroke-width="4" stroke-dasharray="33 55" stroke-dashoffset="33" stroke-linecap="round" transform="rotate(-90 18 18)"/>
+                    <circle class="donut-fill" cx="18" cy="18" r="14" fill="none" stroke="#6366f1" stroke-width="4" stroke-dasharray="22 66" stroke-dashoffset="22" stroke-linecap="round" transform="rotate(126 18 18)"/>
+                    <circle class="donut-fill" cx="18" cy="18" r="14" fill="none" stroke="#10b981" stroke-width="4" stroke-dasharray="15 73" stroke-dashoffset="15" stroke-linecap="round" transform="rotate(284 18 18)"/>
+                    <text x="18" y="19" text-anchor="middle" dominant-baseline="middle" fill="#fff" font-size="6" font-weight="800">6h 42m</text>
+                  </svg>
+                  <div class="spa-donut-legend">
+                    <div class="spa-donut-item"><i style="background:#a259ff"></i>Figma 37%</div>
+                    <div class="spa-donut-item"><i style="background:#6366f1"></i>VS Code 25%</div>
+                    <div class="spa-donut-item"><i style="background:#10b981"></i>Terminal 10%</div>
+                    <div class="spa-donut-item"><i style="background:#D97757"></i>Claude 9%</div>
+                  </div>
+                </div>
+                <div class="spa-client-group">
+                  <div class="spa-client-header"><i style="background:#6366f1"></i><span>Northwind Labs</span><em>3h 32m</em></div>
+                  <div class="spa-client-apps">
+                    <div class="spa-chart-row"><span class="spa-chart-label">Figma</span><div class="spa-chart-bar" style="width:72%;background:linear-gradient(90deg,#a259ff,#c084fc);transition-delay:.1s"></div><span class="spa-chart-val">1h 48m</span></div>
+                    <div class="spa-chart-row"><span class="spa-chart-label">VS Code</span><div class="spa-chart-bar" style="width:52%;background:linear-gradient(90deg,#6366f1,#818cf8);transition-delay:.2s"></div><span class="spa-chart-val">1h 12m</span></div>
+                    <div class="spa-chart-row"><span class="spa-chart-label">Terminal</span><div class="spa-chart-bar" style="width:24%;background:linear-gradient(90deg,#10b981,#34d399);transition-delay:.3s"></div><span class="spa-chart-val">32m</span></div>
+                  </div>
+                </div>
+                <div class="spa-client-group">
+                  <div class="spa-client-header"><i style="background:#06b6d4"></i><span>Meridian Media</span><em>45m</em></div>
+                  <div class="spa-client-apps">
+                    <div class="spa-chart-row"><span class="spa-chart-label">Safari</span><div class="spa-chart-bar" style="width:38%;background:linear-gradient(90deg,#3b82f6,#60a5fa);transition-delay:.4s"></div><span class="spa-chart-val">28m</span></div>
+                    <div class="spa-chart-row"><span class="spa-chart-label">Claude</span><div class="spa-chart-bar" style="width:22%;background:linear-gradient(90deg,#D97757,#e8956f);transition-delay:.5s"></div><span class="spa-chart-val">17m</span></div>
+                  </div>
+                </div>
+                <div class="spa-client-group">
+                  <div class="spa-client-header"><i style="background:#ec4899"></i><span>Studio Volta</span><em>53m</em></div>
+                  <div class="spa-client-apps">
+                    <div class="spa-chart-row"><span class="spa-chart-label">Figma</span><div class="spa-chart-bar" style="width:28%;background:linear-gradient(90deg,#a259ff,#c084fc);transition-delay:.6s"></div><span class="spa-chart-val">26m</span></div>
+                    <div class="spa-chart-row"><span class="spa-chart-label">Spotify</span><div class="spa-chart-bar" style="width:30%;background:linear-gradient(90deg,#1db954,#34d399);transition-delay:.7s"></div><span class="spa-chart-val">27m</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ▸ Bulk Selection -->
+      <div class="new-card reveal" id="bulk-demo-card">
+        <div class="new-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7C5CFC" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="6" height="6" rx="1"/><path d="M5 11l1.5 1.5L9 9"/><rect x="3" y="14" width="6" height="6" rx="1"/><path d="M5 20l1.5 1.5L9 18"/><line x1="12" y1="8" x2="21" y2="8"/><line x1="12" y1="17" x2="21" y2="17"/></svg>
+        </div>
+        <h3>Bulk Selection &amp; Assignment</h3>
+        <p>Select dozens of activities, pick a project, assign all at once.</p>
+        <div class="bulk-demo">
+          <div class="bulk-rows">
+            <div class="bulk-row checked"><span class="bulk-cb"></span><span class="bulk-app">Safari</span><span class="bulk-title">docs.google.com</span><span class="bulk-dur">12m</span></div>
+            <div class="bulk-row checked"><span class="bulk-cb"></span><span class="bulk-app">Safari</span><span class="bulk-title">analytics.google.com</span><span class="bulk-dur">8m</span></div>
+            <div class="bulk-row checked"><span class="bulk-cb"></span><span class="bulk-app">Terminal</span><span class="bulk-title">~/projects/client &mdash; npm run dev</span><span class="bulk-dur">14m</span></div>
+            <div class="bulk-row"><span class="bulk-cb"></span><span class="bulk-app">Figma</span><span class="bulk-title">App Icon Exploration</span><span class="bulk-dur">22m</span></div>
+          </div>
+          <div class="bulk-bar show">
+            <span class="bulk-bar-count">3 items selected</span>
+            <span class="bulk-bar-btn">Assign All</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ▸ Brand Merge -->
+      <div class="new-card reveal">
+        <div class="new-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+        </div>
+        <h3>Client Merge</h3>
+        <p>Duplicate client? Merge all projects into another brand with one click.</p>
+        <div class="merge-demo">
+          <div class="merge-brand merged"><span class="merge-brand-dot" style="background:#06b6d4"></span><span class="merge-brand-name">Meridian Media</span><span class="merge-brand-count">3 projects</span></div>
+          <div class="merge-arrow">&#x2193; merge into &#x2193;</div>
+          <div class="merge-brand target"><span class="merge-brand-dot" style="background:#6366f1"></span><span class="merge-brand-name">Northwind Labs</span><span class="merge-brand-count"><span class="merge-result">9 projects</span></span></div>
+        </div>
+      </div>
+
+      <!-- ▸ Client Detail View -->
+      <div class="new-card reveal">
+        <div class="new-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B8DEF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>Client Detail View</h3>
+        <p>Click any client &mdash; see projects, hours, and monthly activity.</p>
+        <div class="client-detail-demo">
+          <div class="cd-header"><span class="cd-dot" style="background:#6366f1"></span><span class="cd-name">Northwind Labs</span><span class="cd-total">48h 32m</span></div>
+          <div class="cd-projects">
+            <div class="cd-proj"><span class="cd-proj-name">Web + Docs</span><div class="cd-proj-bar" style="width:65%;background:#6366f1;transition-delay:.15s"></div><span class="cd-proj-val">22h</span></div>
+            <div class="cd-proj"><span class="cd-proj-name">Backend API</span><div class="cd-proj-bar" style="width:40%;background:#818cf8;transition-delay:.3s"></div><span class="cd-proj-val">14h</span></div>
+            <div class="cd-proj"><span class="cd-proj-name">Launchpad</span><div class="cd-proj-bar" style="width:25%;background:#a5b4fc;transition-delay:.45s"></div><span class="cd-proj-val">8h</span></div>
+            <div class="cd-proj"><span class="cd-proj-name">Pebble</span><div class="cd-proj-bar" style="width:12%;background:#c7d2fe;transition-delay:.6s"></div><span class="cd-proj-val">4h</span></div>
+          </div>
+          <div class="cd-months">
+            <div class="cd-month-bar" style="height:30%;background:#6366f1;transition-delay:.1s"></div>
+            <div class="cd-month-bar" style="height:55%;background:#6366f1;transition-delay:.15s"></div>
+            <div class="cd-month-bar" style="height:40%;background:#6366f1;transition-delay:.2s"></div>
+            <div class="cd-month-bar" style="height:70%;background:#6366f1;transition-delay:.25s"></div>
+            <div class="cd-month-bar" style="height:85%;background:#7C5CFC;transition-delay:.3s"></div>
+            <div class="cd-month-bar" style="height:100%;background:#7C5CFC;transition-delay:.35s"></div>
+          </div>
+          <div class="cd-month-labels"><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span><span>Feb</span></div>
+        </div>
+      </div>
+
+      <!-- ▸ Smart Auto-Creation -->
+      <div class="new-card reveal">
+        <div class="new-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </div>
+        <h3>Smart Auto-Creation</h3>
+        <p>Select a client with no projects &mdash; one is created on the fly.</p>
+        <div class="auto-demo">
+          <div class="auto-step">
+            <span class="auto-step-num">1</span>
+            <span class="auto-step-text">Pick <b>Studio Volta</b> from dropdown</span>
+          </div>
+          <div class="auto-step">
+            <span class="auto-step-num">2</span>
+            <span class="auto-step-text">Project auto-created <span class="auto-badge">new</span></span>
+          </div>
+          <div class="auto-step">
+            <span class="auto-step-num">3</span>
+            <span class="auto-step-text">Activities assigned <span class="auto-badge">127 matched</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ▸ Period Tabs -->
+      <div class="new-card reveal">
+        <div class="new-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B84FFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <h3>Period Tabs</h3>
+        <p>All Time, This Week, This Month &mdash; switch instantly on any app detail view. Filter your data without leaving the page.</p>
+        <div style="display:flex;gap:0;margin-top:14px;background:rgba(255,255,255,.04);border-radius:8px;overflow:hidden">
+          <span style="font-size:.68rem;font-weight:700;padding:6px 12px;color:#555;cursor:default">All Time</span>
+          <span style="font-size:.68rem;font-weight:700;padding:6px 12px;background:rgba(124,92,252,.15);color:#a78bfa;cursor:default">Week</span>
+          <span style="font-size:.68rem;font-weight:700;padding:6px 12px;color:#555;cursor:default">Month</span>
+        </div>
+      </div>
+
+      <!-- ▸ AI Pattern Detection -->
+      <div class="new-card reveal">
+        <div class="new-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D97757" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h3>AI Pattern Detection</h3>
+        <p>Scans unassigned activities, detects URL domains, folder names, and window titles. Suggests brands, projects, and rules &mdash; one-click accept creates everything.</p>
+        <div class="new-tag-row">
+          <span class="new-tag" style="--tag-c:#D97757">urlDomain</span>
+          <span class="new-tag" style="--tag-c:#10b981">terminalFolder</span>
+          <span class="new-tag" style="--tag-c:#B84FFF">windowTitle</span>
+        </div>
+      </div>
+
+      <!-- ▸ Client Management -->
+      <div class="new-card reveal">
+        <div class="new-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <h3>Client Management</h3>
+        <p>Add, rename, delete, and color-pick clients and projects directly from the dashboard. Full CRUD without leaving your report.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── Replace Manual Tools ── -->
 <section class="replace-section" id="replace">
   <div class="container">
@@ -770,89 +1088,6 @@ section{padding:100px 0}
       <p>Stop filling timesheets. Start getting real data.</p>
     </div>
 
-  </div>
-</section>
-
-<!-- ── What's New ── -->
-<section class="whats-new" id="new">
-  <div class="container">
-    <div class="section-header reveal">
-      <div class="section-label">Automatic Project Tracking</div>
-      <h2 class="section-title">AI-powered project management<br><span class="gradient-text">built into your time tracker.</span></h2>
-      <p class="section-desc">Automatic project classification, client brand hierarchy, and smart rules engine. Track billable hours per client without lifting a finger &mdash; the project time tracking software that actually works.</p>
-    </div>
-
-    <div class="new-grid">
-      <div class="new-card new-card-hero reveal">
-        <div class="new-icon-lg">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#7C5CFC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-        </div>
-        <h3>Brand &amp; Project Hierarchy</h3>
-        <p>Create brands, nest projects under them, and define classification rules. Every minute of your work gets automatically categorized &mdash; which client, which project, which task.</p>
-        <div class="new-tag-row">
-          <span class="new-tag" style="--tag-c:#6366f1">Brands</span>
-          <span class="new-tag" style="--tag-c:#10b981">Projects</span>
-          <span class="new-tag" style="--tag-c:#f59e0b">Rules</span>
-          <span class="new-tag" style="--tag-c:#ec4899">Auto-assign</span>
-        </div>
-      </div>
-
-      <div class="new-card reveal">
-        <div class="new-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B84FFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/><line x1="11" y1="8" x2="11" y2="14"/></svg>
-        </div>
-        <h3>AI Pattern Detection</h3>
-        <p>One click: scans your unassigned activities, detects URL domains, folder names, and window title patterns, then suggests brands, projects, and rules.</p>
-      </div>
-
-      <div class="new-card reveal">
-        <div class="new-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-        </div>
-        <h3>Smart Project Suggestions</h3>
-        <p>Open a report and Pulse suggests projects it detected from your activities. Edit the name, click Create &mdash; brand, project, and rules are set up in one step. Or assign to an existing project.</p>
-      </div>
-
-      <div class="new-card reveal">
-        <div class="new-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B8DEF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-        </div>
-        <h3>Native Settings Window</h3>
-        <p>Manage brands, projects, and rules from a macOS-native settings panel. Edit colors, reorder, delete with cascade &mdash; all in a familiar interface.</p>
-      </div>
-
-      <div class="new-card reveal">
-        <div class="new-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-        </div>
-        <h3>Smart Terminal Filtering</h3>
-        <p>Idle background processes like <code style="font-size:.8rem;background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px">caffeinate</code> and <code style="font-size:.8rem;background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px">sourcekit-lsp</code> are filtered out. Only real work &mdash; builds, servers, git &mdash; counts as active terminal time.</p>
-      </div>
-
-      <div class="new-card reveal">
-        <div class="new-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        </div>
-        <h3>In-Report Assignment</h3>
-        <p>See an unassigned window in your report? Click "Assign", pick a project, optionally auto-create a rule. No need to leave the report page.</p>
-      </div>
-
-      <div class="new-card reveal">
-        <div class="new-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1db954" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-        </div>
-        <h3>Clean Media Tracking</h3>
-        <p>Spotify, Apple Music, and YouTube show what you listened to or watched &mdash; without cluttering reports with per-track durations. Just the content, clean and simple.</p>
-      </div>
-
-      <div class="new-card reveal">
-        <div class="new-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D97757" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2z"/><path d="M12 6v6l4 2"/></svg>
-        </div>
-        <h3>Classification Rules Engine</h3>
-        <p>URL domains, folder paths, window titles, Figma files, bundle IDs &mdash; seven rule types with regex support. Set once, auto-classify forever.</p>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -932,16 +1167,16 @@ section{padding:100px 0}
           <div class="tl-body">
             <div class="tl-head"><div class="tl-date">Friday, 7 February</div><div class="tl-total"><b>6h 42m</b> across 8 apps</div></div>
             <div class="tl-row"><span class="tl-time">09:15</span><span class="tl-dot" style="background:#8b5cf6"></span><span class="tl-app">Figma</span><span class="tl-title">E-Commerce Redesign &mdash; Product Detail Page</span><span class="tl-dur">37m</span></div>
-            <div class="tl-row"><span class="tl-time">09:52</span><span class="tl-dot" style="background:#6366f1"></span><span class="tl-app">VS Code</span><span class="tl-title">sections/header.liquid &mdash; shopify-theme</span><span class="tl-dur">32m</span></div>
-            <div class="tl-row"><span class="tl-time">10:24</span><span class="tl-dot" style="background:#10b981"></span><span class="tl-app">Terminal</span><span class="tl-title">~/projects/client-store &mdash; npm run dev</span><span class="tl-dur">14m</span></div>
-            <div class="tl-row"><span class="tl-time">10:38</span><span class="tl-dot" style="background:#8b5cf6"></span><span class="tl-app">Figma</span><span class="tl-title">Pulse &mdash; App Icon Exploration</span><span class="tl-dur">44m</span></div>
+            <div class="tl-row"><span class="tl-time">09:52</span><span class="tl-dot" style="background:#6366f1"></span><span class="tl-app">VS Code</span><span class="tl-title">components/Header.tsx &mdash; roast-store</span><span class="tl-dur">32m</span></div>
+            <div class="tl-row"><span class="tl-time">10:24</span><span class="tl-dot" style="background:#10b981"></span><span class="tl-app">Terminal</span><span class="tl-title">~/projects/roast-store &mdash; next dev</span><span class="tl-dur">14m</span></div>
+            <div class="tl-row"><span class="tl-time">10:38</span><span class="tl-dot" style="background:#8b5cf6"></span><span class="tl-app">Figma</span><span class="tl-title">Nomad &mdash; Landing Page Wireframes</span><span class="tl-dur">44m</span></div>
             <div class="tl-row"><span class="tl-time">11:22</span><span class="tl-dot" style="background:#ec4899"></span><span class="tl-app">Claude</span><span class="tl-title">How to optimize SQLite WAL mode for low-write workloads</span><span class="tl-dur">17m</span></div>
-            <div class="tl-row"><span class="tl-time">11:39</span><span class="tl-dot" style="background:#6366f1"></span><span class="tl-app">VS Code</span><span class="tl-title">ActivityStore.swift &mdash; pulse-app</span><span class="tl-dur">48m</span></div>
-            <div class="tl-row"><span class="tl-time">12:27</span><span class="tl-dot" style="background:#10b981"></span><span class="tl-app">Terminal</span><span class="tl-title">~/projects/pulse-app &mdash; swift build -c release</span><span class="tl-dur">18m</span></div>
+            <div class="tl-row"><span class="tl-time">11:39</span><span class="tl-dot" style="background:#6366f1"></span><span class="tl-app">VS Code</span><span class="tl-title">DataManager.swift &mdash; weather-app</span><span class="tl-dur">48m</span></div>
+            <div class="tl-row"><span class="tl-time">12:27</span><span class="tl-dot" style="background:#10b981"></span><span class="tl-app">Terminal</span><span class="tl-title">~/projects/weather-app &mdash; swift build -c release</span><span class="tl-dur">18m</span></div>
             <div class="tl-row"><span class="tl-time">12:45</span><span class="tl-dot" style="background:#1db954"></span><span class="tl-app">Spotify</span><span class="tl-title">Bad Bunny &mdash; DtMF</span></div>
             <div class="tl-row"><span class="tl-time">14:10</span><span class="tl-dot" style="background:#8b5cf6"></span><span class="tl-app">Figma</span><span class="tl-title">Design System &mdash; Component Library v2</span><span class="tl-dur">32m</span></div>
-            <div class="tl-row"><span class="tl-time">14:42</span><span class="tl-dot" style="background:#6366f1"></span><span class="tl-app">VS Code</span><span class="tl-title">HTMLReportGenerator.swift &mdash; pulse-app</span><span class="tl-dur">16m</span></div>
-            <div class="tl-row"><span class="tl-time">14:58</span><span class="tl-dot" style="background:#10b981"></span><span class="tl-app">Terminal</span><span class="tl-title">~/projects/pulse-app &mdash; git push origin main</span><span class="tl-dur">6m</span></div>
+            <div class="tl-row"><span class="tl-time">14:42</span><span class="tl-dot" style="background:#6366f1"></span><span class="tl-app">VS Code</span><span class="tl-title">ChartRenderer.swift &mdash; weather-app</span><span class="tl-dur">16m</span></div>
+            <div class="tl-row"><span class="tl-time">14:58</span><span class="tl-dot" style="background:#10b981"></span><span class="tl-app">Terminal</span><span class="tl-title">~/projects/weather-app &mdash; git push origin main</span><span class="tl-dur">6m</span></div>
           </div>
         </div>
       </div>
@@ -962,8 +1197,8 @@ section{padding:100px 0}
             <div class="dk-dur">2h 14m</div>
           </div>
           <div class="dk-list">
-            <div class="dk-item"><span class="dk-item-t">Flavor &amp; Co &mdash; Mobile Checkout Flow</span><span class="dk-item-bar" style="width:72%"></span><span class="dk-item-d">58m</span></div>
-            <div class="dk-item"><span class="dk-item-t">Pulse &mdash; Icon Iterations</span><span class="dk-item-bar" style="width:55%"></span><span class="dk-item-d">44m</span></div>
+            <div class="dk-item"><span class="dk-item-t">Roast &amp; Co &mdash; Mobile Checkout Flow</span><span class="dk-item-bar" style="width:72%"></span><span class="dk-item-d">58m</span></div>
+            <div class="dk-item"><span class="dk-item-t">Nomad &mdash; App Icon Variants</span><span class="dk-item-bar" style="width:55%"></span><span class="dk-item-d">44m</span></div>
             <div class="dk-item"><span class="dk-item-t">Component Library &mdash; Button States</span><span class="dk-item-bar" style="width:40%"></span><span class="dk-item-d">32m</span></div>
           </div>
         </div>
@@ -980,8 +1215,8 @@ section{padding:100px 0}
             <div class="dk-dur">38m</div>
           </div>
           <div class="dk-list">
-            <div class="dk-item"><span class="tg">swift build</span><span class="dk-item-t">pulse-app &mdash; release</span><span class="dk-item-bar" style="width:47%"></span><span class="dk-item-d">18m</span></div>
-            <div class="dk-item"><span class="tg">shopify dev</span><span class="dk-item-t">flavor-co-theme</span><span class="dk-item-bar" style="width:37%"></span><span class="dk-item-d">14m</span></div>
+            <div class="dk-item"><span class="tg">swift build</span><span class="dk-item-t">weather-app &mdash; release</span><span class="dk-item-bar" style="width:47%"></span><span class="dk-item-d">18m</span></div>
+            <div class="dk-item"><span class="tg">next dev</span><span class="dk-item-t">roast-store</span><span class="dk-item-bar" style="width:37%"></span><span class="dk-item-d">14m</span></div>
             <div class="dk-item"><span class="tg">git push</span><span class="dk-item-t">origin main</span><span class="dk-item-bar" style="width:16%"></span><span class="dk-item-d">6m</span></div>
           </div>
         </div>

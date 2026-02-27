@@ -95,12 +95,14 @@ final class ProjectMatcher {
     }
 
     private func matchDomain(_ pattern: String, url: String) -> Bool {
-        // Extract host from URL
-        if let components = URLComponents(string: url), let host = components.host {
-            return host.localizedCaseInsensitiveContains(pattern)
+        guard let components = URLComponents(string: url), let host = components.host else {
+            return false
         }
-        // Fallback: simple string check
-        return url.localizedCaseInsensitiveContains(pattern)
+        let hostLower = host.lowercased().replacingOccurrences(of: "^www\\.", with: "", options: .regularExpression)
+        let patternLower = pattern.lowercased()
+
+        // Exact match or suffix match (e.g. pattern "saasbridge.co" matches "api.saasbridge.co")
+        return hostLower == patternLower || hostLower.hasSuffix(".\(patternLower)")
     }
 
     // MARK: - Retroactive Assignment

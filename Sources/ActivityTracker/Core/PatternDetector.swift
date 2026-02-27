@@ -100,9 +100,10 @@ final class PatternDetector {
 
                 // Window title rule (if we found window title tokens)
                 if info.sources.contains(.windowTitle) && !existingPatterns.contains(fullToken) {
+                    let escaped = NSRegularExpression.escapedPattern(for: fullToken)
                     rules.append(SuggestedRule(
                         ruleType: .windowTitle,
-                        pattern: "^\\Q\(fullToken)\\E",
+                        pattern: "(?i)^\(escaped)",
                         isRegex: true
                     ))
                 }

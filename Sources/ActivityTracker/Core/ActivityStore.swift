@@ -35,6 +35,11 @@ final class ActivityStore {
     private let colProjSortOrder = SQLite.Expression<Int>("sort_order")
     private let colProjCreatedAt = SQLite.Expression<Double>("created_at")
 
+    // Table definition - dismissed_suggestions
+    private let dismissedSuggestions = Table("dismissed_suggestions")
+    private let colDismissedToken = SQLite.Expression<String>("token")
+    private let colDismissedAt = SQLite.Expression<Double>("dismissed_at")
+
     // Table definition - project_rules
     private let projectRules = Table("project_rules")
     private let colRuleId = SQLite.Expression<Int64>("id")
@@ -138,6 +143,50 @@ final class ActivityStore {
 
         // Index on project_id
         try db.run(activities.createIndex(colProjectId, ifNotExists: true))
+
+        // dismissed_suggestions table
+        try db.run(dismissedSuggestions.create(ifNotExists: true) { t in
+            t.column(colDismissedToken, primaryKey: true)
+            t.column(colDismissedAt, defaultValue: Date().timeIntervalSince1970)
+        })
+
+        // Fix broken \Q...\E regex patterns (not supported by NSRegularExpression)
+        fixBrokenRegexRules()
+    }
+
+    /// Converts broken \Q...\E regex rules to proper escaped patterns and removes redundant over-specific window title rules.
+    private func fixBrokenRegexRules() {
+        guard let rows = try? db.prepare(projectRules.filter(colRuleIsRegex == true)) else { return }
+
+        for row in rows {
+            let ruleId = row[colRuleId]
+            let pattern = row[colRulePattern]
+
+            // Fix \Q...\E syntax → proper NSRegularExpression escaped pattern
+            if pattern.contains("\\Q") && pattern.contains("\\E") {
+                let inner = pattern
+                    .replacingOccurrences(of: "^\\Q", with: "")
+                    .replacingOccurrences(of: "\\Q", with: "")
+                    .replacingOccurrences(of: "\\E", with: "")
+                let escaped = NSRegularExpression.escapedPattern(for: inner)
+                let fixed = "(?i)^\(escaped)"
+                _ = try? db.run(projectRules.filter(colRuleId == ruleId).update(colRulePattern <- fixed))
+            }
+        }
+
+        // Remove overly specific window title rules (those containing terminal state markers)
+        let terminalMarkers = ["— ✳", "— ⠂", "— ⠐", "sourcekit-lsp", "◂ claude", "TERM_PROGRAM", "caffeinate"]
+        guard let allRules = try? db.prepare(projectRules.filter(colRuleType == "windowTitle" && colRuleIsRegex == false)) else { return }
+
+        for row in allRules {
+            let ruleId = row[colRuleId]
+            let pattern = row[colRulePattern]
+
+            let isOverSpecific = terminalMarkers.contains { pattern.contains($0) }
+            if isOverSpecific {
+                _ = try? db.run(projectRules.filter(colRuleId == ruleId).delete())
+            }
+        }
     }
 
     // MARK: - Insert & Update
@@ -238,6 +287,15 @@ final class ActivityStore {
         try db.run(projects.filter(colProjBrandId == id).delete())
         // Delete brand
         try db.run(brands.filter(colBrandId == id).delete())
+    }
+
+    /// Merge sourceBrand into targetBrand: move all projects from source to target, then delete source
+    func mergeBrands(sourceId: Int64, targetId: Int64) throws {
+        // Move all projects from source brand to target brand
+        let sourceProjects = projects.filter(colProjBrandId == sourceId)
+        try db.run(sourceProjects.update(colProjBrandId <- targetId))
+        // Delete the now-empty source brand
+        try db.run(brands.filter(colBrandId == sourceId).delete())
     }
 
     // MARK: - Project CRUD
@@ -692,5 +750,129 @@ final class ActivityStore {
             current = next
         }
         return summaries
+    }
+
+    func queryAppDetail(appName: String, from: String? = nil, to: String? = nil) throws -> AppDetailReport {
+        var query = activities.filter(colAppName == appName)
+        if let from = from { query = query.filter(colDate >= from) }
+        if let to = to { query = query.filter(colDate <= to) }
+        var totalSeconds = 0
+        var dayMap: [String: Int] = [:]
+        var windowMap: [String: (url: String?, extraInfo: String?, seconds: Int)] = [:]
+
+        for row in try db.prepare(query) {
+            let duration = row[colDurationSeconds]
+            let date = row[colDate]
+            let windowTitle = row[colWindowTitle]
+            let url = row[colUrl]
+            let extraInfo = row[colExtraInfo]
+
+            totalSeconds += duration
+            dayMap[date, default: 0] += duration
+
+            var window = windowMap[windowTitle] ?? (url: url, extraInfo: extraInfo, seconds: 0)
+            window.seconds += duration
+            window.url = window.url ?? url
+            window.extraInfo = window.extraInfo ?? extraInfo
+            windowMap[windowTitle] = window
+        }
+
+        let days = dayMap.map { DayBreakdown(date: $0.key, totalSeconds: $0.value) }
+            .sorted { $0.date > $1.date }
+
+        let topWindows = windowMap.map {
+            WindowDetail(windowTitle: $0.key, url: $0.value.url, extraInfo: $0.value.extraInfo, totalSeconds: $0.value.seconds)
+        }
+            .sorted { $0.totalSeconds > $1.totalSeconds }
+            .prefix(30)
+
+        return AppDetailReport(
+            appName: appName,
+            totalSeconds: totalSeconds,
+            days: days,
+            topWindows: Array(topWindows)
+        )
+    }
+
+    func queryBrandDetail(brandId: Int64, from: String? = nil, to: String? = nil) throws -> [String: Any] {
+        let brand = try db.prepare(brands.filter(colBrandId == brandId)).map { row in
+            Brand(id: row[colBrandId], name: row[colBrandName], color: row[colBrandColor], sortOrder: row[colBrandSortOrder])
+        }.first
+        guard let brand = brand else { return [:] }
+
+        let brandProjects = try db.prepare(projects.filter(colProjBrandId == brandId)).map { row in
+            Project(id: row[colProjId], brandId: row[colProjBrandId], name: row[colProjName], color: row[colProjColor], sortOrder: row[colProjSortOrder])
+        }
+
+        var totalSeconds = 0
+        var dayMap: [String: Int] = [:]
+        var projectSeconds: [Int64: Int] = [:]
+        var projectDayMap: [Int64: [String: Int]] = [:]
+
+        let projectIds = brandProjects.map { $0.id }
+        var query = activities.filter(projectIds.contains(colProjectId))
+        if let from = from { query = query.filter(colDate >= from) }
+        if let to = to { query = query.filter(colDate <= to) }
+
+        for row in try db.prepare(query) {
+            let duration = row[colDurationSeconds]
+            let date = row[colDate]
+            let pid = row[colProjectId] ?? 0
+
+            totalSeconds += duration
+            dayMap[date, default: 0] += duration
+            projectSeconds[pid, default: 0] += duration
+            projectDayMap[pid, default: [:]][date, default: 0] += duration
+        }
+
+        let days = dayMap.map { ["date": $0.key, "totalSeconds": $0.value] as [String: Any] }
+            .sorted { ($0["date"] as! String) > ($1["date"] as! String) }
+
+        let projectDetails = brandProjects.map { proj -> [String: Any] in
+            let pDays = (projectDayMap[proj.id] ?? [:]).map { ["date": $0.key, "totalSeconds": $0.value] as [String: Any] }
+                .sorted { ($0["date"] as! String) > ($1["date"] as! String) }
+            return [
+                "id": proj.id,
+                "name": proj.name,
+                "color": proj.color,
+                "totalSeconds": projectSeconds[proj.id] ?? 0,
+                "days": pDays
+            ] as [String: Any]
+        }.sorted { ($0["totalSeconds"] as! Int) > ($1["totalSeconds"] as! Int) }
+
+        return [
+            "brandId": brand.id,
+            "brandName": brand.name,
+            "color": brand.color,
+            "totalSeconds": totalSeconds,
+            "days": days,
+            "projects": projectDetails
+        ] as [String: Any]
+    }
+
+    func allDates() throws -> [String] {
+        let query = activities.select(distinct: colDate).order(colDate.desc)
+        return try db.prepare(query).map { $0[colDate] }
+    }
+
+    func assignedActivityIds(date: String) throws -> [Int64] {
+        let query = activities
+            .select(colId)
+            .filter(colDate == date && colProjectId != nil)
+        return try db.prepare(query).map { $0[colId] }
+    }
+
+    // MARK: - Dismissed Suggestions
+
+    func dismissSuggestion(token: String) throws {
+        try db.run(dismissedSuggestions.insert(or: .replace,
+            colDismissedToken <- token.lowercased(),
+            colDismissedAt <- Date().timeIntervalSince1970
+        ))
+    }
+
+    func dismissedSuggestionTokens() throws -> Set<String> {
+        let rows = try db.prepare(dismissedSuggestions.select(colDismissedToken))
+        return Set(rows.map { $0[colDismissedToken] })
     }
 }
