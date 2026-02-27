@@ -8,13 +8,13 @@
 [![Swift 5.9](https://img.shields.io/badge/Swift-5.9-F05138?style=for-the-badge&logo=swift&logoColor=white)](https://swift.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-10b981?style=for-the-badge)](#license)
 [![100% Offline](https://img.shields.io/badge/100%25-Offline-6366f1?style=for-the-badge&logo=lock&logoColor=white)](#privacy)
-[![GitHub Release](https://img.shields.io/github/v/release/alpgiray-crypto/pulse-app?style=for-the-badge&color=f59e0b)](https://github.com/alpgiray-crypto/pulse-app/releases/latest)
+[![GitHub Release](https://img.shields.io/github/v/release/alpgiraykelem/pulse-app?style=for-the-badge&color=f59e0b)](https://github.com/alpgiraykelem/pulse-app/releases/latest)
 
 Privacy-first, automatic time tracking for macOS. Runs silently in your menu bar, tracks which apps and windows you use, and generates beautiful HTML reports.
 
 **No cloud. No accounts. No data leaves your Mac.**
 
-[Download Latest Release](https://github.com/alpgiray-crypto/pulse-app/releases/latest) · [Website](https://alpgiray-crypto.github.io/pulse-app/) · [Report Bug](https://github.com/alpgiray-crypto/pulse-app/issues)
+[Download Latest Release](https://github.com/alpgiraykelem/pulse-app/releases/latest) · [Website](https://alpgiraykelem.github.io/pulse-app/) · [Report Bug](https://github.com/alpgiraykelem/pulse-app/issues)
 
 </div>
 
@@ -27,7 +27,7 @@ Manual time trackers require you to start/stop timers, categorize tasks, and rem
 | | Manual Time Trackers | Pulse |
 |---|---|---|
 | **Tracking** | Start/stop timers manually | Automatic — detects active app every 2s |
-| **Project assignment** | Select project per entry | AI suggests rules, auto-classifies |
+| **Project assignment** | Select project per entry | Pattern detection suggests rules, auto-classifies |
 | **Terminal work** | Not tracked | Builds, deploys, git — all captured |
 | **Spotify / Music** | Not tracked | Now playing alongside your work |
 | **Data location** | Cloud servers | 100% local on your Mac |
@@ -44,8 +44,8 @@ Detects your active app and window every 2 seconds. No timers to start, no butto
 ### Brand & Project Hierarchy
 Organize your work by client (brand) and project. Assign activities automatically with 7 rule types: URL domain, folder path, window title, Figma file, bundle ID, page title, terminal folder.
 
-### AI Pattern Detection
-Scans your unassigned activities and suggests classification rules. One click to create rules that auto-categorize future work.
+### Smart Pattern Detection
+Scans your unassigned activities and detects patterns in URLs, folders, window titles, and Figma files. Suggests clients, projects, and matching rules — no AI, just smart pattern recognition. One click to accept.
 
 ### Smart Site Separation
 YouTube, GitHub, ChatGPT, Claude, and other sites are tracked as separate "apps" inside your browser — not just lumped under "Safari" or "Chrome".
@@ -55,6 +55,15 @@ Tracks builds, deploys, git operations, and long-running processes. Parses proje
 
 ### Beautiful HTML Reports
 Daily reports with donut charts, activity timelines, per-app breakdowns, and in-report project assignment.
+
+### Live SPA Dashboard
+A full single-page dashboard served from your menu bar. Filter by client, switch between time periods (All Time / Week / Month / Custom), and see exactly where every minute goes.
+
+### Parallel Work Tracking
+Working on a deploy while reviewing a PR in another terminal? Pulse tracks both simultaneously — each project gets its own clock. No project switching needed.
+
+### Bulk Assignment
+Select multiple activities with checkboxes, then assign them all to a project at once. Select all per app, or cherry-pick individual windows.
 
 ### Native macOS Settings
 Manage brands, projects, and rules from a native settings window. Keyboard shortcut: `Cmd+,`
@@ -68,7 +77,7 @@ Captures Spotify and Apple Music tracks alongside your work — see what you wer
 
 ### Option 1: Download the .app (Recommended)
 
-1. Download `Pulse-v1.0.0-macOS.zip` from [Releases](https://github.com/alpgiray-crypto/pulse-app/releases/latest)
+1. Download `Pulse-v1.0.0-macOS.zip` from [Releases](https://github.com/alpgiraykelem/pulse-app/releases/latest)
 2. Unzip and move `Pulse.app` to `/Applications`
 3. Open from Spotlight or Applications folder
 4. Grant Accessibility permission when prompted
@@ -76,7 +85,7 @@ Captures Spotify and Apple Music tracks alongside your work — see what you wer
 ### Option 2: Build from source
 
 ```bash
-git clone https://github.com/alpgiray-crypto/pulse-app.git
+git clone https://github.com/alpgiraykelem/pulse-app.git
 cd pulse-app && ./Scripts/install.sh
 ```
 

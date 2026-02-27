@@ -1279,5 +1279,613 @@ h2.section-label{
   </div>
 </div>
 
+<!-- ════════════════════════════════════════════════════════════════
+     NEW FEATURE PROMO CARDS — LinkedIn (1200x627)
+     ════════════════════════════════════════════════════════════════ -->
+
+<style>
+/* ── LinkedIn Feature Cards (1200x627) ── */
+.li-card{
+  width:1200px;height:627px;
+  position:relative;overflow:hidden;
+  display:flex;
+}
+.li-card::before{
+  content:'';position:absolute;inset:0;z-index:0;
+}
+.li-card *{position:relative;z-index:1}
+
+/* ── Card 1: SPA Dashboard ── */
+.li-spa{
+  background:linear-gradient(160deg,#0B0D17,#0f1128 50%,#0B0D17);
+  padding:0;
+}
+.li-spa::before{
+  background:radial-gradient(ellipse at 30% 40%,rgba(124,92,252,.12),transparent 60%);
+}
+.li-spa-left{
+  flex:0 0 440px;padding:56px 48px;display:flex;flex-direction:column;justify-content:center;
+}
+.li-spa-right{
+  flex:1;display:flex;align-items:center;justify-content:center;padding:32px 40px 32px 0;
+}
+
+/* Mini dashboard mockup */
+.li-dash{
+  width:100%;height:100%;border-radius:16px;overflow:hidden;
+  background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);
+  display:flex;
+}
+.li-dash-side{
+  width:160px;background:rgba(255,255,255,.02);border-right:1px solid rgba(255,255,255,.05);
+  padding:20px 0;display:flex;flex-direction:column;gap:2px;
+}
+.li-dash-logo{
+  padding:0 16px 16px;display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid rgba(255,255,255,.04);margin-bottom:8px;
+}
+.li-dash-logo i{width:20px;height:20px;border-radius:6px;background:linear-gradient(135deg,#3D4FF5,#8C38E0);flex-shrink:0}
+.li-dash-logo span{font-size:13px;font-weight:800;color:#fff}
+.li-nav-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#444;padding:10px 16px 4px}
+.li-nav-i{font-size:11px;padding:7px 16px;color:#8b8fa7;border-left:2px solid transparent;display:flex;align-items:center;gap:8px}
+.li-nav-i.active{color:#fff;background:rgba(124,92,252,.08);border-left-color:#7C5CFC}
+.li-nav-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.li-nav-sub{font-size:9px;padding:4px 16px 4px 36px;color:#555;display:flex;align-items:center;gap:5px}
+.li-nav-sub i{width:4px;height:4px;border-radius:50%;flex-shrink:0}
+.li-dash-main{flex:1;padding:20px 24px;overflow:hidden}
+.li-dash-tabs{display:flex;gap:0;margin-bottom:16px;background:rgba(255,255,255,.04);border-radius:6px;overflow:hidden}
+.li-dash-tab{font-size:10px;font-weight:700;padding:5px 14px;color:#555}
+.li-dash-tab.active{background:rgba(124,92,252,.15);color:#a78bfa}
+.li-dash-metrics{display:flex;gap:12px;margin-bottom:18px}
+.li-dash-metric{flex:1;padding:12px;border-radius:10px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.04)}
+.li-dash-metric-val{font-size:20px;font-weight:800;color:#fff;letter-spacing:-.02em}
+.li-dash-metric-lbl{font-size:8px;color:#8b8fa7;margin-top:2px}
+.li-dash-chart{display:flex;flex-direction:column;gap:6px}
+.li-dash-bar-row{display:flex;align-items:center;gap:8px}
+.li-dash-bar-lbl{font-size:9px;color:#8b8fa7;width:60px;text-align:right;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.li-dash-bar{height:16px;border-radius:4px;min-width:8px}
+.li-dash-bar-val{font-size:9px;font-weight:700;color:#c4c7d4;width:30px;flex-shrink:0}
+
+/* ── Card 2: Parallel Tracking ── */
+.li-parallel{
+  background:linear-gradient(160deg,#0B0D17,#0a1420 50%,#0B0D17);
+  flex-direction:column;align-items:center;justify-content:center;
+  padding:56px 64px;gap:36px;
+}
+.li-parallel::before{
+  background:radial-gradient(ellipse at 50% 30%,rgba(14,165,233,.1),transparent 60%);
+}
+.li-parallel-title{
+  font-size:44px;font-weight:800;color:#fff;text-align:center;
+  letter-spacing:-.03em;line-height:1.15;
+}
+.li-parallel-title em{
+  font-style:normal;
+  background:linear-gradient(135deg,#0ea5e9,#38bdf8);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.li-parallel-sub{font-size:18px;color:#8b8fa7;text-align:center;max-width:600px;line-height:1.5}
+.li-timelines{
+  display:flex;flex-direction:column;gap:12px;width:100%;max-width:900px;
+}
+.li-tl{
+  display:flex;align-items:center;gap:16px;padding:16px 20px;
+  border-radius:14px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);
+  position:relative;overflow:hidden;
+}
+.li-tl-icon{
+  width:40px;height:40px;border-radius:10px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.li-tl-info{flex:1}
+.li-tl-name{font-size:15px;font-weight:700;color:#fff}
+.li-tl-project{font-size:11px;color:#8b8fa7;margin-top:2px}
+.li-tl-bar-wrap{flex:0 0 400px;height:28px;border-radius:6px;background:rgba(255,255,255,.03);position:relative;overflow:hidden;display:flex}
+.li-tl-seg{height:100%;position:relative;display:flex;align-items:center;justify-content:center}
+.li-tl-seg span{font-size:9px;font-weight:700;color:rgba(255,255,255,.7);white-space:nowrap}
+.li-tl-time{font-size:14px;font-weight:800;flex-shrink:0;width:48px;text-align:right}
+.li-overlap-badge{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  padding:4px 12px;border-radius:100px;
+  background:rgba(14,165,233,.15);border:1px solid rgba(14,165,233,.3);
+  font-size:11px;font-weight:700;color:#38bdf8;
+  z-index:3;
+}
+
+/* ── Card 3: Client Management ── */
+.li-client{
+  background:linear-gradient(160deg,#0B0D17,#0f1128 50%,#0B0D17);
+  flex-direction:column;align-items:center;justify-content:center;
+  padding:56px 64px;gap:32px;
+}
+.li-client::before{
+  background:radial-gradient(ellipse at 50% 30%,rgba(168,85,247,.1),transparent 60%);
+}
+.li-client-title{
+  font-size:44px;font-weight:800;color:#fff;text-align:center;
+  letter-spacing:-.03em;line-height:1.15;
+}
+.li-client-title em{
+  font-style:normal;
+  background:linear-gradient(135deg,#a855f7,#c084fc);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.li-client-sub{font-size:18px;color:#8b8fa7;text-align:center;max-width:600px;line-height:1.5}
+
+.li-brand-grid{display:flex;gap:16px;width:100%;max-width:960px}
+.li-brand-card{
+  flex:1;padding:24px 20px;border-radius:16px;
+  background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);
+  display:flex;flex-direction:column;gap:12px;
+}
+.li-brand-head{display:flex;align-items:center;gap:10px}
+.li-brand-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.li-brand-name{font-size:16px;font-weight:700;color:#fff}
+.li-brand-hrs{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-left:auto}
+.li-brand-projects{display:flex;flex-direction:column;gap:6px}
+.li-brand-proj{display:flex;align-items:center;gap:8px;font-size:12px;color:#8b8fa7;padding:8px 12px;border-radius:8px;background:rgba(255,255,255,.02)}
+.li-brand-proj-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.li-brand-proj-name{flex:1}
+.li-brand-proj-hrs{font-weight:700;color:#c4c7d4}
+.li-brand-proj-bar{flex:0 0 80px;height:6px;border-radius:3px;background:rgba(255,255,255,.06);overflow:hidden}
+.li-brand-proj-fill{height:100%;border-radius:3px}
+
+/* ── Card 4: Smart Pattern Detection ── */
+.li-pattern{
+  background:linear-gradient(160deg,#0B0D17,#0f0d1d 50%,#0B0D17);
+  padding:0;
+}
+.li-pattern::before{
+  background:radial-gradient(ellipse at 70% 40%,rgba(249,115,22,.08),transparent 60%);
+}
+.li-pattern-left{
+  flex:0 0 460px;padding:56px 48px;display:flex;flex-direction:column;justify-content:center;
+}
+.li-pattern-right{
+  flex:1;display:flex;flex-direction:column;justify-content:center;padding:40px 48px 40px 0;gap:12px;
+}
+.li-rule{
+  display:flex;align-items:center;gap:12px;padding:14px 18px;
+  border-radius:12px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);
+}
+.li-rule-type{
+  font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  padding:4px 10px;border-radius:6px;flex-shrink:0;min-width:80px;text-align:center;
+}
+.li-rule-pattern{font-size:13px;font-family:'SF Mono',Menlo,monospace;color:#c4c7d4;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.li-rule-arrow{color:#555;flex-shrink:0;font-size:14px}
+.li-rule-project{font-size:12px;font-weight:700;color:#fff;flex-shrink:0;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.li-rule-match{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:10px;font-weight:700;color:#22c55e;flex-shrink:0;
+  padding:3px 8px;border-radius:4px;background:rgba(34,197,94,.08);
+}
+
+/* ── Card 5: Bulk Selection ── */
+.li-bulk{
+  background:linear-gradient(160deg,#0B0D17,#0d1117 50%,#0B0D17);
+  flex-direction:column;align-items:center;justify-content:center;
+  padding:48px 64px;gap:28px;
+}
+.li-bulk::before{
+  background:radial-gradient(ellipse at 50% 30%,rgba(16,185,129,.08),transparent 60%);
+}
+.li-bulk-title{
+  font-size:44px;font-weight:800;color:#fff;text-align:center;
+  letter-spacing:-.03em;line-height:1.15;
+}
+.li-bulk-title em{
+  font-style:normal;
+  background:linear-gradient(135deg,#10b981,#34d399);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.li-bulk-sub{font-size:18px;color:#8b8fa7;text-align:center;max-width:600px;line-height:1.5}
+.li-bulk-demo{
+  width:100%;max-width:860px;border-radius:16px;overflow:hidden;
+  background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);
+}
+.li-bulk-header{
+  padding:14px 20px;display:flex;align-items:center;gap:12px;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+.li-bulk-header-icon{width:28px;height:28px;border-radius:8px;background:rgba(124,92,252,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.li-bulk-header-name{font-size:14px;font-weight:700;color:#fff}
+.li-bulk-header-dur{font-size:14px;font-weight:800;color:#7C5CFC;margin-left:auto}
+.li-bulk-selall{display:flex;align-items:center;gap:6px;font-size:10px;color:#8b8fa7;margin-left:16px}
+.li-bulk-rows{padding:8px}
+.li-bulk-row{
+  display:flex;align-items:center;gap:10px;padding:10px 14px;
+  border-radius:10px;font-size:13px;color:#c4c7d4;margin-bottom:4px;
+  transition:all .2s;
+}
+.li-bulk-row.sel{background:rgba(16,185,129,.06);box-shadow:inset 0 0 0 1px rgba(16,185,129,.15)}
+.li-bulk-cb{
+  width:16px;height:16px;border-radius:4px;flex-shrink:0;
+  border:1.5px solid rgba(255,255,255,.15);
+}
+.li-bulk-row.sel .li-bulk-cb{border-color:#10b981;background:#10b981}
+.li-bulk-row-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.li-bulk-row-dur{font-weight:700;color:#8b8fa7;flex-shrink:0;font-variant-numeric:tabular-nums}
+.li-bulk-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 20px;border-top:1px solid rgba(255,255,255,.04);
+  background:rgba(16,185,129,.04);
+}
+.li-bulk-bar-left{font-size:12px;font-weight:700;color:#10b981}
+.li-bulk-bar-actions{display:flex;gap:8px}
+.li-bulk-bar-btn{
+  font-size:11px;font-weight:700;padding:7px 18px;border-radius:8px;
+}
+
+/* ── Shared elements ── */
+.li-label{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;font-weight:600;
+  padding:6px 16px;border-radius:100px;
+  margin-bottom:20px;
+}
+.li-h{font-size:38px;font-weight:800;color:#fff;letter-spacing:-.03em;line-height:1.15;margin-bottom:12px}
+.li-h em{font-style:normal;background:linear-gradient(135deg,#7C5CFC,#5B8DEF);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.li-p{font-size:16px;color:#8b8fa7;line-height:1.55;max-width:380px}
+.li-foot{
+  position:absolute;bottom:24px;left:48px;right:48px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.li-foot-logo{display:flex;align-items:center;gap:10px}
+.li-foot-icon{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#3D4FF5,#8C38E0);display:flex;align-items:center;justify-content:center}
+.li-foot-icon svg{width:16px;height:16px}
+.li-foot-name{font-size:15px;font-weight:800;color:#fff}
+.li-foot-url{font-size:12px;color:#555;font-family:'SF Mono',monospace}
+</style>
+
+<!-- ─────────────────────────────────────────────────────────────
+     CARD A: SPA Dashboard — Live Client View
+     ───────────────────────────────────────────────────────────── -->
+<h2 class="section-label">11. LinkedIn: SPA Dashboard (1200x627)</h2>
+<div class="li-card li-spa">
+  <div class="li-spa-left">
+    <div class="li-label" style="background:rgba(124,92,252,.1);border:1px solid rgba(124,92,252,.2);color:#a78bfa">
+      <span style="width:7px;height:7px;border-radius:50%;background:#22c55e"></span> New Feature
+    </div>
+    <div class="li-h">Real-time<br><em>Client Dashboard</em></div>
+    <div class="li-p">A full SPA dashboard served from your menu bar. Filter by client, switch between time periods, and see exactly where every minute goes.</div>
+    <div style="display:flex;gap:8px;margin-top:24px;flex-wrap:wrap">
+      <span style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;background:rgba(124,92,252,.08);color:#a78bfa;border:1px solid rgba(124,92,252,.15)">Period Tabs</span>
+      <span style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;background:rgba(91,141,239,.08);color:#93bbfd;border:1px solid rgba(91,141,239,.15)">Client Sidebar</span>
+      <span style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;background:rgba(34,197,94,.08);color:#4ade80;border:1px solid rgba(34,197,94,.15)">Custom Range</span>
+    </div>
+  </div>
+  <div class="li-spa-right">
+    <div class="li-dash">
+      <div class="li-dash-side">
+        <div class="li-dash-logo"><i></i><span>Pulse</span></div>
+        <div class="li-nav-lbl">Clients</div>
+        <div class="li-nav-i active"><span class="li-nav-dot" style="background:#6366f1"></span>NovaTech</div>
+        <div class="li-nav-sub"><i style="background:#818cf8"></i>Community Platform</div>
+        <div class="li-nav-sub"><i style="background:#818cf8"></i>Pro Dashboard</div>
+        <div class="li-nav-i"><span class="li-nav-dot" style="background:#f43f5e"></span>Meridian Studio</div>
+        <div class="li-nav-i"><span class="li-nav-dot" style="background:#f97316"></span>Greenfield Media</div>
+        <div class="li-nav-i"><span class="li-nav-dot" style="background:#a855f7"></span>Atelier Agency</div>
+        <div class="li-nav-lbl">Apps</div>
+        <div class="li-nav-i"><span class="li-nav-dot" style="background:#3b82f6"></span>VS Code</div>
+        <div class="li-nav-i"><span class="li-nav-dot" style="background:#ef4444"></span>Figma</div>
+        <div class="li-nav-i"><span class="li-nav-dot" style="background:#22c55e"></span>Terminal</div>
+      </div>
+      <div class="li-dash-main">
+        <div style="font-size:14px;font-weight:800;color:#fff;margin-bottom:4px">NovaTech</div>
+        <div class="li-dash-tabs">
+          <div class="li-dash-tab active">All Time</div>
+          <div class="li-dash-tab">Week</div>
+          <div class="li-dash-tab">Month</div>
+          <div class="li-dash-tab">Custom</div>
+        </div>
+        <div class="li-dash-metrics">
+          <div class="li-dash-metric">
+            <div class="li-dash-metric-val">47h</div>
+            <div class="li-dash-metric-lbl">Total Time</div>
+          </div>
+          <div class="li-dash-metric">
+            <div class="li-dash-metric-val">14</div>
+            <div class="li-dash-metric-lbl">Active Days</div>
+          </div>
+          <div class="li-dash-metric">
+            <div class="li-dash-metric-val">5</div>
+            <div class="li-dash-metric-lbl">Apps Used</div>
+          </div>
+        </div>
+        <div class="li-dash-chart">
+          <div class="li-dash-bar-row"><span class="li-dash-bar-lbl">VS Code</span><div class="li-dash-bar" style="width:65%;background:linear-gradient(90deg,#6366f1,#818cf8)"></div><span class="li-dash-bar-val">22h</span></div>
+          <div class="li-dash-bar-row"><span class="li-dash-bar-lbl">Terminal</span><div class="li-dash-bar" style="width:38%;background:linear-gradient(90deg,#10b981,#34d399)"></div><span class="li-dash-bar-val">12h</span></div>
+          <div class="li-dash-bar-row"><span class="li-dash-bar-lbl">Figma</span><div class="li-dash-bar" style="width:24%;background:linear-gradient(90deg,#ef4444,#f87171)"></div><span class="li-dash-bar-val">8h</span></div>
+          <div class="li-dash-bar-row"><span class="li-dash-bar-lbl">Safari</span><div class="li-dash-bar" style="width:14%;background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div><span class="li-dash-bar-val">5h</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="li-foot">
+    <div class="li-foot-logo">
+      <div class="li-foot-icon"><svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="19" r="8" fill="none" stroke="#fff" stroke-width="2"/><line x1="22" y1="19" x2="22" y2="14" stroke="#fff" stroke-width="2" stroke-linecap="round"/><line x1="22" y1="19" x2="25" y2="21" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <span class="li-foot-name">Pulse</span>
+    </div>
+    <span class="li-foot-url">github.com/alpgiraykelem/pulse-app</span>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────────────────────
+     CARD B: Parallel Tracking
+     ───────────────────────────────────────────────────────────── -->
+<h2 class="section-label">12. LinkedIn: Parallel Tracking (1200x627)</h2>
+<div class="li-card li-parallel">
+  <div class="li-parallel-title">Two projects, one screen.<br><em>Both clocks running.</em></div>
+  <div class="li-parallel-sub">Working on a deploy while reviewing a PR in another terminal? Pulse tracks both simultaneously. No project switching needed.</div>
+
+  <div class="li-timelines">
+    <!-- Timeline row 1 -->
+    <div class="li-tl">
+      <div class="li-tl-icon" style="background:rgba(99,102,241,.12)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+      </div>
+      <div class="li-tl-info">
+        <div class="li-tl-name">Terminal &mdash; NovaTech Deploy</div>
+        <div class="li-tl-project">NovaTech &rsaquo; Community Platform</div>
+      </div>
+      <div class="li-tl-bar-wrap">
+        <div class="li-tl-seg" style="width:20%;background:rgba(99,102,241,.15)"></div>
+        <div class="li-tl-seg" style="width:35%;background:rgba(99,102,241,.3)"><span>deploying...</span></div>
+        <div class="li-tl-seg" style="width:15%;background:rgba(99,102,241,.15)"></div>
+        <div class="li-tl-seg" style="width:30%;background:rgba(99,102,241,.25)"><span>tests</span></div>
+      </div>
+      <div class="li-tl-time" style="color:#6366f1">1h 24m</div>
+    </div>
+
+    <!-- Timeline row 2 -->
+    <div class="li-tl">
+      <div class="li-tl-icon" style="background:rgba(14,165,233,.12)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <div class="li-tl-info">
+        <div class="li-tl-name">VS Code &mdash; Greenfield WordPress Theme</div>
+        <div class="li-tl-project">Greenfield Media &rsaquo; WordPress Site</div>
+      </div>
+      <div class="li-tl-bar-wrap">
+        <div class="li-tl-seg" style="width:10%;background:rgba(14,165,233,.1)"></div>
+        <div class="li-tl-seg" style="width:45%;background:rgba(14,165,233,.25)"><span>editing theme</span></div>
+        <div class="li-tl-seg" style="width:20%;background:rgba(14,165,233,.35)"><span>CSS</span></div>
+        <div class="li-tl-seg" style="width:25%;background:rgba(14,165,233,.15)"></div>
+      </div>
+      <div class="li-tl-time" style="color:#0ea5e9">52m</div>
+    </div>
+
+    <!-- Timeline row 3 -->
+    <div class="li-tl">
+      <div class="li-tl-icon" style="background:rgba(239,68,68,.12)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round"><path d="M5 3v18l7-3 7 3V3H5z"/></svg>
+      </div>
+      <div class="li-tl-info">
+        <div class="li-tl-name">Figma &mdash; Meridian App Mockups</div>
+        <div class="li-tl-project">Meridian Studio &rsaquo; Mobile App</div>
+      </div>
+      <div class="li-tl-bar-wrap">
+        <div class="li-tl-seg" style="width:30%;background:rgba(239,68,68,.2)"><span>wireframes</span></div>
+        <div class="li-tl-seg" style="width:25%;background:rgba(239,68,68,.3)"><span>hi-fi</span></div>
+        <div class="li-tl-seg" style="width:25%;background:rgba(239,68,68,.15)"></div>
+        <div class="li-tl-seg" style="width:20%;background:rgba(239,68,68,.25)"><span>export</span></div>
+      </div>
+      <div class="li-tl-time" style="color:#ef4444">38m</div>
+    </div>
+  </div>
+
+  <div class="li-foot">
+    <div class="li-foot-logo">
+      <div class="li-foot-icon"><svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="19" r="8" fill="none" stroke="#fff" stroke-width="2"/><line x1="22" y1="19" x2="22" y2="14" stroke="#fff" stroke-width="2" stroke-linecap="round"/><line x1="22" y1="19" x2="25" y2="21" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <span class="li-foot-name">Pulse</span>
+    </div>
+    <span class="li-foot-url">github.com/alpgiraykelem/pulse-app</span>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────────────────────
+     CARD C: Client & Project Hierarchy
+     ───────────────────────────────────────────────────────────── -->
+<h2 class="section-label">13. LinkedIn: Client Management (1200x627)</h2>
+<div class="li-card li-client">
+  <div class="li-client-title">Know where every hour goes.<br><em>By client. By project.</em></div>
+  <div class="li-client-sub">Organize work by client and project. Auto-assign activities with 7 rule types. See per-client breakdowns in one glance.</div>
+
+  <div class="li-brand-grid">
+    <!-- Brand 1 -->
+    <div class="li-brand-card">
+      <div class="li-brand-head">
+        <span class="li-brand-dot" style="background:#6366f1"></span>
+        <span class="li-brand-name">NovaTech</span>
+        <span class="li-brand-hrs" style="color:#6366f1">47h 12m</span>
+      </div>
+      <div class="li-brand-projects">
+        <div class="li-brand-proj">
+          <span class="li-brand-proj-dot" style="background:#818cf8"></span>
+          <span class="li-brand-proj-name">Community Platform</span>
+          <span class="li-brand-proj-hrs">32h</span>
+          <div class="li-brand-proj-bar"><div class="li-brand-proj-fill" style="width:68%;background:#6366f1"></div></div>
+        </div>
+        <div class="li-brand-proj">
+          <span class="li-brand-proj-dot" style="background:#818cf8"></span>
+          <span class="li-brand-proj-name">Pro Dashboard</span>
+          <span class="li-brand-proj-hrs">11h</span>
+          <div class="li-brand-proj-bar"><div class="li-brand-proj-fill" style="width:23%;background:#818cf8"></div></div>
+        </div>
+        <div class="li-brand-proj">
+          <span class="li-brand-proj-dot" style="background:#a5b4fc"></span>
+          <span class="li-brand-proj-name">novatech.io</span>
+          <span class="li-brand-proj-hrs">4h</span>
+          <div class="li-brand-proj-bar"><div class="li-brand-proj-fill" style="width:9%;background:#a5b4fc"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brand 2 -->
+    <div class="li-brand-card">
+      <div class="li-brand-head">
+        <span class="li-brand-dot" style="background:#f43f5e"></span>
+        <span class="li-brand-name">Meridian Studio</span>
+        <span class="li-brand-hrs" style="color:#f43f5e">18h 40m</span>
+      </div>
+      <div class="li-brand-projects">
+        <div class="li-brand-proj">
+          <span class="li-brand-proj-dot" style="background:#fb7185"></span>
+          <span class="li-brand-proj-name">meridianstudio.co</span>
+          <span class="li-brand-proj-hrs">18h</span>
+          <div class="li-brand-proj-bar"><div class="li-brand-proj-fill" style="width:96%;background:#f43f5e"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brand 3 -->
+    <div class="li-brand-card">
+      <div class="li-brand-head">
+        <span class="li-brand-dot" style="background:#f97316"></span>
+        <span class="li-brand-name">Greenfield Media</span>
+        <span class="li-brand-hrs" style="color:#f97316">12h 8m</span>
+      </div>
+      <div class="li-brand-projects">
+        <div class="li-brand-proj">
+          <span class="li-brand-proj-dot" style="background:#fb923c"></span>
+          <span class="li-brand-proj-name">WordPress Site</span>
+          <span class="li-brand-proj-hrs">9h</span>
+          <div class="li-brand-proj-bar"><div class="li-brand-proj-fill" style="width:74%;background:#f97316"></div></div>
+        </div>
+        <div class="li-brand-proj">
+          <span class="li-brand-proj-dot" style="background:#fdba74"></span>
+          <span class="li-brand-proj-name">Brand Landing Page</span>
+          <span class="li-brand-proj-hrs">3h</span>
+          <div class="li-brand-proj-bar"><div class="li-brand-proj-fill" style="width:26%;background:#fdba74"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="li-foot">
+    <div class="li-foot-logo">
+      <div class="li-foot-icon"><svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="19" r="8" fill="none" stroke="#fff" stroke-width="2"/><line x1="22" y1="19" x2="22" y2="14" stroke="#fff" stroke-width="2" stroke-linecap="round"/><line x1="22" y1="19" x2="25" y2="21" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <span class="li-foot-name">Pulse</span>
+    </div>
+    <span class="li-foot-url">github.com/alpgiraykelem/pulse-app</span>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────────────────────
+     CARD D: Smart Pattern Detection
+     ───────────────────────────────────────────────────────────── -->
+<h2 class="section-label">14. LinkedIn: Smart Pattern Detection (1200x627)</h2>
+<div class="li-card li-pattern">
+  <div class="li-pattern-left">
+    <div class="li-label" style="background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.2);color:#fb923c">
+      <span style="width:7px;height:7px;border-radius:50%;background:#f97316"></span> No AI Needed
+    </div>
+    <div class="li-h" style="max-width:400px">It learns your<br><em style="background:linear-gradient(135deg,#f97316,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent">work patterns.</em></div>
+    <div class="li-p">Pulse scans your window titles, URLs, terminal folders, and Figma files. Detects patterns, suggests clients &amp; projects, creates matching rules automatically.</div>
+    <div style="display:flex;gap:8px;margin-top:24px;flex-wrap:wrap">
+      <span style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;background:rgba(249,115,22,.08);color:#fb923c;border:1px solid rgba(249,115,22,.15)">7 Rule Types</span>
+      <span style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;background:rgba(124,92,252,.08);color:#a78bfa;border:1px solid rgba(124,92,252,.15)">Regex Support</span>
+      <span style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;background:rgba(34,197,94,.08);color:#4ade80;border:1px solid rgba(34,197,94,.15)">Auto-Assign</span>
+    </div>
+  </div>
+  <div class="li-pattern-right">
+    <div class="li-rule">
+      <span class="li-rule-type" style="background:rgba(124,92,252,.1);color:#a78bfa">Window Title</span>
+      <span class="li-rule-pattern">(?i)^novatech community</span>
+      <span class="li-rule-arrow">&rarr;</span>
+      <span class="li-rule-project">Community Platform</span>
+      <span class="li-rule-match">&#10003; 847</span>
+    </div>
+    <div class="li-rule">
+      <span class="li-rule-type" style="background:rgba(14,165,233,.1);color:#38bdf8">URL Domain</span>
+      <span class="li-rule-pattern">meridianstudio.co</span>
+      <span class="li-rule-arrow">&rarr;</span>
+      <span class="li-rule-project">Meridian Studio</span>
+      <span class="li-rule-match">&#10003; 312</span>
+    </div>
+    <div class="li-rule">
+      <span class="li-rule-type" style="background:rgba(16,185,129,.1);color:#34d399">Terminal Folder</span>
+      <span class="li-rule-pattern">~/projects/greenfield-theme</span>
+      <span class="li-rule-arrow">&rarr;</span>
+      <span class="li-rule-project">Greenfield Media</span>
+      <span class="li-rule-match">&#10003; 156</span>
+    </div>
+    <div class="li-rule">
+      <span class="li-rule-type" style="background:rgba(239,68,68,.1);color:#f87171">Figma File</span>
+      <span class="li-rule-pattern">Atelier Agency - Brand Guide</span>
+      <span class="li-rule-arrow">&rarr;</span>
+      <span class="li-rule-project">Atelier Agency</span>
+      <span class="li-rule-match">&#10003; 89</span>
+    </div>
+    <div class="li-rule">
+      <span class="li-rule-type" style="background:rgba(168,85,247,.1);color:#c084fc">Bundle ID</span>
+      <span class="li-rule-pattern">com.spotify.client</span>
+      <span class="li-rule-arrow">&rarr;</span>
+      <span class="li-rule-project">Music</span>
+      <span class="li-rule-match">&#10003; 2.1k</span>
+    </div>
+    <div class="li-rule">
+      <span class="li-rule-type" style="background:rgba(251,191,36,.1);color:#fbbf24">Page Title</span>
+      <span class="li-rule-pattern">Pull Request #42 &mdash; novatech-web</span>
+      <span class="li-rule-arrow">&rarr;</span>
+      <span class="li-rule-project">Pulse</span>
+      <span class="li-rule-match">&#10003; 64</span>
+    </div>
+  </div>
+  <div class="li-foot">
+    <div class="li-foot-logo">
+      <div class="li-foot-icon"><svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="19" r="8" fill="none" stroke="#fff" stroke-width="2"/><line x1="22" y1="19" x2="22" y2="14" stroke="#fff" stroke-width="2" stroke-linecap="round"/><line x1="22" y1="19" x2="25" y2="21" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <span class="li-foot-name">Pulse</span>
+    </div>
+    <span class="li-foot-url">github.com/alpgiraykelem/pulse-app</span>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────────────────────
+     CARD E: Bulk Selection & Assignment
+     ───────────────────────────────────────────────────────────── -->
+<h2 class="section-label">15. LinkedIn: Bulk Assignment (1200x627)</h2>
+<div class="li-card li-bulk">
+  <div class="li-bulk-title">Select. Assign. Done.<br><em>100 activities in one click.</em></div>
+  <div class="li-bulk-sub">Checkbox any window, select all per app, then assign everything to a project at once. No more one-by-one classification.</div>
+
+  <div class="li-bulk-demo">
+    <div class="li-bulk-header">
+      <div class="li-bulk-header-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7C5CFC" stroke-width="2" stroke-linecap="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+      </div>
+      <span class="li-bulk-header-name">Terminal</span>
+      <span class="li-bulk-header-dur">3h 42m</span>
+      <div class="li-bulk-selall">
+        <span style="width:12px;height:12px;border-radius:3px;border:1.5px solid #10b981;background:#10b981;display:inline-block"></span>
+        Select All
+      </div>
+    </div>
+    <div class="li-bulk-rows">
+      <div class="li-bulk-row sel"><span class="li-bulk-cb"></span><span class="li-bulk-row-title">novatech-community &mdash; npm run build</span><span class="li-bulk-row-dur">42m</span></div>
+      <div class="li-bulk-row sel"><span class="li-bulk-cb"></span><span class="li-bulk-row-title">novatech-community &mdash; git push origin main</span><span class="li-bulk-row-dur">18m</span></div>
+      <div class="li-bulk-row sel"><span class="li-bulk-cb"></span><span class="li-bulk-row-title">novatech-community &mdash; claude code review</span><span class="li-bulk-row-dur">1h 12m</span></div>
+      <div class="li-bulk-row"><span class="li-bulk-cb"></span><span class="li-bulk-row-title">greenfield-theme &mdash; npm run dev</span><span class="li-bulk-row-dur">34m</span></div>
+      <div class="li-bulk-row"><span class="li-bulk-cb"></span><span class="li-bulk-row-title">meridian-app &mdash; swift build -c release</span><span class="li-bulk-row-dur">56m</span></div>
+    </div>
+    <div class="li-bulk-bar">
+      <span class="li-bulk-bar-left">3 selected &middot; 2h 12m</span>
+      <div class="li-bulk-bar-actions">
+        <span class="li-bulk-bar-btn" style="background:rgba(255,255,255,.06);color:#8b8fa7">Clear</span>
+        <span class="li-bulk-bar-btn" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff">Assign to NovaTech &rsaquo; Community Platform</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="li-foot">
+    <div class="li-foot-logo">
+      <div class="li-foot-icon"><svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="19" r="8" fill="none" stroke="#fff" stroke-width="2"/><line x1="22" y1="19" x2="22" y2="14" stroke="#fff" stroke-width="2" stroke-linecap="round"/><line x1="22" y1="19" x2="25" y2="21" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <span class="li-foot-name">Pulse</span>
+    </div>
+    <span class="li-foot-url">github.com/alpgiraykelem/pulse-app</span>
+  </div>
+</div>
+
 </body>
 </html>
